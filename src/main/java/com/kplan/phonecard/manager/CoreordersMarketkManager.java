@@ -29,8 +29,8 @@ import com.kplan.phonecard.utils.SqeUtils;
 
 @Component
 @Transactional
-public class core_orders_market_kManager extends BaseManager{
-	private static final Logger logger = LoggerFactory.getLogger(core_orders_market_kManager.class);
+public class CoreordersMarketkManager extends BaseManager{
+	private static final Logger logger = LoggerFactory.getLogger(CoreordersMarketkManager.class);
 	@Autowired
 	core_orders_market_kService coreOrderSerbice;
 	public Page<core_orders_market_k> findOrder(@NotNull core_orders_market_kQuery query, Pageable pageable){

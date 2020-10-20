@@ -19,9 +19,9 @@ import com.kplan.phonecard.domain.kplan_phone_number;
 import com.kplan.phonecard.domain.unicom_post_city_code;
 import com.kplan.phonecard.enums.GenderEnum;
 import com.kplan.phonecard.manager.ManagerInfoManager;
-import com.kplan.phonecard.manager.core_orders_market_kManager;
-import com.kplan.phonecard.manager.kplan_phone_numberManager;
-import com.kplan.phonecard.manager.unicom_post_city_codeManager;
+import com.kplan.phonecard.manager.CoreordersMarketkManager;
+import com.kplan.phonecard.manager.KplanpHonenumBerManager;
+import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.query.ManagerInfoQuery;
 import com.kplan.phonecard.query.core_orders_market_kQuery;
 import com.kplan.phonecard.service.core_orders_market_kService;
@@ -31,13 +31,13 @@ import com.kplan.phonecard.service.core_orders_market_kService;
 public class CoreOrdersMarketkController extends AbstractBaseController{
 	private static final Logger logger = LoggerFactory.getLogger(CoreOrdersMarketkController.class);
 	@Autowired
-	core_orders_market_kManager coreOrdersManager;
+	CoreordersMarketkManager coreOrdersManager;
 	@Autowired
 	core_orders_market_kService coreOrderSerbice;
 	@Autowired
-	unicom_post_city_codeManager unicompostcityManager;
+	UnicomPostcityCodeManager unicompostcityManager;
 	@Autowired
-	kplan_phone_numberManager kplanPhoneManager;
+	KplanpHonenumBerManager kplanPhoneManager;
 	@Autowired
 	ManagerInfoManager managerInfoManager;
 	@RequestMapping("/list")

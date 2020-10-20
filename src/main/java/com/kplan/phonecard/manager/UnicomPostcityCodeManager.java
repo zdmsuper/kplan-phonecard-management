@@ -22,7 +22,7 @@ import one.util.streamex.StreamEx;
 
 @Component
 @Transactional
-public class unicom_post_city_codeManager extends BaseManager{
+public class UnicomPostcityCodeManager extends BaseManager{
 	@Autowired
 	unicom_post_city_codeService unicomCityService;
 	

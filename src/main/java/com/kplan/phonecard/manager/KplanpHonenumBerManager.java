@@ -14,7 +14,7 @@ import one.util.streamex.StreamEx;
 
 @Component
 @Transactional
-public class kplan_phone_numberManager extends BaseManager{
+public class KplanpHonenumBerManager extends BaseManager{
 @Autowired
 kplan_phone_numberService kplanPhoneService;
 
