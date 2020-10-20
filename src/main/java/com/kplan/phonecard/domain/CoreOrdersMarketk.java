@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 import com.kplan.phonecard.base.BaseDomain;
 @Entity
 @Table(name = "core_orders_market_k")
-public class core_orders_market_k extends  BaseDomain{
+public class CoreOrdersMarketk extends  BaseDomain{
 	@Id
 	@Column(name = "order_no", unique = true, nullable = false, precision = 22, scale = 0 )
 	private String id	;

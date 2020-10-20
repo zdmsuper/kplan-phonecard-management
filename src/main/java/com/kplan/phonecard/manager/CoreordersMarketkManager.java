@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
-import com.kplan.phonecard.domain.core_orders_market_k;
-import com.kplan.phonecard.domain.kplan_phone_number;
+import com.kplan.phonecard.domain.CoreOrdersMarketk;
+import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.query.core_orders_market_kQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
@@ -33,10 +33,10 @@ public class CoreordersMarketkManager extends BaseManager{
 	private static final Logger logger = LoggerFactory.getLogger(CoreordersMarketkManager.class);
 	@Autowired
 	CoreordersMarketkService coreOrderSerbice;
-	public Page<core_orders_market_k> findOrder(@NotNull core_orders_market_kQuery query, Pageable pageable){
-			Specification<core_orders_market_k> spec=new Specification<core_orders_market_k>() {
+	public Page<CoreOrdersMarketk> findOrder(@NotNull core_orders_market_kQuery query, Pageable pageable){
+			Specification<CoreOrdersMarketk> spec=new Specification<CoreOrdersMarketk>() {
 			@Override
-			public Predicate toPredicate(Root<core_orders_market_k> r, CriteriaQuery<?> qr,
+			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr,
 					CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<>();
 //				cb.equal(r.get("id"), 23L) "线下上门渠道"
@@ -56,7 +56,7 @@ public class CoreordersMarketkManager extends BaseManager{
 			String province_name, String re_phone, String city, String cityName, String district, String districtName,
 			String phone_Num, String smsstatus) {
 		try {
-			kplan_phone_number phone = (kplan_phone_number) coreOrderSerbice.getById( phone_Num, kplan_phone_number.class);
+			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById( phone_Num, KplanPhoneNumber.class);
 			if (phone != null) {
 				if (phone.getUse_not() != 0) {
 					msgRes msg = new msgRes();
@@ -68,7 +68,7 @@ public class CoreordersMarketkManager extends BaseManager{
 					phone.setPhone_num(re_phone);
 					phone.setUse_not(1);
 					this.coreOrderSerbice.modify(phone);
-					core_orders_market_k k = new core_orders_market_k();
+					CoreOrdersMarketk k = new CoreOrdersMarketk();
 					k.setReceiver_name(userName);
 					k.setAccess_name(userName);
 					k.setAccess_id_number(userid);

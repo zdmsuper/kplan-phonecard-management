@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.kplan.phonecard.dao.Core_orders_market_kDao;
-import com.kplan.phonecard.domain.core_orders_market_k;
+import com.kplan.phonecard.domain.CoreOrdersMarketk;
 
 @Service
 public class CoreordersMarketkService {
@@ -33,7 +33,7 @@ public class CoreordersMarketkService {
 	@Autowired
 	Core_orders_market_kDao Core_orders_market_kDao;
 
-	public Page<core_orders_market_k> findAll(Specification<core_orders_market_k> spec, Pageable pageable) {
+	public Page<CoreOrdersMarketk> findAll(Specification<CoreOrdersMarketk> spec, Pageable pageable) {
 		return Core_orders_market_kDao.findAll(spec, pageable);
 	}
 	

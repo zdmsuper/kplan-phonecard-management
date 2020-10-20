@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kplan.phonecard.domain.ManagerInfo;
-import com.kplan.phonecard.domain.core_orders_market_k;
-import com.kplan.phonecard.domain.kplan_phone_number;
-import com.kplan.phonecard.domain.unicom_post_city_code;
+import com.kplan.phonecard.domain.CoreOrdersMarketk;
+import com.kplan.phonecard.domain.KplanPhoneNumber;
+import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.enums.GenderEnum;
 import com.kplan.phonecard.manager.ManagerInfoManager;
 import com.kplan.phonecard.manager.CoreordersMarketkManager;
-import com.kplan.phonecard.manager.KplanpHonenumBerManager;
+import com.kplan.phonecard.manager.KplanPhonenumBerManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.query.ManagerInfoQuery;
 import com.kplan.phonecard.query.core_orders_market_kQuery;
@@ -37,12 +37,12 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@Autowired
 	UnicomPostcityCodeManager unicompostcityManager;
 	@Autowired
-	KplanpHonenumBerManager kplanPhoneManager;
+	KplanPhonenumBerManager kplanPhoneManager;
 	@Autowired
 	ManagerInfoManager managerInfoManager;
 	@RequestMapping("/list")
 	public String findOrders(Map<String, Object> map, core_orders_market_kQuery query){
-		Page<core_orders_market_k> page = this.coreOrdersManager.findOrder(query, this.getPageRequest());
+		Page<CoreOrdersMarketk> page = this.coreOrdersManager.findOrder(query, this.getPageRequest());
 		map.put("query", query);
 		map.put("page", page);
 		return "coreorders/list";
@@ -50,9 +50,9 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	
 	@RequestMapping("/edit")
 	public String edit(Map<String, Object> map, ManagerInfoQuery query) {
-		List<unicom_post_city_code> l=this.unicompostcityManager.findByPrivoin();
-		List<kplan_phone_number> phoneList=this.kplanPhoneManager.findPhoneList("");
-		List<kplan_phone_number> phoneRuleList=this.kplanPhoneManager.findPhoneRuleList();
+		List<UnicomPostCityCode> l=this.unicompostcityManager.findByPrivoin();
+		List<KplanPhoneNumber> phoneList=this.kplanPhoneManager.findPhoneList("");
+		List<KplanPhoneNumber> phoneRuleList=this.kplanPhoneManager.findPhoneRuleList();
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);

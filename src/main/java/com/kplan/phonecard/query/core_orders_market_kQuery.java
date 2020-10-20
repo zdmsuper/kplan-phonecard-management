@@ -1,7 +1,7 @@
 package com.kplan.phonecard.query;
 
-import com.kplan.phonecard.domain.core_orders_market_k;
+import com.kplan.phonecard.domain.CoreOrdersMarketk;
 
-public class core_orders_market_kQuery extends BaseQuery<core_orders_market_k>{
+public class core_orders_market_kQuery extends BaseQuery<CoreOrdersMarketk>{
 
 }

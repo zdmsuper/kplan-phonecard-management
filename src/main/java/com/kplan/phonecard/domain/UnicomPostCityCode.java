@@ -10,7 +10,7 @@ import com.kplan.phonecard.base.BaseDomain;
 
 @Entity
 @Table(name = "unicom_post_city_code")
-public class unicom_post_city_code extends  BaseDomain{
+public class UnicomPostCityCode extends  BaseDomain{
 	@Column(name = "province_code", unique = true, length = 32)
 	private String province_code;
 	@Column(name = "city_code", unique = true, length = 32)
