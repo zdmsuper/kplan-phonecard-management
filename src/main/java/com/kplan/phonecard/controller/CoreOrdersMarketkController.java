@@ -24,7 +24,7 @@ import com.kplan.phonecard.manager.KplanpHonenumBerManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.query.ManagerInfoQuery;
 import com.kplan.phonecard.query.core_orders_market_kQuery;
-import com.kplan.phonecard.service.core_orders_market_kService;
+import com.kplan.phonecard.service.CoreordersMarketkService;
 
 @Controller
 @RequestMapping("/coreorder")
@@ -33,7 +33,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@Autowired
 	CoreordersMarketkManager coreOrdersManager;
 	@Autowired
-	core_orders_market_kService coreOrderSerbice;
+	CoreordersMarketkService coreOrderSerbice;
 	@Autowired
 	UnicomPostcityCodeManager unicompostcityManager;
 	@Autowired

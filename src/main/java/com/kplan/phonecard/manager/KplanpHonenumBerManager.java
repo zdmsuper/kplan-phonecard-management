@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kplan.phonecard.domain.kplan_phone_number;
-import com.kplan.phonecard.service.kplan_phone_numberService;
+import com.kplan.phonecard.service.KplanPhoneNumberService;
 
 import one.util.streamex.StreamEx;
 
@@ -16,7 +16,7 @@ import one.util.streamex.StreamEx;
 @Transactional
 public class KplanpHonenumBerManager extends BaseManager{
 @Autowired
-kplan_phone_numberService kplanPhoneService;
+KplanPhoneNumberService kplanPhoneService;
 
 
 	public List<kplan_phone_number> findPhoneList(String phoneRule){

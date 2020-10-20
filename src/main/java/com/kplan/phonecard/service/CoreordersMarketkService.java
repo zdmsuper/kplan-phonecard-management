@@ -15,7 +15,7 @@ import com.kplan.phonecard.dao.Core_orders_market_kDao;
 import com.kplan.phonecard.domain.core_orders_market_k;
 
 @Service
-public class core_orders_market_kService {
+public class CoreordersMarketkService {
 	@Autowired
 	EntityManager em;
 	

@@ -14,7 +14,7 @@ import com.kplan.phonecard.domain.PhoneRuleResult;
 import com.kplan.phonecard.domain.errorMsg;
 import com.kplan.phonecard.domain.kplan_phone_number;
 import com.kplan.phonecard.domain.unicom_post_city_code;
-import com.kplan.phonecard.service.unicom_post_city_codeService;
+import com.kplan.phonecard.service.UnicomPostcityCodeService;
 import com.kplan.phonecard.utils.HttpUtils;
 import com.kplan.phonecard.utils.PhoneRuleUtils;
 
@@ -24,7 +24,7 @@ import one.util.streamex.StreamEx;
 @Transactional
 public class UnicomPostcityCodeManager extends BaseManager{
 	@Autowired
-	unicom_post_city_codeService unicomCityService;
+	UnicomPostcityCodeService unicomCityService;
 	
 	public List<unicom_post_city_code> findByPrivoin(){
 		String sql="select  province_code,province_name from unicom_post_city_code group by province_code,province_name";

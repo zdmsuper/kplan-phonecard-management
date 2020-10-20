@@ -8,7 +8,7 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
-public class kplan_phone_numberService {
+public class KplanPhoneNumberService {
 	@Autowired
 	EntityManager em;
 	public  List getNativeResultList(String sql, Object... paras) {

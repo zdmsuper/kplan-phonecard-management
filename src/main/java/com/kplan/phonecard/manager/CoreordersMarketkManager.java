@@ -24,7 +24,7 @@ import com.kplan.phonecard.domain.core_orders_market_k;
 import com.kplan.phonecard.domain.kplan_phone_number;
 import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.query.core_orders_market_kQuery;
-import com.kplan.phonecard.service.core_orders_market_kService;
+import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.utils.SqeUtils;
 
 @Component
@@ -32,7 +32,7 @@ import com.kplan.phonecard.utils.SqeUtils;
 public class CoreordersMarketkManager extends BaseManager{
 	private static final Logger logger = LoggerFactory.getLogger(CoreordersMarketkManager.class);
 	@Autowired
-	core_orders_market_kService coreOrderSerbice;
+	CoreordersMarketkService coreOrderSerbice;
 	public Page<core_orders_market_k> findOrder(@NotNull core_orders_market_kQuery query, Pageable pageable){
 			Specification<core_orders_market_k> spec=new Specification<core_orders_market_k>() {
 			@Override
