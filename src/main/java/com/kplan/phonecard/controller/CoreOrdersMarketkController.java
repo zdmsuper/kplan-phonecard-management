@@ -23,7 +23,7 @@ import com.kplan.phonecard.manager.CoreordersMarketkManager;
 import com.kplan.phonecard.manager.KplanPhonenumBerManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.query.ManagerInfoQuery;
-import com.kplan.phonecard.query.core_orders_market_kQuery;
+import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 
 @Controller
@@ -41,7 +41,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@Autowired
 	ManagerInfoManager managerInfoManager;
 	@RequestMapping("/list")
-	public String findOrders(Map<String, Object> map, core_orders_market_kQuery query){
+	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query){
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.findOrder(query, this.getPageRequest());
 		map.put("query", query);
 		map.put("page", page);

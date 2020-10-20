@@ -23,7 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.msgRes;
-import com.kplan.phonecard.query.core_orders_market_kQuery;
+import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.utils.SqeUtils;
 
@@ -33,7 +33,7 @@ public class CoreordersMarketkManager extends BaseManager{
 	private static final Logger logger = LoggerFactory.getLogger(CoreordersMarketkManager.class);
 	@Autowired
 	CoreordersMarketkService coreOrderSerbice;
-	public Page<CoreOrdersMarketk> findOrder(@NotNull core_orders_market_kQuery query, Pageable pageable){
+	public Page<CoreOrdersMarketk> findOrder(@NotNull CoreOrdersMarketkQuery query, Pageable pageable){
 			Specification<CoreOrdersMarketk> spec=new Specification<CoreOrdersMarketk>() {
 			@Override
 			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr,
