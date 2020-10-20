@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.repository.MyJpaSpecificationExecutor;
 @Repository
-public interface kplan_phone_numberDao extends JpaRepository<KplanPhoneNumber, String>, JpaSpecificationExecutor<KplanPhoneNumber>,MyJpaSpecificationExecutor<KplanPhoneNumber> {
+public interface KplanPhoneNumberDao extends JpaRepository<KplanPhoneNumber, String>, JpaSpecificationExecutor<KplanPhoneNumber>,MyJpaSpecificationExecutor<KplanPhoneNumber> {
 
 }
