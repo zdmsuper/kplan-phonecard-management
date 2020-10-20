@@ -1,0 +1,120 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<!--[if lt IE 7]>
+
+<html class="lt-ie9 lt-ie8 lt-ie7">
+
+<![endif]-->
+<!--[if IE 7]>
+
+<html class="lt-ie9 lt-ie8" lang="en">
+
+<![endif]-->
+<!--[if IE 8]>
+
+<html class="lt-ie9" lang="en">
+
+<![endif]-->
+<!--[if gt IE 8]>
+<!-->
+
+<html>
+  <!--
+<![endif]-->
+  <head th:fragment="head">
+    <meta charset="utf-8">
+    <title>
+      Blue Moon - Responsive Admin Dashboard
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    
+    <meta name="author" content="">
+    <!-- bootstrap css -->
+    
+    <link th:href="@{/icomoon/style.css}" href="icomoon/style.css" rel="stylesheet">
+    <!--[if lte IE 7]>
+    <script src="css/icomoon-font/lte-ie7.js">
+    </script>
+    <![endif]-->
+  <link th:href="@{/css/wysiwyg/bootstrap-wysihtml5.css}" href="css/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet">
+  <link th:href="@{/css/wysiwyg/wysiwyg-color.css}" href="css/wysiwyg/wysiwyg-color.css" rel="stylesheet">
+  <link th:href="@{/css/main.css}" href="css/main.css" rel="stylesheet"> <!-- Important. For Theming change primary-color variable in main.css  -->
+  <link th:href="@{/css/charts-graphs.css}" href="css/charts-graphs.css" rel="stylesheet">
+   <script th:src="@{/js/jquery.min.js}"></script>
+  <script th:src="@{/layer/layer.js}"></script>
+<link rel="stylesheet"  th:href="@{/layer/theme/default/layer.css}">
+  </head>
+  
+  
+<body>
+
+
+
+<div class="top-nav" th:fragment="top-nav(nav)">
+				<ul>
+					<li><a  th:href="@{/index}"  href="index.html" th:class="${nav=='index'?'selected':''}">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe0a0;"></div>
+							首页
+					</a></li>
+					<li><a href="forms.html">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe0b8;"></div>
+							Forms
+					</a></li>
+					<li><a href="graphs.html">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe096;"></div>
+							Graphs
+					</a></li>
+					<li><a href="ui-elements.html">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe0d2;"></div>
+							UI Elements
+					</a></li>
+					<li><a href="icons.html" th:class="${nav=='icons'?'selected':''}">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe0a9;"></div>
+							Icons
+					</a></li>
+					<li><a href="tables.html" th:class="${nav=='icons'?'selected':''}">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe14a;"></div>
+							Tables
+					</a></li>
+					<li><a href="media.html" th:class="${nav=='icons'?'selected':''}">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe00d;"></div>
+							Media
+					</a></li>
+					<li><a href="calendar.html" th:class="${nav=='icons'?'selected':''}">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe052;"></div>
+							Calendar
+					</a></li>
+					<li><a href="typography.html" th:class="${nav=='icons'?'selected':''}">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe100;"></div>
+							Typography
+					</a></li>
+					<li><a href="edit-profile.html" th:class="${nav=='icons'?'selected':''}">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe0aa;"></div>
+							Extras
+					</a></li>
+					<li><a th:href="@{/managerInfo/list}" th:class="${nav=='/managerInfo/list'?'selected':''}">
+							<div class="fs1" aria-hidden="true" data-icon="&#xe0aa;"></div>
+							用户管理
+					</a></li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			
+			
+
+ <div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+ <form action="/admin/login/doLogout" method="post">
+        <button type="submit" value="logout">logout</button>
+        </form>
+<div sec:authentication="name">
+        The value of the "name" property of the authentication object should appear here.
+        
+    </div>
+     <div th:text="${#authentication.name}">
+        The value of the "name" property of the authentication object should appear here.
+    </div>
+
+</div>
+</body>
+</html>

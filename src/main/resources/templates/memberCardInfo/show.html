@@ -1,0 +1,119 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui/css/H-ui.min.css}" href="ui/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/H-ui.admin.css}" href="ui/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/skin/default/skin.css}" href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/style.css}" href="ui/h-ui.admin/css/style.css" />
+
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+
+<title>添加用户 - H-ui.admin v3.1</title>
+<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+<article class="page-container">
+	<form  method="post" class="form form-horizontal" id="form" autocomplete="off">
+		<input type="hidden" class="input-text" value="" placeholder="" id="domain.id" name="domain.id" th:remove="${item.id!=null?'none':'all'}">
+		<input type="hidden" class="input-text" value="" placeholder="" id="shopInfoId" name="shopInfoId" th:value="${item.shopInfo?.id}">
+		<input type="hidden" class="input-text" value="" placeholder="" id="memberInfoId" name="memberInfoId" th:value="${item.memberInfo?.id}">
+		
+		<div class="row cl" >
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>店铺名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="shopInfo.shopName" name="shopInfo.shopName" th:value="${item.shopInfo?.shopName}" th:disabled="${item.id!=null}">
+			</div>
+		</div>
+		<div class="row cl" >
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>商户名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="shopInfo.shopOwnerInfo.basicUserInfo.userRealName" name="shopInfo.shopOwnerInfo.basicUserInfo.userRealName" th:value="${item.shopInfo?.shopOwnerInfo?.basicUserInfo?.userRealName}" disabled="disabled">
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="memberInfo.basicUserInfo.userRealName" name="memberInfo.basicUserInfo.userRealName" th:value="${item.memberInfo?.basicUserInfo?.userRealName}"  th:disabled="${item.id!=null}">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户电话：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="memberInfo.basicUserInfo.phone" name="memberInfo.basicUserInfo.phone" th:value="${item.memberInfo?.basicUserInfo?.phone}"  disabled="disabled">
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>有效期开始时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="validPeriodStartDate" name="validPeriodStartDate" th:value="${#temporals.format(item.validPeriodStartDate, 'yyyy-MM-dd')}">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>有效期结束时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="validPeriodEndDate" name="validPeriodEndDate" th:value="${#temporals.format(item.validPeriodEndDate, 'yyyy-MM-dd')}">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="memberCardInfo.remark" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="$.Huitextarealength(this,100)">[[${item.remark}]]</textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="button" id="saveBtn" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" style="display: none;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript"
+	th:src="@{/lib/jquery/1.9.1/jquery.min.js}"
+	src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" th:src="@{/lib/jquery/1.9.1/jquery.min.js}" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" th:src="@{/ui/h-ui/js/H-ui.min.js}" src="ui/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}" src="ui/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript" th:src="@{/lib/jquery.validation/1.14.0/jquery.validate.js}" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" th:src="@{/lib/jquery.validation/1.14.0/validate-methods.js}" src="lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" th:src="@{/lib/jquery.validation/1.14.0/messages_zh.js}" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+
+
+<script type="text/javascript" th:src="@{/lib/jquery.autocomplete/jquery.autocomplete.js}" src="lib/jquery.ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript"
+		th:src="@{/lib/jquery.readonly/jquery.readonly.js}"
+		src="lib/jquery.readonly/jquery.readonly.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			$('input, select, textarea').readonly();
+		});
+		
+		</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

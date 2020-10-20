@@ -1,0 +1,60 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html>
+<body>
+	<div th:fragment="pagination(page)">
+		<div class="dataTables_info" style="float: left;">
+			<label>每页 <select name="pageSize" onchange="changePageSize(this);">
+				<option th:each="p: ${T(java.util.Arrays).asList(10,25,50,100)}" th:selected="${page.size==p}" th:text="${p}" th:value="${p}"></option>
+			</select> 条
+			</label>
+		</div>
+		<div th:remove="${page.hasContent()?'all':'none'}">
+			<div class="dataTables_info"
+				style="float: left; clear: none; padding-left: 30px" role="status"
+				aria-live="polite" th:inline="text">没有数据可以显示</div>
+
+		</div>
+		<div th:remove="${page.hasContent()?'none':'all'}">
+			<div class="dataTables_info"
+				style="float: left; clear: none; padding-left: 30px" role="status"
+				aria-live="polite" th:inline="text">显示
+				第[[${page.number*page.size+1}]]到第[[${page.number*page.size+page.numberOfElements}]]条,一共[[${page.totalElements}]]条</div>
+			<div class="dataTables_paginate paging_simple_numbers"
+				style="float: right;">
+
+				<a class="paginate_button previous disabled"
+					th:onclick="changePage([[${page.number-1}]])"
+					th:remove="${page.first}?'all':'none'">上一页</a> <span> <a
+					class="paginate_button current"
+					th:onclick="changePage([[${page.number}]])"
+					th:text="${page.number+1}">1</a>
+				</span> <a class="paginate_button next disabled" href="javascript:void(0);"
+					th:onclick="changePage([[${page.number+1}]])" tabindex="0"
+					th:remove="${page.last}?'all':'none'">下一页</a>
+			</div>
+
+		</div>
+
+		<script type="text/javascript" th:inline="javascript">
+			function changeUrlArg(url, arg, val) {
+				var pattern = arg + '=([^&]*)';
+				var replaceText = arg + '=' + val;
+				return url.match(pattern) ? url.replace(eval('/(' + arg
+						+ '=)([^&]*)/gi'), replaceText)
+						: (url.match('[\?]') ? url + '&' + replaceText : url
+								+ '?' + replaceText);
+			}
+			function changePage(pageIndex) {
+				window.location.href = changeUrlArg(window.location.href,
+						'pageIndex', pageIndex);
+			}
+			function changePageSize(obj) {
+				window.location.href = changeUrlArg(window.location.href,
+						'pageSize', $(obj).val());
+			}
+		</script>
+	</div>
+
+
+</body>
+</html>

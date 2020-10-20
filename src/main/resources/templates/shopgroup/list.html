@@ -1,0 +1,230 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui/css/H-ui.min.css}" href="ui/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/H-ui.admin.css}" href="ui/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/skin/default/skin.css}" href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/style.css}" href="ui/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>店铺群列表</title>
+</head>
+<body>
+	<nav class="breadcrumb">
+		<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
+		用户中心 <span class="c-gray en">&gt;</span>店铺群列表 <a
+			class="btn btn-success radius r"
+			style="line-height: 1.6em; margin-top: 3px"
+			href="javascript:location.replace(location.href);" title="刷新"> <i
+			class="Hui-iconfont">&#xe68f;</i>
+		</a>
+
+	</nav>
+	<div class="page-container">
+		<form action="" th:action="@{/shopGroup/list}" method="get" autocomplete="off">
+			<div class="text">
+			
+				群主： <select name="shopOwnerId" class="select select-box inline" style="width: 10%" >
+						<option value="">全部</option>
+						<option th:each="shopOwnerInfo:${shopOwnerInfoList}" 
+						th:value="${shopOwnerInfo.id}" th:text="${shopOwnerInfo.basicUserInfo.userRealName}"
+						th:selected="${query.shopOwnerId==shopOwnerInfo.id}">
+						</option>
+					</select>
+			
+				群名： <input type="text"
+					id="" class="input-text" style="width: 10%" name="groupName" th:value="${query.groupName}">
+
+				<button type="button" class="btn btn-success radius" id="searchBtn"
+					name="">
+					<i class="Hui-iconfont">&#xe665;</i> 查询
+				</button>
+			</div>
+
+			<div class="mt-20 dataTables_wrapper">
+				<table
+					class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead>
+						<tr class="text-c">
+							<th>ID</th>
+							<th>群主</th>
+							<th>群名</th>
+							<th>商铺数量限制</th>
+							<th>包含商铺数量</th>
+							<th>最小折扣</th>
+							<th>最大折扣</th>
+							<th>最小返点</th>
+							<th>最大返点</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="text-c" th:each="item:${page}">
+							<td><a style="text-decoration: underline" class="text-primary" th:onClick="show([['详情:'+${item.id}]],'show?domain.id=[[${item.id}]]','','510')"
+								th:text="${item.id}">ID</a></td>
+							<td th:text="${item.shopOwnerInfo.basicUserInfo.userRealName}">商品编号</td>
+							<td th:text="${item.groupName}">群名</td>
+							<td class="text-l" th:text="${item.maxMember}">商铺数量限制</td>
+							<td th:text="${item.shopGroupMemeberList?.size()}">包含商铺数量</td>
+							<td th:text="${item.minDiscount}">最小折扣</td>
+							<td th:text="${item.maxDiscount}">最大折扣</td>
+							<td th:text="${item.minRebate}">最小返点</td>
+							<td th:text="${item.maxRebate}">最大返点</td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="pagination_div" th:include="fragments/page :: pagination(${page})"></div>
+			</div>
+		</form>
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript"
+		th:src="@{/lib/jquery/1.9.1/jquery.min.js}"
+		src="lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}"
+		src="lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" th:src="@{/ui/h-ui/js/H-ui.min.js}"
+		src="ui/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript"
+		th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}"
+		src="ui/h-ui.admin/js/H-ui.admin.js"></script>
+	<!--/_footer 作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" th:src="@{/lib/laydate/laydate.js}" src="/lib/laydate/laydate.js"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+	lay('.date').each(function(){
+		  laydate.render({
+		    elem: this
+		    ,trigger: 'click'
+		  });
+		});
+		$('#searchBtn').click(function() {
+			var formObj = $(this).parents('form');
+			formObj.submit();
+			//var formData = new FormData(formObj[0]);
+		});
+
+		/*用户-添加*/
+		function add(title, url, w, h) {
+			layer_show(title, url, w, h);
+		}
+		/*用户-查看*/
+		function show(title, url, w, h) {
+
+			layer_show(title, url, w, h);
+		}
+		/*用户-停用*/
+		function member_stop(obj, id) {
+			layer
+					.confirm(
+							'确认要停用吗？',
+							function(index) {
+								$
+										.ajax({
+											type : 'POST',
+											url : '',
+											dataType : 'json',
+											success : function(data) {
+												$(obj)
+														.parents("tr")
+														.find(".td-manage")
+														.prepend(
+																'<a style="text-decoration:none" onClick="member_start(this,id)" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
+												$(obj)
+														.parents("tr")
+														.find(".td-status")
+														.html(
+																'<span class="label label-defaunt radius">已停用</span>');
+												$(obj).remove();
+												layer.msg('已停用!', {
+													icon : 5,
+													time : 1000
+												});
+											},
+											error : function(data) {
+												console.log(data.msg);
+											},
+										});
+							});
+		}
+
+		/*用户-启用*/
+		function member_start(obj, id) {
+			layer
+					.confirm(
+							'确认要启用吗？',
+							function(index) {
+								$
+										.ajax({
+											type : 'POST',
+											url : '',
+											dataType : 'json',
+											success : function(data) {
+												$(obj)
+														.parents("tr")
+														.find(".td-manage")
+														.prepend(
+																'<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
+												$(obj)
+														.parents("tr")
+														.find(".td-status")
+														.html(
+																'<span class="label label-success radius">已启用</span>');
+												$(obj).remove();
+												layer.msg('已启用!', {
+													icon : 6,
+													time : 1000
+												});
+											},
+											error : function(data) {
+												console.log(data.msg);
+											},
+										});
+							});
+		}
+		/*用户-编辑*/
+		function member_edit(title, url, id, w, h) {
+			layer_show(title, url, w, h);
+		}
+		/*密码-修改*/
+		function change_password(title, url, id, w, h) {
+			layer_show(title, url, w, h);
+		}
+		/*用户-删除*/
+		function member_del(obj, id) {
+			layer.confirm('确认要删除吗？', function(index) {
+				$.ajax({
+					type : 'POST',
+					url : '',
+					dataType : 'json',
+					success : function(data) {
+						$(obj).parents("tr").remove();
+						layer.msg('已删除!', {
+							icon : 1,
+							time : 1000
+						});
+					},
+					error : function(data) {
+						console.log(data.msg);
+					},
+				});
+			});
+		}
+		/*]]>*/
+	</script>
+</body>
+</html>

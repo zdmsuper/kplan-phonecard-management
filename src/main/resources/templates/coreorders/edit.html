@@ -1,0 +1,520 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico">
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui/css/H-ui.min.css}" href="ui/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/css/H-ui.admin.css}"
+	href="ui/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}"
+	href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/skin/default/skin.css}"
+	href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/css/style.css}"
+	href="ui/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+<title>添加用户 - H-ui.admin v3.1</title>
+<meta name="keywords"
+	content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+<meta name="description"
+	content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+	<article class="page-container">
+		<form method="post" class="form form-horizontal" id="form" autocomplete="off">
+<!-- 			<input type="hidden" name="id" th:value="${item.id}"> -->
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>用户姓名：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="userName" name="userName"
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>身份证号码：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="userid" name="userid"
+						>
+				</div>
+			</div>
+				<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>详细地址：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="address" name="address"
+						>
+				</div>
+			</div>
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>订单来源：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<select class="select select-box inline" style="width: 50" name="ordersource" id="ordersource">
+							<option value="线下上门渠道">线下上门渠道</option>
+					</select>
+				</div>
+			</div>
+			
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>地区：</label>
+				<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+						<select style="width: 50" id="province_code" class="select select-box inline" name="province_code" >
+							<option value="">请选择</option>
+							<option th:each="channel:${privoin}"
+								th:value="${channel.province_code}"
+								th:text="${channel.province_name}" >&nbsp;</option>
+						</select>
+						<select class="select select-box inline" style="width: 50" id="city" name="city">
+										<option value="">请选择</option>
+						</select> 
+						<select style="width: 50" class="select select-box inline" id="district" name="district">
+							<option value="">请选择</option>
+						</select>
+<!-- 					<div class="radio-box" -->
+<!-- 						th:each="gender:${T(com.kplan.phonecard.enums.GenderEnum).values()}"> -->
+<!-- 						<input name="basicUserInfo.gender" type="radio" id="sex-1" -->
+<!-- 							value="MALE" th:value="${gender}" -->
+<!-- 							th:checked="${item.basicUserInfo.gender==gender}"> <label -->
+<!-- 							for="sex-1" th:text="${gender.desc}">男</label> -->
+<!-- 					</div> -->
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>短信：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="radio" class="radio-box" name="smsstatus"  value="1">发送
+					<input type="radio" class="radio-box" name="smsstatus" checked="checked" value="2">不发送
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>联系号码：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" 
+						name="re_phone" id="re_phone"
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>订购号码：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" 
+						name="phone_Num" id="phone_Num"
+						>
+				</div>
+			</div>
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red"></span>尾号搜索：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" style="width: 20;" class="input-text"  name="basicUserInfo.email" id="phoneNum" >
+					<input type="button" class="btn btn-primary radius" id="id-disable-check" value="搜索" /> 
+				</div>
+			</div>
+			
+<!-- 			<div class="row cl"> -->
+<!-- 				<label class="form-label col-xs-4 col-sm-3">头像：</label> -->
+<!-- 				<div class="formControls col-xs-6 col-sm-6"> -->
+<!-- 					<span class="btn-upload form-group"> <input -->
+<!-- 						class="input-text upload-url" type="text" -->
+<!-- 						name="basicUserInfo.headImg" id="basicUserInfo.headImg" readonly -->
+<!-- 						nullmsg="请添加附件！" style="width: 100px"> <a -->
+<!-- 						href="javascript:void();" -->
+<!-- 						class="btn btn-primary radius upload-btn"><i -->
+<!-- 							class="Hui-iconfont">&#xe642;</i> 浏览文件</a> <input type="file" -->
+<!-- 						multiple name="headImg" class="input-file"> -->
+<!-- 					</span> -->
+<!-- 				</div> -->
+<!-- <!-- 				<div class="formControls col-xs-2 col-sm-2"> --> 
+<!-- <!-- 					<img alt="" id="img" src="" width="40" height="40" -->
+<!-- <!-- 						th:src="'data:image/jpeg;base64,'+${item.basicUserInfo.headImg}" /> --> 
+<!-- <!-- 				</div> --> 
+<!-- 			</div> -->
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3">
+				<select style="width: 50"  class="select select-box inline" id="phoneRule" name="phoneRule" >
+							<option value="">请选择</option>
+							<option th:each="channel:${phoneRuleList}"
+								th:value="${channel.rule_name}"
+								th:text="${channel.rule_name}" >&nbsp;</option>
+						</select>
+				<input type="button" class="btn btn-primary radius" id="phonescheck" value="换一批">
+				</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<table
+					class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead style="text-align: center;">
+						<tr >
+							<th style="text-align: center;">
+<!-- 							<input type="radio" name="" value=""> -->
+							</th>
+							<th style="text-align: center;">靓号</th>
+							<th style="text-align: center;">规则</th>
+							<th style="text-align: center;">省份</th>
+							<th style="text-align: center;">城市</th>
+						</tr>
+					</thead>
+					<tbody id='phones' th:each="phones:${phoneList}">
+						<tr class="text-c" >
+						<td><input type="radio" th:value="${phones.phone}" name="phonesNum"/></td>
+							<td  th:text="${phones.phone}">暂无靓号</td>
+							<td th:text="${phones.rule_name}">暂无靓号</td>
+							<td th:text="${phones.province_name}">暂无靓号</td>
+							<td th:text="${phones.city_name}">暂无靓号</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+					<input class="btn btn-primary radius" type="button" id="saveBtn"
+						value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+				</div>
+			</div>
+		</form>
+	</article>
+
+	<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript"
+		th:src="@{/lib/jquery/1.9.1/jquery.min.js}"
+		src="lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}"
+		src="lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" th:src="@{/ui/h-ui/js/H-ui.min.js}"
+		src="ui/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript"
+		th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}"
+		src="ui/h-ui.admin/js/H-ui.admin.js"></script>
+	<!--/_footer 作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/jquery.validate.js}"
+		src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/validate-methods.js}"
+		src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/messages_zh.js}"
+		src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('.skin-minimal input').iCheck({
+				checkboxClass : 'icheckbox-blue',
+				radioClass : 'iradio-blue',
+				increaseArea : '20%'
+			});
+			$(".file-2").change(function() {
+				console.info(1)
+			});
+			$("#headImg").change(function() {
+				console.info(2)
+			});
+			$("#headImg").change(
+					function() {
+						$("#img").attr("src",
+								URL.createObjectURL($(this)[0].files[0]));
+					});
+			function validateForm() {
+				return $("#form").validate({
+					rules : {
+						'userName' : {
+							required : true,
+							minlength : 2,
+							maxlength : 16
+						},
+						'userid' : {
+							required : true,
+						},
+						'address' : {
+							required : true,
+							isMobile : true,
+						},
+						'province_code' : {
+							required : true,
+							province_code : true,
+						},
+						'district' : {
+							required : true,
+							district : true,
+						},
+						'city' : {
+							required : true,
+							city : true,
+						},
+						're_phone' : {
+							required : true,
+							re_phone : true,
+						},
+						'phone_Num' : {
+							required : true,
+							phone_Num : true,
+						},
+
+					},
+					onkeyup : false,
+					focusCleanup : true,
+					success : "valid"
+				}).form();
+
+			}
+
+			$('#saveBtn').click(function() {
+// 				if (!validateForm()) {
+// 					return false;
+// 				}
+				
+				var smsstatus=$("input[name='smsstatus']:checked").val();
+				var url="/coreorder/savaOrders";
+				var userName=$('#userName').val()
+				var userid=$('#userid').val()
+				var address=$('#address').val()
+				var ordersource=$('#ordersource').val()
+				var province_code=$('#province_code').val()
+				var province_name=$('#province_code').find("option:selected").text()
+				var re_phone=$('#re_phone').val();
+				var city=$('#city').val()
+				var cityName=$('#city').find("option:selected").text()
+				var district=$('#district').val()
+				var districtName=$('#district').find("option:selected").text()
+				var phone_Num=$('#phone_Num').val()
+				var pramStr="userName="+userName+"&userid="+userid+"&address="+address+"&ordersource="+ordersource+
+				"&province_code="+province_code+"&province_name="+province_name+"&re_phone="+re_phone+"&city="+city+"&cityName="+cityName+
+				"&district="+district+"&districtName="+districtName+"&phone_Num="+phone_Num+"&smsstatus="+smsstatus
+				var submitMsg="用户名："+userName+"<br/> 身份证:"+userid+"<br/> 省份："+province_name+"<br/>地市:"+cityName+"<br/>区县:"+districtName+"<br/> 详细地址："+address+"<br/>订购号码："+phone_Num+"<br/>联系电话："+re_phone;
+				if(userName==''||userid==''||address==''||ordersource=='' ||province_code==''||re_phone==''||city==''||district==''||phone_Num==''){
+					layer.msg('请将订单信息填写完整', {
+						    time: 5000, //20s后自动关闭
+ 						    btn: ['确定', '取消']
+						  });
+						return;
+				}
+				
+				
+				layer.confirm(submitMsg, {
+					  btn: ['确定提交','取消'] //按钮
+					}, function(){
+						$.ajax({
+							type:'get',
+							async:false,
+							url:url+"?"+pramStr,
+							success:function(resp){
+//							  layer.msg('订单提交成功', {icon: 1});
+								if(resp.status==200){
+// 									parent.layer.alert(resp.msg, '提示信息')
+// 									 window.parent.location.reload()
+									  layer.msg(resp.msg, {
+										    icon: 1,
+										    time: 3000 //2秒关闭（如果不配置，默认是3秒）
+										  }, function(){
+// 											  var sendUrl=/*[[@{/klanBiliBili/orderAdd}]]*/'';
+// 											  $(window).attr('location',sendUrl);
+ 											window.parent.location.reload()
+											 
+										  });
+								}else{
+									
+									parent.layer.alert(resp.msg, '提示信息')
+// 									 layer.msg(resp.msg, {
+// 										    icon: 1,
+// 										    time: 5000 //2秒关闭（如果不配置，默认是3秒）
+// 										  }, function(){
+// //											  var sendUrl=/*[[@{/klanBiliBili/orderAdd}]]*/'';
+// //											  $(window).attr('location',sendUrl);
+// 										  });
+								}
+							
+							
+							}
+						});
+					}, function(){
+					  layer.msg('订单已取消提交', {
+					    time: 1000, //20s后自动关闭
+//					    btn: ['明白了', '']
+					  });
+					});
+				
+// 				var formObj = $("#form");
+// 				var formData = new FormData(formObj[0]);
+// 				var url = "/managerInfo/saveOrUpdate";
+// 				formData.append("url", url);
+// 				$.ajax({
+// 					url : url,
+// 					type : 'POST',
+// 					data : formData,
+// 					cache : false,
+// 					processData : false,
+// 					contentType : false,
+// 					datatype : 'json'
+
+// 				}).done(function(resp) {
+// 					if (resp.success) {
+// 						//var index = parent.layer.getFrameIndex(window.name);
+// 						//parent.layer.close(index);
+// 						window.parent.location.reload()
+// 					} else {
+// 						parent.layer.alert(resp.msg, '出错了')
+// 					}
+
+// 				}).fail(function(res) {
+// 					parent.layer.alert("请关闭重试", '出错了')
+// 				});
+
+// 				return false;
+
+			});
+
+		});
+		
+		
+		$('#province_code').change(function(){
+			var province=$(this).val();
+			var city=$('#city');
+			$('#city option[value!=""]').remove();
+			$('#district option[value!=""]').remove();
+			var url="/coreorder/qryCity";
+// 				/*[[@{/klanBiliBili/qryCity}]]*/'';
+//				$.ajax({
+//					type:'post',
+//					url:url,
+//					data:JSON.stringify({id:123}),
+//					contentType:'application/json',
+//					success:function(resp){
+//						$.each(resp,function(){
+//							city.append('<option value='+$(this).id+'>'+$(this).name+'</option>');
+						
+//						});
+					
+//					}
+//				});
+			
+			$.ajax({
+				type:'get',
+				url:url+'?province_code='+province,
+				success:function(resp){
+					$.each(resp,function(){
+//							style=" width:2rem; white-space: nowrap;overflow: hidden; text-overflow: ellipsis;"
+						city.append('<option  value='+this.city_code+'>'+this.city_name+'</option>');
+						
+					});
+					
+				}
+			});
+		});
+		
+		
+		$('#city').change(function(){
+			var city_code=$(this).val();
+			var city=$('#district');
+			$('#district option[value!=""]').remove();
+			var url="/coreorder/qryDistrict";
+				
+// 				/*[[@{/klanBiliBili/qryDistrict}]]*/'';
+			var cityList=[];
+			$.ajax({
+				type:'get',
+				async:false,
+				url:url+'?city_code='+city_code,
+				success:function(resp){
+					cityList=resp;
+				}
+			});
+			$.each(cityList,function(){
+				city.append('<option value='+this.district_code+'>'+this.district_name+'</option>');
+				
+			});
+		});
+		
+		
+		$('#phonescheck').click(function(){
+			var phones=$('#phones');
+			var phoneRule=$('#phoneRule').val();
+			var url="/coreorder/qryPhones"
+// 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
+			var phone=[];
+			$.ajax({
+				type:'get',
+				async:false,
+				url:url+"?phoneRule="+phoneRule,
+				success:function(resp){
+					phone=resp;
+				}
+			});
+			$('.text-c').remove();
+			$.each(phone,function(){
+				phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td></tr>');
+				
+			});
+		});
+		
+		$('body').on("click", "input[name='phonesNum']",function(event) {
+			var smsstatus=$(this).val();
+			$("#phone_Num").val(smsstatus);
+			
+		});
+		
+		
+		$('#id-disable-check').click(function(){
+			var phones=$('#phones');
+			var url="/coreorder/qryPhonesNum"
+// 			var url=/*[[@{/klanBiliBili/qryPhonesNum}]]*/'';
+			var phone=[];
+			var phoneNum=$('#phoneNum').val();
+			$.ajax({
+				type:'get',
+				async:false,
+				url:url+"?phoneNum="+phoneNum,
+				success:function(resp){
+					if(resp.status==201){
+						parent.layer.alert(resp.msg, '尾号匹配失败')
+						return;
+					}else{
+						phone=resp;
+						$('.text-c').remove();
+						$.each(phone,function(){
+							phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td></tr>');
+							
+						});
+					}
+					
+				}
+			});
+			
+		});
+		
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
