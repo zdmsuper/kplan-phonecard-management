@@ -167,4 +167,23 @@ public abstract class BaseService<T extends BaseDomain> {
 		this.getDao().deleteById(id);
 	}
 
+	
+	public  List getNativeResultList(String sql, Object... paras) {
+		Query query = em.createNativeQuery(sql);
+		int parameterIndex = 1;
+		if (paras != null && paras.length > 0) {
+			for (Object obj : paras) {
+				query.setParameter(parameterIndex++, obj);
+			}
+		}
+		return query.getResultList();
+	}
+	public  void add(  Object arg0) {
+		em.persist(arg0);
+	}
+	
+	public  Object getById(Object arg1, Class arg0) {
+		Object o = em.find(arg0, arg1);
+		return o;
+	}
 }
