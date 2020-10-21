@@ -183,6 +183,7 @@
 							<th style="text-align: center;">规则</th>
 							<th style="text-align: center;">省份</th>
 							<th style="text-align: center;">城市</th>
+							<th style="text-align: center;">更新时间</th>
 						</tr>
 					</thead>
 					<tbody id='phones' th:each="phones:${phoneList}">
@@ -192,6 +193,7 @@
 							<td th:text="${phones.rule_name}">暂无靓号</td>
 							<td th:text="${phones.province_name}">暂无靓号</td>
 							<td th:text="${phones.city_name}">暂无靓号</td>
+							<td th:text="${phones.last_date}">暂无靓号</td>
 						</tr>
 					</tbody>
 				</table>
@@ -331,29 +333,17 @@
 							async:false,
 							url:url+"?"+pramStr,
 							success:function(resp){
-//							  layer.msg('订单提交成功', {icon: 1});
 								if(resp.status==200){
-// 									parent.layer.alert(resp.msg, '提示信息')
-// 									 window.parent.location.reload()
 									  layer.msg(resp.msg, {
 										    icon: 1,
 										    time: 3000 //2秒关闭（如果不配置，默认是3秒）
 										  }, function(){
-// 											  var sendUrl=/*[[@{/klanBiliBili/orderAdd}]]*/'';
-// 											  $(window).attr('location',sendUrl);
  											window.parent.location.reload()
 											 
 										  });
 								}else{
 									
 									parent.layer.alert(resp.msg, '提示信息')
-// 									 layer.msg(resp.msg, {
-// 										    icon: 1,
-// 										    time: 5000 //2秒关闭（如果不配置，默认是3秒）
-// 										  }, function(){
-// //											  var sendUrl=/*[[@{/klanBiliBili/orderAdd}]]*/'';
-// //											  $(window).attr('location',sendUrl);
-// 										  });
 								}
 							
 							
@@ -366,33 +356,6 @@
 					  });
 					});
 				
-// 				var formObj = $("#form");
-// 				var formData = new FormData(formObj[0]);
-// 				var url = "/managerInfo/saveOrUpdate";
-// 				formData.append("url", url);
-// 				$.ajax({
-// 					url : url,
-// 					type : 'POST',
-// 					data : formData,
-// 					cache : false,
-// 					processData : false,
-// 					contentType : false,
-// 					datatype : 'json'
-
-// 				}).done(function(resp) {
-// 					if (resp.success) {
-// 						//var index = parent.layer.getFrameIndex(window.name);
-// 						//parent.layer.close(index);
-// 						window.parent.location.reload()
-// 					} else {
-// 						parent.layer.alert(resp.msg, '出错了')
-// 					}
-
-// 				}).fail(function(res) {
-// 					parent.layer.alert("请关闭重试", '出错了')
-// 				});
-
-// 				return false;
 
 			});
 
@@ -405,27 +368,11 @@
 			$('#city option[value!=""]').remove();
 			$('#district option[value!=""]').remove();
 			var url="/coreorder/qryCity";
-// 				/*[[@{/klanBiliBili/qryCity}]]*/'';
-//				$.ajax({
-//					type:'post',
-//					url:url,
-//					data:JSON.stringify({id:123}),
-//					contentType:'application/json',
-//					success:function(resp){
-//						$.each(resp,function(){
-//							city.append('<option value='+$(this).id+'>'+$(this).name+'</option>');
-						
-//						});
-					
-//					}
-//				});
-			
 			$.ajax({
 				type:'get',
 				url:url+'?province_code='+province,
 				success:function(resp){
 					$.each(resp,function(){
-//							style=" width:2rem; white-space: nowrap;overflow: hidden; text-overflow: ellipsis;"
 						city.append('<option  value='+this.city_code+'>'+this.city_name+'</option>');
 						
 					});
@@ -458,6 +405,29 @@
 		});
 		
 		
+		
+			function  formatTime (time,shu) {//时间切换
+			            if (!time) {
+			            return
+			            }
+			            const timer = new Date(time)
+			            let year = timer.getFullYear()
+			            let month = timer.getMonth() + 1
+			            let date = timer.getDate()
+			            let hours = timer.getHours()
+			            let min = timer.getMinutes()
+						let second = timer.getSeconds()
+			            month < 10 ? month = `0${month}` : month = month
+			            date < 10 ? date = `0${date}` : date = date
+			            hours < 10 ? hours = `0${hours}` : hours = hours
+			            min < 10 ? min = `0${min}` : min = min
+			            if(shu == 1){
+			                return ` ${month}-${date} ${hours}:${min}`
+			            }else{
+			                return `${year} ${month}-${date} ${hours}:${min}:${second}`
+			            }
+			        }
+		
 		$('#phonescheck').click(function(){
 			var phones=$('#phones');
 			var phoneRule=$('#phoneRule').val();
@@ -474,7 +444,8 @@
 			});
 			$('.text-c').remove();
 			$.each(phone,function(){
-				phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td></tr>');
+				var dateStr=formatTime(this.last_date)
+				phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
 				
 			});
 		});
