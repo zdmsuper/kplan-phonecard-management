@@ -1,5 +1,6 @@
 package com.kplan.phonecard.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -11,20 +12,29 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kplan.phonecard.domain.ManagerInfo;
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.metadata.Sheet;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
+import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
+import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.enums.GenderEnum;
 import com.kplan.phonecard.manager.ManagerInfoManager;
 import com.kplan.phonecard.manager.CoreordersMarketkManager;
 import com.kplan.phonecard.manager.KplanPhonenumBerManager;
+import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.query.ManagerInfoQuery;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
+import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
+import com.kplan.phonecard.service.KplanSecondaryOrdersService;
 
 @Controller
 @RequestMapping("/coreorder")
@@ -40,6 +50,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	KplanPhonenumBerManager kplanPhoneManager;
 	@Autowired
 	ManagerInfoManager managerInfoManager;
+	@Autowired
+	KplanSecondaryOrdersManager  kplanSecondaryOrdersManager;
 	@RequestMapping("/list")
 	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query){
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.findOrder(query, this.getPageRequest());
@@ -57,6 +69,16 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
 		return "coreorders/edit";
+	}
+	@RequestMapping("/upedit")
+	public String upedit(Map<String, Object> map, ManagerInfoQuery query) {
+		return "coreorders/upedit";
+	}
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	@ResponseBody
+	public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 0));
+		return  kplanSecondaryOrdersManager.upLoadorDers(data);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhones")
@@ -116,5 +138,13 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 				+ " districtName:" + districtName+" phone_Num:"+phone_Num);
 		return this.coreOrdersManager.savaOrders(userName, userid, address, ordersource, province_code, province_name,
 				re_phone, city, cityName, district, districtName, phone_Num,smsstatus);
+	}
+	@RequestMapping("/secondarylist")
+	public String qrySeconDaryorDer(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		Page<KplanSecondaryOrders> orDers=this.kplanSecondaryOrdersManager.qrySeconadryorDer(query, this.getPageRequest());
+		map.put("page", orDers);
+		map.put("query", query);
+		return "coreorders/secondarylist";
+		
 	}
 }
