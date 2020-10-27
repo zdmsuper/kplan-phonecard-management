@@ -3,7 +3,6 @@ package com.kplan.phonecard.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,25 +15,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kplan.phonecard.domain.ManagerInfo;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.metadata.Sheet;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
-import com.kplan.phonecard.domain.msgRes;
-import com.kplan.phonecard.enums.GenderEnum;
+import com.kplan.phonecard.domain.kplanscorders;
 import com.kplan.phonecard.manager.ManagerInfoManager;
 import com.kplan.phonecard.manager.CoreordersMarketkManager;
 import com.kplan.phonecard.manager.KplanPhonenumBerManager;
 import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
+import com.kplan.phonecard.manager.kplanscordersManager;
 import com.kplan.phonecard.query.ManagerInfoQuery;
+import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
-import com.kplan.phonecard.service.KplanSecondaryOrdersService;
 
 @Controller
 @RequestMapping("/coreorder")
@@ -52,6 +50,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	ManagerInfoManager managerInfoManager;
 	@Autowired
 	KplanSecondaryOrdersManager  kplanSecondaryOrdersManager;
+	@Autowired
+	kplanscordersManager kplanscordersManager;
 	@RequestMapping("/list")
 	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query){
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.findOrder(query, this.getPageRequest());
@@ -139,6 +139,11 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		return this.coreOrdersManager.savaOrders(userName, userid, address, ordersource, province_code, province_name,
 				re_phone, city, cityName, district, districtName, phone_Num,smsstatus);
 	}
+	/**回捞订单列表
+	 * @param map
+	 * @param query
+	 * @return
+	 */
 	@RequestMapping("/secondarylist")
 	public String qrySeconDaryorDer(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
 		Page<KplanSecondaryOrders> orDers=this.kplanSecondaryOrdersManager.qrySeconadryorDer(query, this.getPageRequest());
@@ -146,5 +151,17 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		map.put("query", query);
 		return "coreorders/secondarylist";
 		
+	}
+	/**移网审单列表
+	 * @param map
+	 * @param query
+	 * @return
+	 */
+	@RequestMapping("/scorderlist")
+	public String qryScorDers(Map<String, Object> map, kplanscordersQuery query) {
+		Page<kplanscorders> scoDers=this.kplanscordersManager.qryList(query, this.getPageRequest());
+		map.put("page", scoDers);
+		map.put("query", query);
+		return "coreorders/scorderlist";
 	}
 }

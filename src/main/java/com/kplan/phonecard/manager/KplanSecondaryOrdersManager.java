@@ -76,7 +76,7 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 				list.add(cb.or(cb.equal(r.get("pro_status"), 1),cb.equal(r.get("pro_status"), 99)));
 //				list.add(cb.or(cb.equal(r.get("pro_status"), 99)));
 //				list.add(cb.and());
-				return cb.or(list.toArray(new Predicate[0]));
+				return cb.and(list.toArray(new Predicate[0]));
 			}
 		};
 		return this.kplanSecondaryOrdersService.findAll(spec, pageable);

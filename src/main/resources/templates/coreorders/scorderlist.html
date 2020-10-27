@@ -25,7 +25,7 @@
 <body>
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
-		用户中心 <span class="c-gray en">&gt;</span>回捞订单列表 <a
+		用户中心 <span class="c-gray en">&gt;</span>移网审单列表 <a
 			class="btn btn-success radius r"
 			style="line-height: 1.6em; margin-top: 3px"
 			href="javascript:location.replace(location.href);" title="刷新"> <i
@@ -34,7 +34,7 @@
 
 	</nav>
 	<div class="page-container">
-		<form th:action="@{/coreorder/secondarylist}" method="get" autocomplete="off">
+		<form th:action="@{/coreorder/scorderlist}" method="get" autocomplete="off">
 			<div class="text">
 <!-- 				<input type="hidden" name="sortName" value="createtime"/> -->
 <!-- 				<input type="hidden" name="sortOrder" value="desc"/> -->
@@ -67,13 +67,13 @@
 					</button>
 			</div>
 
-			<div class="cl pd-5 bg-1 bk-gray mt-20">
-						<span class="l"> <a href="javascript:;"
-					onclick="upfile('文件上传','upedit','','200')"
-					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
-						上传文件</a>
-				</span>
-			</div>
+<!-- 			<div class="cl pd-5 bg-1 bk-gray mt-20"> -->
+<!-- 						<span class="l"> <a href="javascript:;" -->
+<!-- 					onclick="upfile('文件上传','upedit','','200')" -->
+<!-- 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> -->
+<!-- 						上传文件</a> -->
+<!-- 				</span> -->
+<!-- 			</div> -->
 <!-- 			<div class="cl pd-5 bg-1 bk-gray mt-20"> -->
 <!-- 				<span class="l"> <a href="javascript:;" -->
 <!-- 					onclick="add('录入订单','edit','','850')" -->
@@ -96,16 +96,18 @@
 					<thead>
 						<tr class="text-c">
 							<th><input type="checkbox" name="" value=""></th>
-							<th>订单号</th>
 							<th>姓名</th>
 							<th>联系电话</th>
 							<th>身份证</th>
 							<th>省份</th>
 							<th>地市</th>
+							<th>区县</th>
 							<th>详细地址</th>
-							<th>订单来源</th>
-							<th>恶意标签</th>
-							<th>反诈标签</th>
+<!-- 							<th>订单来源</th> -->
+							<th>备注标签</th>
+							<th>锁定状态</th>
+							<th>最后操作人</th>
+							<th>订单状态</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -113,19 +115,20 @@
 						<tr class="text-c" th:each="item:${page}">
 							<td><input type="checkbox" value="1" name=""
 								th:value="${item.id}"></td>
-							<td th:text="${item.order_no}">1</td>
-							<td th:text="${item.user_name}"></td>
+							<td th:text="${item.contacts_name}"></td>
 							<td th:text="${item.phone_num}"></td>
 							<td th:text="${item.user_id}"></td>
-							<td th:text="${item.post_province}"></td>
-							<td th:text="${item.post_city}"></td>
-							<td th:text="${item.post_district}"></td>
-							<td th:text="${item.order_source}"></td>
+							<td th:text="${item.province}"></td>
+							<td th:text="${item.city}"></td>
+							<td th:text="${item.district}"></td>
+							<td th:text="${item.distribution_addres}"></td>
 							
 							<td >
-							<span th:text="${item.malicious_order}"></span>
+							<span th:text="${item.remarks_tag}"></span>
 							</td>
-							<td th:text="${item.back_info}"></td>
+							<td th:text="${item.newest_status==221?'已锁定':'未锁定'}">0</td>
+							<td th:text="${item.documentary}"></td>
+							<td th:text="${item.order_status}"></td>
 <!-- 							<td th:text="${item.deliveryOrder==-1?'不限量':item.deliveryOrder}">0</td> -->
 <!-- 							<td th:text="${item.deliveryNum}">13000000000</td> -->
 <!-- 							<td th:text="${item.creadDate}">admin@mail.com</td> -->
