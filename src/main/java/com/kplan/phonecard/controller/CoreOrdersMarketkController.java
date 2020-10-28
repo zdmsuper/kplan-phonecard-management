@@ -1,6 +1,10 @@
 package com.kplan.phonecard.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +21,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.metadata.Sheet;
+import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
+import com.kplan.phonecard.domain.KplanChannelNumberDetail;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.kplanscorders;
 import com.kplan.phonecard.manager.ManagerInfoManager;
 import com.kplan.phonecard.manager.CoreordersMarketkManager;
+import com.kplan.phonecard.manager.KplanChannelNumberDetailManager;
 import com.kplan.phonecard.manager.KplanPhonenumBerManager;
 import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
@@ -31,8 +38,10 @@ import com.kplan.phonecard.manager.kplanscordersManager;
 import com.kplan.phonecard.query.ManagerInfoQuery;
 import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
+import com.kplan.phonecard.query.KplanChannelNumberDetailQuery;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
+import com.kplan.phonecard.utils.DateUtils;
 
 @Controller
 @RequestMapping("/coreorder")
@@ -50,6 +59,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	ManagerInfoManager managerInfoManager;
 	@Autowired
 	KplanSecondaryOrdersManager  kplanSecondaryOrdersManager;
+	@Autowired
+	KplanChannelNumberDetailManager kplanChannelNumberDetailManager;
 	@Autowired
 	kplanscordersManager kplanscordersManager;
 	@RequestMapping("/list")
@@ -130,14 +141,14 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@ResponseBody
 	public Object savaOrders(String userName, String userid, String address, String ordersource, String province_code,
 			String province_name, String re_phone, String city, String cityName, String district, String districtName,
-			String phone_Num,String smsstatus) {
+			String phone_Num,String smsstatus,String Productcode,String Productname) {
 
 		logger.info("userName:" + userName + " userid:" + userid + " address:" + address + " ordersource:" + ordersource
 				+ " province_code:" + province_code + " province_name:" + province_name + " re_phone：" + re_phone
 				+ " phone_Num:" + phone_Num + " city:" + city + " cityName:" + cityName + " district:" + district
-				+ " districtName:" + districtName+" phone_Num:"+phone_Num);
+				+ " districtName:" + districtName+" phone_Num:"+phone_Num+"Productcode:"+Productcode+"Productname:"+Productname);
 		return this.coreOrdersManager.savaOrders(userName, userid, address, ordersource, province_code, province_name,
-				re_phone, city, cityName, district, districtName, phone_Num,smsstatus);
+				re_phone, city, cityName, district, districtName, phone_Num,smsstatus,Productcode,Productname);
 	}
 	/**回捞订单列表
 	 * @param map
@@ -163,5 +174,31 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		map.put("page", scoDers);
 		map.put("query", query);
 		return "coreorders/scorderlist";
+	}
+	@RequestMapping("/reportForm")
+	public String reportForm(Map<String, Object> map, KplanChannelNumberDetailQuery query) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		query.setCreatedDateStart(sdf.parse(DateUtils.getoDay()));
+		query.setCreatedDateEnd(sdf.parse(DateUtils.getyesterDay()));
+		Page<KplanChannelNumberDetail> page=this.kplanChannelNumberDetailManager.findChannelInfos(query, this.getPageRequest());
+		map.put("page", page);
+		map.put("query", query);
+		return "test/a";
+	}
+	
+	@RequestMapping("/reportFormList")
+	@ResponseBody
+	public String reportFormList(Map<String, Object> map, KplanChannelNumberDetailQuery query) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		query.setCreatedDateStart(sdf.parse(DateUtils.getoDay()));
+		query.setCreatedDateEnd(sdf.parse(DateUtils.getyesterDay()));
+		Page<KplanChannelNumberDetail> page=this.kplanChannelNumberDetailManager.findChannelInfos(query, this.getPageRequest());
+//		map.put("page", page);
+//		map.put("query", query);
+		List<KplanChannelNumberDetail> l=new ArrayList<KplanChannelNumberDetail>();
+		for(KplanChannelNumberDetail d:page) {
+			l.add(d);
+		}
+		return JSON.toJSONString(l);
 	}
 }

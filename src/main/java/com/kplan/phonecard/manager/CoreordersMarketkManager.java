@@ -54,7 +54,7 @@ public class CoreordersMarketkManager extends BaseManager{
 	
 	public Object savaOrders(String userName, String userid, String address, String ordersource, String province_code,
 			String province_name, String re_phone, String city, String cityName, String district, String districtName,
-			String phone_Num, String smsstatus) {
+			String phone_Num, String smsstatus,String Productcode,String Productname) {
 		try {
 			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById( phone_Num, KplanPhoneNumber.class);
 			if (phone != null) {
@@ -73,7 +73,7 @@ public class CoreordersMarketkManager extends BaseManager{
 					k.setAccess_name(userName);
 					k.setAccess_id_number(userid);
 					k.setReceiver_address(address);
-					k.setOrder_source(ordersource);
+					k.setOrder_source("线下上门渠道");
 					k.setProvince_code(province_code);
 					k.setProvince_name(province_name);
 					k.setReceiver_phone(re_phone);
@@ -87,8 +87,10 @@ public class CoreordersMarketkManager extends BaseManager{
 					k.setExport_status(0);
 					k.setVisit_code(0);
 					k.setCreatetime(new Date());
-					k.setProduct_code("981610241535");
-					k.setProduct_name("大王卡");
+//					k.setProduct_code("981610241535");
+//					k.setProduct_name("大王卡");
+					k.setProduct_code(Productcode);
+					k.setProduct_name(Productname);
 					k.setBusiness_type("K计划");
 					k.setDifferent_nets(-1);
 					k.setId(SqeUtils.getBILIBILISqeNo());

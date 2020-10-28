@@ -37,9 +37,11 @@ public class kplanscordersManager extends BaseManager{
 				List<Predicate> list = new ArrayList<>();
 				if(query.getCreatedDateStart()!=null&&query.getCreatedDateEnd()!=null) {
 					list.add(cb.between(r.get("place_order_duration"), query.getCreatedDateStart(), query.getCreatedDateEnd()));
-				}else if(query.getDomain().getExamineStatus()!=null) {
+				}
+				if(query.getDomain().getExamineStatus()!=null) {
 					list.add(cb.equal(r.get("examineStatus"), query.getDomain().getExamineStatus()));
-				}else if(query.getDomain().getOrderstatus()!=null) {
+				}
+				if(query.getDomain().getOrderstatus()!=null) {
 					list.add(cb.equal(r.get("orderstatus"), query.getDomain().getOrderstatus()));
 				}
 //				list.add(cb.or(cb.equal(r.get("pro_status"), 1),cb.equal(r.get("pro_status"), 99)));

@@ -73,10 +73,12 @@
 			
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>订单来源：</label>
+					class="c-red">*</span>产品：</label>
 				<div class="formControls col-xs-8 col-sm-9">
 					<select class="select select-box inline" style="width: 50" name="ordersource" id="ordersource">
-							<option value="线下上门渠道">线下上门渠道</option>
+							<option value="981610241535">大王卡</option>
+							<option value="981702278573">天王卡</option>
+<!-- 							线下上门渠道 -->
 					</select>
 				</div>
 			</div>
@@ -312,10 +314,12 @@
 				var district=$('#district').val()
 				var districtName=$('#district').find("option:selected").text()
 				var phone_Num=$('#phone_Num').val()
+				var Productcode=$('#ordersource').val()
+				var Productname=$('#ordersource').find("option:selected").text()
 				var pramStr="userName="+userName+"&userid="+userid+"&address="+address+"&ordersource="+ordersource+
 				"&province_code="+province_code+"&province_name="+province_name+"&re_phone="+re_phone+"&city="+city+"&cityName="+cityName+
-				"&district="+district+"&districtName="+districtName+"&phone_Num="+phone_Num+"&smsstatus="+smsstatus
-				var submitMsg="用户名："+userName+"<br/> 身份证:"+userid+"<br/> 省份："+province_name+"<br/>地市:"+cityName+"<br/>区县:"+districtName+"<br/> 详细地址："+address+"<br/>订购号码："+phone_Num+"<br/>联系电话："+re_phone;
+				"&district="+district+"&districtName="+districtName+"&phone_Num="+phone_Num+"&smsstatus="+smsstatus+"&Productcode="+Productcode+"&Productname="+Productname;
+				var submitMsg="用户名："+userName+"<br/> 身份证:"+userid+"<br/> 省份："+province_name+"<br/>地市:"+cityName+"<br/>区县:"+districtName+"<br/> 详细地址："+address+"<br/>订购号码："+phone_Num+"<br/>联系电话："+re_phone+"<br/>产品名称："+Productname;
 				if(userName==''||userid==''||address==''||ordersource=='' ||province_code==''||re_phone==''||city==''||district==''||phone_Num==''){
 					layer.msg('请将订单信息填写完整', {
 						    time: 5000, //20s后自动关闭
