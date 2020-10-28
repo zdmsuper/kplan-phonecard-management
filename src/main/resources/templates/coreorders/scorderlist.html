@@ -44,22 +44,22 @@
 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
 					
-<!-- 					<select name="domain.userStatus" class="select select-box inline"> -->
-<!-- 						<option value="">全部状态</option> -->
-<!-- 						<option th:each="userStatus:${T(com.kplan.phonecard.enums.UserStatusEnum).values()}"  -->
-<!-- 						th:value="${userStatus}" th:text="${userStatus.desc}" -->
-<!-- 						th:selected="${userStatus==query.domain.userStatus}" -->
-<!-- 						> -->
-<!-- 						</option> -->
-<!-- 					</select> -->
-<!-- 					<select name="domain.basicUserInfo.gender" class="select select-box inline"> -->
-<!-- 						<option value="">全部性别</option> -->
-<!-- 						<option th:each="gender:${T(com.kplan.phonecard.enums.GenderEnum).values()}"  -->
-<!-- 						th:value="${gender}" th:text="${gender.desc}" -->
-<!-- 						th:selected="${gender==query.domain.basicUserInfo?.gender}" -->
-<!-- 						> -->
-<!-- 						</option> -->
-<!-- 					</select> -->
+					<select name="domain.examineStatus" class="select select-box inline">
+						<option value="">全部状态</option>
+						<option th:each="examineStatus:${T(com.kplan.phonecard.enums.ExamineStatusEnum).values()}" 
+						th:value="${examineStatus}" th:text="${examineStatus.desc}"
+						th:selected="${examineStatus==query.domain.examineStatus}"
+						>
+						</option>
+					</select>
+					<select name="domain.orderstatus" class="select select-box inline">
+						<option value="">全部状态</option>
+						<option th:each="orderstatus:${T(com.kplan.phonecard.enums.ScorDerStatusEnum).values()}" 
+						th:value="${orderstatus}" th:text="${orderstatus.desc}"
+						th:selected="${orderstatus==query.domain.orderstatus}"
+						>
+						</option>
+					</select>
 <!-- 					<input type="text" class="input-text" style="width: 250px"  -->
 <!-- 					placeholder="输入用户名、电话、邮箱" id="" name="keyword" th:value="${query.keyword}"> -->
 					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
@@ -108,6 +108,7 @@
 							<th>锁定状态</th>
 							<th>最后操作人</th>
 							<th>订单状态</th>
+							<th>审核状态</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -128,7 +129,8 @@
 							</td>
 							<td th:text="${item.newest_status==221?'已锁定':'未锁定'}">0</td>
 							<td th:text="${item.documentary}"></td>
-							<td th:text="${item.order_status}"></td>
+							<td th:text="${item.orderstatus.desc}"></td>
+							<td th:text="${item.examineStatus.desc}"></td>
 <!-- 							<td th:text="${item.deliveryOrder==-1?'不限量':item.deliveryOrder}">0</td> -->
 <!-- 							<td th:text="${item.deliveryNum}">13000000000</td> -->
 <!-- 							<td th:text="${item.creadDate}">admin@mail.com</td> -->

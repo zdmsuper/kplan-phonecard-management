@@ -3,6 +3,7 @@ package com.kplan.phonecard.domain;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.kplan.phonecard.base.BaseDomain;
+import com.kplan.phonecard.enums.ExamineStatusEnum;
+import com.kplan.phonecard.enums.GenderEnum;
+import com.kplan.phonecard.enums.ScorDerStatusEnum;
 @Entity
 @Table(name = "kplan_sc_orders")
 public class kplanscorders extends BaseDomain{
@@ -59,8 +63,9 @@ public class kplanscorders extends BaseDomain{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "cread_date", length = 7)
 	private Date cread_date;//	timestamp	6	0	False		创建时间
+	@Convert(converter = ScorDerStatusEnum.EnumConvert.class)
 	@Column(name = "order_status", precision = 32, scale = 0)
-	private Integer order_status;//	int4	32	0	False		订单状态，入库状态默认0     3:订单处理中（信息爬取） 1：信息爬取完成
+	private ScorDerStatusEnum orderstatus;//	int4	32	0	False		订单状态，入库状态默认0     3:订单处理中（信息爬取） 1：信息爬取完成
 	@Column(name = "newest_status", precision = 32, scale = 0)
 	private Integer newest_status;//	int4	32	0	False		最新状态
 	@Column(name = "documentary", unique = true, length = 255)
@@ -73,8 +78,7 @@ public class kplanscorders extends BaseDomain{
 	private Date lock_date;//	timestamp	6	0	False		锁定时间
 	@Column(name = "website_status", precision = 32, scale = 0)
 	private Integer website_status;//	int2	16	0	False		本网异网状态 1：本网 2：异网
-	@Column(name = "examine_status", precision = 32, scale = 0)
-	private Integer examine_status;//	int2	16	0	False		审核状态
+
 	@Column(name = "failed_tag", precision = 32, scale = 0)
 	private Integer failed_tag;//	int2	16	0	False		失败标签
 	@Column(name = "repeat_tag", precision = 32, scale = 0)
@@ -83,7 +87,11 @@ public class kplanscorders extends BaseDomain{
 	private String risk_addres;//	varchar	255	0	False		风险地址
 	@Column(name = "risk_addres_tag", unique = true, length = 255)
 	private String risk_addres_tag;//	varchar	128	0	False		风险地址标签
-
+	
+	@Convert(converter = ExamineStatusEnum.EnumConvert.class)
+	@Column(name = "examine_status", precision = 32, scale = 0)
+	private ExamineStatusEnum examineStatus;//	int2	16	0	False		审核状态
+	
 	public Integer getId() {
 		return id;
 	}
@@ -199,11 +207,11 @@ public class kplanscorders extends BaseDomain{
 	public void setCread_date(Date cread_date) {
 		this.cread_date = cread_date;
 	}
-	public Integer getOrder_status() {
-		return order_status;
+	public ScorDerStatusEnum getOrderstatus() {
+		return orderstatus;
 	}
-	public void setOrder_status(Integer order_status) {
-		this.order_status = order_status;
+	public void setOrderstatus(ScorDerStatusEnum orderstatus) {
+		this.orderstatus = orderstatus;
 	}
 	public Integer getNewest_status() {
 		return newest_status;
@@ -235,12 +243,7 @@ public class kplanscorders extends BaseDomain{
 	public void setWebsite_status(Integer website_status) {
 		this.website_status = website_status;
 	}
-	public Integer getExamine_status() {
-		return examine_status;
-	}
-	public void setExamine_status(Integer examine_status) {
-		this.examine_status = examine_status;
-	}
+	
 	public Integer getFailed_tag() {
 		return failed_tag;
 	}
@@ -265,6 +268,14 @@ public class kplanscorders extends BaseDomain{
 	public void setRisk_addres_tag(String risk_addres_tag) {
 		this.risk_addres_tag = risk_addres_tag;
 	}
+	
+	
+	public ExamineStatusEnum getExamineStatus() {
+		return examineStatus;
+	}
+	public void setExamineStatus(ExamineStatusEnum examineStatus) {
+		this.examineStatus = examineStatus;
+	}
 	@Override
 	public String toString() {
 		return "kplan_sc_orders [id=" + id + ", order_no=" + order_no + ", product_name=" + product_name + ", phone="
@@ -273,9 +284,9 @@ public class kplanscorders extends BaseDomain{
 				+ ", distribution_addres=" + distribution_addres + ", distribution_type=" + distribution_type
 				+ ", phone_qcellcore=" + phone_qcellcore + ", channel_name=" + channel_name + ", user_id=" + user_id
 				+ ", head_sign=" + head_sign + ", platform_remarks=" + platform_remarks + ", remarks_tag=" + remarks_tag
-				+ ", cread_date=" + cread_date + ", order_status=" + order_status + ", newest_status=" + newest_status
+				+ ", cread_date=" + cread_date + ", order_status=" + orderstatus + ", newest_status=" + newest_status
 				+ ", documentary=" + documentary + ", update_date=" + update_date + ", lock_date=" + lock_date
-				+ ", website_status=" + website_status + ", examine_status=" + examine_status + ", failed_tag="
+				+ ", website_status=" + website_status + ", examineStatus=" + examineStatus + ", failed_tag="
 				+ failed_tag + ", repeat_tag=" + repeat_tag + "]";
 	}
 	
