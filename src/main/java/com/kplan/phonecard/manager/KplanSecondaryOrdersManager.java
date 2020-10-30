@@ -73,7 +73,7 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 				}else if(query.getKeyword()!=null) {
 					list.add(cb.equal(r.get("phone_num"), query.getKeyword()));
 				}
-				list.add(cb.or(cb.equal(r.get("pro_status"), 1),cb.equal(r.get("pro_status"), 99)));
+//				list.add(cb.or(cb.equal(r.get("pro_status"), 1),cb.equal(r.get("pro_status"), 99)));
 //				list.add(cb.or(cb.equal(r.get("pro_status"), 99)));
 //				list.add(cb.and());
 				return cb.and(list.toArray(new Predicate[0]));
