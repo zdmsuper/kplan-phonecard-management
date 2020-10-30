@@ -178,6 +178,29 @@ public abstract class BaseService<T extends BaseDomain> {
 		}
 		return query.getResultList();
 	}
+	
+	public  List getResultList( String sql, Object... paras) {
+		Query query = em.createQuery(sql);
+		int parameterIndex = 1;
+		if (paras != null && paras.length > 0) {
+			for (Object obj : paras) {
+				query.setParameter(parameterIndex++, obj);
+			}
+		}
+		return query.getResultList();
+	}
+	
+	public  Object getNative(String sql, Object... paras) {
+		Query query = em.createNativeQuery(sql);
+		int parameterIndex = 1;
+		if (paras != null && paras.length > 0) {
+			for (Object obj : paras) {
+				query.setParameter(parameterIndex++, obj);
+			}
+		}
+		return query.getResultList();
+	}
+	
 	public  void add(  Object arg0) {
 		em.persist(arg0);
 	}

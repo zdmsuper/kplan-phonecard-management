@@ -35,20 +35,18 @@
 	</nav>
 	<div class="page-container">
 
-			<div class="mt-20 dataTables_wrapper" style="width: 600px;height: 800px" id="main">
+			<div class="mt-20 dataTables_wrapper" style="width: 1600px;height: 700px" id="main">
 			</div>
 	</div>
 		<!--_footer 作为公共模版分离出去-->
-	<script type="text/javascript" th:src="@{/lib/jquery/1.9.1/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/jquery/1.9.1/jquery.js}"></script>
 	<script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}"></script>
 	<script type="text/javascript" th:src="@{/ui/h-ui/js/H-ui.min.js}"></script>
 	<script type="text/javascript" th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}"></script>
 	<script type="text/javascript" th:src="@{/lib/laydate/laydate.js}"></script>
 	<script type="text/javascript" th:src="@{/lib/laypage/1.2/laypage.js}"></script>
-	<script type="text/javascript" th:src="@{/lib/js/web-global.js}"></script>
 	<script type="text/javascript" th:src="@{/echarts/echarts.min.js}"></script>
 	<!--/_footer 作为公共模版分离出去-->
-
 	<!--请在下方写此页面业务相关的脚本-->
 	<script type="text/javascript" th:inline="javascript">
 // 	alert(${page})
@@ -56,29 +54,100 @@
 // 		alert(${page.delivery_num})
 		
 // 	});
-		alert()
-			var url="/coreorder/reportFormList";
-			$.ajax({
-				type:'get',
-				url:url,
-				success:function(resp){
-					alert();
-					$.each(resp,function(){
-						alert(resp)
-					});
+
+
+
+
+
+		
+			var chartSeriesData=[]
+			var chartSeriesDetailData=[]
+			var chartSeriesNumData=[]
+			$(function() {
+				var url="/coreorder/reportFormList";
+				$.ajax({
+					type:'get',
+					async:false,
+					url:url,
+					success:function(resp){
+						//result=resp;
+						//console.info(resp)
+						chartSeriesData=resp.map(function(v,i){
+// 							return {name:v.kplanAgentName,value:v.deliveryNum}
+							return v.name
+						});
+// 						chartSeriesNumData=resp.map(function(v,i){
+// // 							return {name:v.kplanAgentName,value:v.deliveryNum}
+// 							return v.lNum
+// 						});
+						
+						chartSeriesDetailData=resp.map(function(v,i){
+// 							return {name:v.kplanAgentName,value:v.deliveryNum}
+							return   { name: v.name, type: 'line',  stack: '总量', data: v.lNum }
+								//[120, 132, 101, 134, 90, 230, 210]
+						});
+						
+						
+					}
+				});
+				console.info(chartSeriesDetailData)
+				console.info(chartSeriesNumData)
+				console.info(chartSeriesData)
+// 				{
 					
-				}
+// 					"系统手工单浙江03":[4,5,6],
+// 					"四川-二级01":[1,2,3]
+					
+// 				}
+				//chartSeriesData= ["系统手工单浙江03", "四川-二级01", "贵阳-南明二级01", "南岸广阳岛合作厅", "系统手工单上海", "系统手工单浙江03", "贵阳-南明二级01", "四川-二级01", "系统手工单广东", "系统手工单上海"]
+// 				chartSeriesData=['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎','搜索引擎2', '搜索引擎3', '搜索引擎4', '搜索引擎5', '搜索引擎6']
+				echarts.init($('#main')[0]).setOption({
+			    title: {
+			        text: '折线图堆叠'
+			    },
+			   
+			    tooltip: {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			        data:chartSeriesData
+			        	
+			    },
+			    grid: {
+			        left: '3%',
+			        right: '4%',
+			        bottom: '3%',
+			        containLabel: true
+			    },
+			    toolbox: {
+			        feature: {
+			            saveAsImage: {}
+			        }
+			    },
+			    xAxis: {
+			        type: 'category',
+			        boundaryGap: false,
+			        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+			    },
+			    yAxis: {
+			        type: 'value'
+			    },
+			    series: chartSeriesDetailData
+	});
+				
+				
+				
+// 				 echarts.init($('#main')[0]).setOption({
+// 			            series: {
+// 			                type: 'pie',
+// 			                data: chartSeriesData
+// 			            }
+// 			        });
 			});
-		echarts.init(document.getElementById('main')).setOption({
-     	   series: {
-            type: 'pie',
-            data: [
-                {name: 'A', value: 1212},
-                {name: 'B', value: 2323},
-                {name: 'C', value: 1919}
-            ]
-        }
-    });
+			
+		
+			
+
 	</script>
 </body>
 </html>

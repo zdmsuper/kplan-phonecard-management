@@ -1,4 +1,4 @@
-(function($){
+/*(function($){
         //备份jquery的ajax方法
         var _ajax=$.ajax;
         //重写jquery的ajax方法
@@ -84,4 +84,4 @@ $(function() {
 	   		$("form").submit();
    	   }
    })
-});
+});*/

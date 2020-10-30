@@ -82,9 +82,9 @@ public class CoreordersMarketkManager extends BaseManager{
 					k.setDistrict_code(district);
 					k.setDistrict_name(districtName);
 					k.setOrder_number(phone_Num);
-					k.setInitial_status(0);
+					k.setInitial_status(20);
 					k.setOrder_status(0);
-					k.setExport_status(0);
+					k.setExport_status(1);
 					k.setVisit_code(0);
 					k.setCreatetime(new Date());
 //					k.setProduct_code("981610241535");

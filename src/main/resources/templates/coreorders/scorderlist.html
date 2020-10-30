@@ -103,7 +103,7 @@
 							<th>地市</th>
 							<th>区县</th>
 							<th>详细地址</th>
-<!-- 							<th>订单来源</th> -->
+							<th>最新状态</th>
 							<th>备注标签</th>
 							<th>锁定状态</th>
 							<th>最后操作人</th>
@@ -123,7 +123,7 @@
 							<td th:text="${item.city}"></td>
 							<td th:text="${item.district}"></td>
 							<td th:text="${item.distribution_addres}"></td>
-							
+							<td th:text="${item.newest_status.desc}"></td>
 							<td >
 							<span th:text="${item.remarks_tag}"></span>
 							</td>

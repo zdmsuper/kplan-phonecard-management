@@ -56,6 +56,19 @@ public class DateUtils {
        return time;
 	}
 	
+	/**7天 根据天获取时间
+	 * @return
+	 */
+	public static String getSevenDay(int dayNum) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//时间格式化
+        Calendar calendar=Calendar.getInstance();
+        Date date=new Date();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY) - 24*dayNum);
+        String time = sdf.format(calendar.getTime());
+       return time;
+	}
+	
 	/**
 	 * @return yyyy-MM-dd 当天
 	 */

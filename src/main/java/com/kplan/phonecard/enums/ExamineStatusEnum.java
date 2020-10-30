@@ -18,7 +18,11 @@ public enum ExamineStatusEnum {
 	/**
 	 * 审核失败
 	 */
-	FAILED(2,"审核失败")
+	FAILED(2,"审核失败"),
+	/**
+	 * 未知
+	 */
+	UNKNOW(null,"未知")
 	,;
 	private ExamineStatusEnum(Integer code, String desc) {
 		this.code = code;
@@ -40,7 +44,7 @@ public enum ExamineStatusEnum {
 				return statusEnum;
 			}
 		}
-		throw new BusinessException("枚举类型错误");
+		return ExamineStatusEnum.UNKNOW;
 	}
 
 //	@Converter

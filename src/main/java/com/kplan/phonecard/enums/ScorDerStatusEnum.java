@@ -88,7 +88,17 @@ public enum ScorDerStatusEnum {
 	/**
 	 * 回访挂起
 	 */
-	ReturnUp(31,"回访挂起"),;
+	ReturnUp(31,"回访挂起"),
+	
+	/**
+	 * 物流单挂起
+	 */
+	othen(32,"物流单挂起"),
+	/**
+	 * 未知
+	 */
+	UNKNOW(null,"未知")
+	,;
 	private ScorDerStatusEnum(Integer code, String desc) {
 		this.code = code;
 		this.desc = desc;
@@ -109,7 +119,7 @@ public enum ScorDerStatusEnum {
 				return statusEnum;
 			}
 		}
-		throw new BusinessException("枚举类型错误");
+		return ScorDerStatusEnum.UNKNOW;
 	}
 
 //	@Converter

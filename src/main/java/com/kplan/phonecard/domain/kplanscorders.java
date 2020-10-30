@@ -16,6 +16,7 @@ import javax.persistence.TemporalType;
 import com.kplan.phonecard.base.BaseDomain;
 import com.kplan.phonecard.enums.ExamineStatusEnum;
 import com.kplan.phonecard.enums.GenderEnum;
+import com.kplan.phonecard.enums.NewStatusEnum;
 import com.kplan.phonecard.enums.ScorDerStatusEnum;
 @Entity
 @Table(name = "kplan_sc_orders")
@@ -66,8 +67,9 @@ public class kplanscorders extends BaseDomain{
 	@Convert(converter = ScorDerStatusEnum.EnumConvert.class)
 	@Column(name = "order_status", precision = 32, scale = 0)
 	private ScorDerStatusEnum orderstatus;//	int4	32	0	False		订单状态，入库状态默认0     3:订单处理中（信息爬取） 1：信息爬取完成
+	@Convert(converter = NewStatusEnum.EnumConvert.class)
 	@Column(name = "newest_status", precision = 32, scale = 0)
-	private Integer newest_status;//	int4	32	0	False		最新状态
+	private NewStatusEnum newest_status;//	int4	32	0	False		最新状态
 	@Column(name = "documentary", unique = true, length = 255)
 	private String documentary;//	varchar	16	0	False		跟单人
 	@Temporal(TemporalType.TIMESTAMP)
@@ -213,10 +215,11 @@ public class kplanscorders extends BaseDomain{
 	public void setOrderstatus(ScorDerStatusEnum orderstatus) {
 		this.orderstatus = orderstatus;
 	}
-	public Integer getNewest_status() {
+	
+	public NewStatusEnum getNewest_status() {
 		return newest_status;
 	}
-	public void setNewest_status(Integer newest_status) {
+	public void setNewest_status(NewStatusEnum newest_status) {
 		this.newest_status = newest_status;
 	}
 	public String getDocumentary() {

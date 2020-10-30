@@ -188,17 +188,12 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	
 	@RequestMapping("/reportFormList")
 	@ResponseBody
-	public String reportFormList(Map<String, Object> map, KplanChannelNumberDetailQuery query) throws ParseException {
+	public Object reportFormList(Map<String, Object> map, KplanChannelNumberDetailQuery query) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		query.setCreatedDateStart(sdf.parse(DateUtils.getoDay()));
-		query.setCreatedDateEnd(sdf.parse(DateUtils.getyesterDay()));
-		Page<KplanChannelNumberDetail> page=this.kplanChannelNumberDetailManager.findChannelInfos(query, this.getPageRequest());
-//		map.put("page", page);
-//		map.put("query", query);
-		List<KplanChannelNumberDetail> l=new ArrayList<KplanChannelNumberDetail>();
-		for(KplanChannelNumberDetail d:page) {
-			l.add(d);
-		}
-		return JSON.toJSONString(l);
+		System.out.println(DateUtils.getSevenDay(3));
+		query.setCreatedDateStart(sdf.parse(DateUtils.getSevenDay(7)));
+		query.setCreatedDateEnd(sdf.parse(DateUtils.getoDay()));
+	
+		return this.kplanChannelNumberDetailManager.findList(query);
 	}
 }
