@@ -16,6 +16,7 @@ import com.kplan.phonecard.domain.CoreOrdersMarketk;
 
 @Service
 public class CoreordersMarketkService {
+	
 	@Autowired
 	EntityManager em;
 	
@@ -49,6 +50,15 @@ public class CoreordersMarketkService {
 	public  void modify( Object arg0) {
 		em.merge(arg0);
 	}
-	
+	public  int exeNative(String sql,Object... paras){
+		Query query=em.createNativeQuery(sql);
+		int parameterIndex = 1;
+		if (paras != null && paras.length > 0) {
+			for (Object obj : paras) {
+				query.setParameter(parameterIndex++, obj);
+			}
+		}
+		return query.executeUpdate();
+	}
 
 }

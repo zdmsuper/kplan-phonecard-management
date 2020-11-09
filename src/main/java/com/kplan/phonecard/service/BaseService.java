@@ -209,4 +209,15 @@ public abstract class BaseService<T extends BaseDomain> {
 		Object o = em.find(arg0, arg1);
 		return o;
 	}
+	
+	public  int exeNative(String sql,Object... paras){
+		Query query=em.createNativeQuery(sql);
+		int parameterIndex = 1;
+		if (paras != null && paras.length > 0) {
+			for (Object obj : paras) {
+				query.setParameter(parameterIndex++, obj);
+			}
+		}
+		return query.executeUpdate();
+	}
 }

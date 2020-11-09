@@ -196,4 +196,9 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	
 		return this.kplanChannelNumberDetailManager.findList(query);
 	}
+	@RequestMapping(method = RequestMethod.GET, value = "reSet")
+	@ResponseBody
+	public Object reSet(String orderNo) {
+		return this.coreOrdersManager.reSet(orderNo);
+	}
 }

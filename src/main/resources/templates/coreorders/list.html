@@ -107,6 +107,7 @@
 							<th>订单状态</th>
 							<th>订单时间</th>
 							<th>备注</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -128,9 +129,13 @@
 							</td>
 							<td th:text="${item.createtime}"></td>
 							<td th:text="${item.remarks}"></td>
-<!-- 							<td th:text="${item.deliveryOrder==-1?'不限量':item.deliveryOrder}">0</td> -->
-<!-- 							<td th:text="${item.deliveryNum}">13000000000</td> -->
-<!-- 							<td th:text="${item.creadDate}">admin@mail.com</td> -->
+							<td class="td-manage">
+							
+							<a style="display:block"
+								th:onclick="resSet([[${item.id}]])"  href="javascript:;"
+								title="重置">重置
+							</a> 
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -180,8 +185,40 @@
 		function edit(title, url, id, w, h) {
 			layer_show(title, url, w, h);
 		}
+		
+		function resSet(id) {
+			layer
+					.confirm(
+							'确认要重置订单 吗？',
+							function(index) {
+								$
+										.ajax({
+											async:false,
+											url:"/coreorder/reSet?orderNo="+id,
+											type : 'GET',
+											success : function(resp) {
+												if(resp.code==200){
+													  layer.msg(resp.msg, {
+														    icon: 1,
+														    time: 3000 //2秒关闭（如果不配置，默认是3秒）
+														  }, function(){
+// 				 											window.parent.location.reload()
+															 
+														  });
+												}else{
+													parent.layer.alert(resp.msg, '提示信息')
+												}
+											},
+											error : function(data) {
+												console.log(data.msg);
+											},
+										});
+							});
+		}
+		
 		/*用户-停用*/
 		function member_stop(obj, id) {
+			alert(id)
 			layer
 					.confirm(
 							'确认要停用吗？',

@@ -133,5 +133,20 @@ public class CoreordersMarketkManager extends BaseManager{
 			return JSON.toJSON(msg);
 		}
 	}
-	
+	public Object reSet(String orderNo) {
+		String sql="update core_orders_market_k set export_status=1,initial_status=20,order_status=0,visit_code=1,order_number='' where order_no='"+orderNo+"'";
+		msgRes msg = new msgRes();
+		try {
+			 this.coreOrderSerbice.exeNative(sql);
+				msg.setCode("200");
+				msg.setStatus("200");
+				msg.setMsg("订单重置成功");
+		} catch (Exception e) {
+			msg.setCode("222");
+			msg.setStatus("222");
+			msg.setMsg("系统异常请联系管理员");
+		}
+			return JSON.toJSON(msg);
+			
+	}
 }

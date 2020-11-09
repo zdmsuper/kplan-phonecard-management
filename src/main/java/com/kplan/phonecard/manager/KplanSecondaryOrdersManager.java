@@ -81,4 +81,6 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 		};
 		return this.kplanSecondaryOrdersService.findAll(spec, pageable);
 	}
+	
+	
 }
