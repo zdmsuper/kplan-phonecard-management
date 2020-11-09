@@ -3,6 +3,7 @@ package com.kplan.phonecard.domain;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,6 +12,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.kplan.phonecard.base.BaseDomain;
+import com.kplan.phonecard.enums.NewStatusEnum;
+import com.kplan.phonecard.enums.OrderStatusEnum;
 @Entity
 @Table(name = "core_orders_market_k")
 public class CoreOrdersMarketk extends  BaseDomain{
@@ -45,8 +48,9 @@ public class CoreOrdersMarketk extends  BaseDomain{
 	private String recommend_number;
 	@Column(name = "order_number", unique = true, length = 32)
 	private String order_number	;
+	@Convert(converter = OrderStatusEnum.EnumConvert.class)
 	@Column(name = "order_status", precision = 22, scale = 0)
-	private Integer order_status;
+	private OrderStatusEnum order_status;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_time", length = 7)
 	private Date createtime;
@@ -208,14 +212,18 @@ public class CoreOrdersMarketk extends  BaseDomain{
 	public void setOrder_number(String order_number) {
 		this.order_number = order_number;
 	}
-	public Integer getOrder_status() {
+	
+	
+	public OrderStatusEnum getOrder_status() {
 		return order_status;
 	}
-	public void setOrder_status(Integer order_status) {
+
+
+	public void setOrder_status(OrderStatusEnum order_status) {
 		this.order_status = order_status;
 	}
-	
-	
+
+
 	public Date getCreatetime() {
 		return createtime;
 	}

@@ -66,8 +66,8 @@ public class KplanSecondaryOrders extends BaseDomain{
 	private String post_district;//	varchar	32	0	False		交付区县
 	@Column(name = "age", unique = true, length = 8)
 	private String age;//	varchar	8	0	False		年龄
-	@Column(name = "product_name", unique = true, length = 32)
-	private String product_name;//	varchar	32	0	False		商品名称
+//	@Column(name = "product_name", unique = true, length = 32)
+//	private String product_name;//	varchar	32	0	False		商品名称
 	@Column(name = "contact_code", unique = true, length = 16)
 	private String contact_code;//	varchar	16	0	False		触点编码
 	@Column(name = "place_agent_code", unique = true, length = 32)
@@ -229,12 +229,6 @@ public class KplanSecondaryOrders extends BaseDomain{
 			public void setAge(String age) {
 				this.age = age;
 			}
-			public String getProduct_name() {
-				return product_name;
-			}
-			public void setProduct_name(String product_name) {
-				this.product_name = product_name;
-			}
 			public String getContact_code() {
 				return contact_code;
 			}
@@ -311,7 +305,7 @@ public class KplanSecondaryOrders extends BaseDomain{
 						+ ", order_source=" + order_source + ", distribution_addres=" + distribution_addres
 						+ ", order_id=" + order_id + ", phone_province=" + phone_province + ", phone_city=" + phone_city
 						+ ", post_province=" + post_province + ", post_city=" + post_city + ", post_district="
-						+ post_district + ", age=" + age + ", product_name=" + product_name + ", contact_code="
+						+ post_district + ", age=" + age + ", contact_code="
 						+ contact_code + ", place_agent_code=" + place_agent_code + ", place_agent_name="
 						+ place_agent_name + ", remove_ident=" + remove_ident + ", back_info=" + back_info
 						+ ", malicious_info=" + malicious_info + ", reject_info=" + reject_info + ", logistics_info="

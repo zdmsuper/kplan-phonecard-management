@@ -10,6 +10,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.msgRes;
+import com.kplan.phonecard.enums.OrderStatusEnum;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.utils.SqeUtils;
@@ -42,6 +44,9 @@ public class CoreordersMarketkManager extends BaseManager{
 //				cb.equal(r.get("id"), 23L) "线下上门渠道"
 				if(query.getCreatedDateStart()!=null&&query.getCreatedDateEnd()!=null) {
 					list.add(cb.between(r.get("create_time"), query.getCreatedDateStart(), query.getCreatedDateEnd()));
+				}
+				if(StringUtils.trimToNull(query.getKeyword())!=null) {
+					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getKeyword()),cb.equal(r.get("order_number"), query.getKeyword())));
 				}
 				list.add(cb.equal(r.get("order_source"),"线下上门渠道"));
 				return cb.and(list.toArray(new Predicate[0]));
@@ -83,7 +88,7 @@ public class CoreordersMarketkManager extends BaseManager{
 					k.setDistrict_name(districtName);
 					k.setOrder_number(phone_Num);
 					k.setInitial_status(20);
-					k.setOrder_status(0);
+					k.setOrder_status(OrderStatusEnum.InitOrderStatus);
 					k.setExport_status(1);
 					k.setVisit_code(0);
 					k.setCreatetime(new Date());
