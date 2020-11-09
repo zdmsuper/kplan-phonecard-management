@@ -134,7 +134,7 @@ public class CoreordersMarketkManager extends BaseManager{
 		}
 	}
 	public Object reSet(String orderNo) {
-		String sql="update core_orders_market_k set export_status=1,initial_status=20,order_status=0,visit_code=1,order_number='' where order_no='"+orderNo+"'";
+		String sql="update core_orders_market_k set export_status=1,initial_status=20,order_status=0,visit_code=1,order_number='' where order_no='"+orderNo+"' and order_status!=11";
 		msgRes msg = new msgRes();
 		try {
 			 this.coreOrderSerbice.exeNative(sql);
