@@ -68,8 +68,8 @@ public class UnicomPostcityCodeManager extends BaseManager{
 	 * @param phoneNum
 	 * @return
 	 */
-	public Object qryPhonesNum(String phoneNum) {
-		String url = "http://59.110.18.76:8888/kplan/kcqapi/selectNumLastNUm?provinceCode=81&cityCode=810&searchCategory=3&goodsId=981610241535&amounts=20&searchType=02&searchValue="
+	public Object qryPhonesNum(String phoneNum,String procductCode,String procductName) {
+		String url = "http://59.110.18.76:8888/kplan/kcqapi/selectNumLastNUm?provinceCode=81&cityCode=810&searchCategory=3&goodsId="+procductCode+"&amounts=20&searchType=02&searchValue="
 				+ phoneNum;
 		String[] result = HttpUtils.doGet(url, 6000);
 		List<KplanPhoneNumber> l = new ArrayList<KplanPhoneNumber>();
@@ -100,6 +100,8 @@ public class UnicomPostcityCodeManager extends BaseManager{
 					k.setCread_date(new Date());
 					k.setLast_date(new Date());
 					k.setPhone_source("手工单尾号匹配");
+					k.setProduct_code(procductCode);
+					k.setProduct_name(procductName);
 					k.setPriority_name(1);
 					l.add(k);
 					this.unicomCityService.add(k);;
@@ -118,6 +120,8 @@ public class UnicomPostcityCodeManager extends BaseManager{
 						k.setCread_date(new Date());
 						k.setLast_date(new Date());
 						k.setPhone_source("手工单尾号匹配");
+						k.setProduct_code(procductCode);
+						k.setProduct_name(procductName);
 						k.setPriority_name(1);
 						l.add(k);
 					}

@@ -74,7 +74,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@RequestMapping("/edit")
 	public String edit(Map<String, Object> map, ManagerInfoQuery query) {
 		List<UnicomPostCityCode> l=this.unicompostcityManager.findByPrivoin();
-		List<KplanPhoneNumber> phoneList=this.kplanPhoneManager.findPhoneList("");
+		List<KplanPhoneNumber> phoneList=this.kplanPhoneManager.findPhoneList("","981610241535");
 		List<KplanPhoneNumber> phoneRuleList=this.kplanPhoneManager.findPhoneRuleList();
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
@@ -94,8 +94,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhones")
 	@ResponseBody
-	public Object qryPhones(String phoneRule) {
-		Object phoneList = this.kplanPhoneManager.findPhoneList(phoneRule);
+	public Object qryPhones(String phoneRule,String procductCode) {
+		Object phoneList = this.kplanPhoneManager.findPhoneList(phoneRule,procductCode);
 		return phoneList;
 	}
 	
@@ -116,8 +116,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhonesNum")
 	@ResponseBody
-	public Object qryPhonesNum(String phoneNum) {
-		return this.unicompostcityManager.qryPhonesNum(phoneNum);
+	public Object qryPhonesNum(String phoneNum,String procductCode,String procductName) {
+		return this.unicompostcityManager.qryPhonesNum(phoneNum,procductCode,procductName);
 	}
 	
 	/**

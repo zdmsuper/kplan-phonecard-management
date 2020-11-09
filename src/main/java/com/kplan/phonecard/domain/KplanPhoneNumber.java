@@ -60,6 +60,10 @@ public class KplanPhoneNumber extends  BaseDomain{
 	private Integer render_starindex;//	int4	32	0	False		渲染开始位置
 	@Column(name = "render_num", precision = 22, scale = 0)
 	private Integer render_num;//	int4	32	0	False		渲染多少位
+	@Column(name = "product_name", unique = true, length = 32)
+	private String product_name;//	varchar	32	0	False		产品名称
+	@Column(name = "product_code", unique = true, length = 32)
+	private String product_code;//	varchar	32	0	False		产品编码
 	@Transient
 	public String getPhone() {
 		return id;
@@ -198,6 +202,30 @@ public class KplanPhoneNumber extends  BaseDomain{
 	}
 	public void setRender_num(Integer render_num) {
 		this.render_num = render_num;
+	}
+
+
+
+	public String getProduct_name() {
+		return product_name;
+	}
+
+
+
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+
+
+
+	public String getProduct_code() {
+		return product_code;
+	}
+
+
+
+	public void setProduct_code(String product_code) {
+		this.product_code = product_code;
 	}
 	
 	
