@@ -156,6 +156,11 @@
 // 				if (!validateForm()) {
 // 					return false;
 // 				}
+				var fileName=$('#file').val();
+				if(fileName==''){
+					parent.layer.alert('请选择文件', '提示信息')
+					return;
+				}
 				var url="/coreorder/uploadFile";
 				var formData = new FormData($('#form')[0]); 
 				layer.confirm('是否提交上传文件', {

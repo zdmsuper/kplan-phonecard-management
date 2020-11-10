@@ -39,7 +39,7 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 					o=new KplanSecondaryOrders();
 					o.setPlace_order_time(new Date());
 					o.setOrder_no(list.get(0));
-					o.setPro_status(11);
+					o.setPro_status(0);
 					o.setOrder_source("CD");
 					this.kplanSecondaryOrdersService.add(o);
 				}
