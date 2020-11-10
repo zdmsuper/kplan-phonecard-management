@@ -60,5 +60,16 @@ public class CoreordersMarketkService {
 		}
 		return query.executeUpdate();
 	}
+	
+	public  List getResultList(String sql, Object... paras) {
+		Query query = em.createQuery(sql);
+		int parameterIndex = 1;
+		if (paras != null && paras.length > 0) {
+			for (Object obj : paras) {
+				query.setParameter(parameterIndex++, obj);
+			}
+		}
+		return query.getResultList();
+	}
 
 }

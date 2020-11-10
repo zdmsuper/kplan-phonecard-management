@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
+import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.enums.OrderStatusEnum;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
@@ -148,5 +149,11 @@ public class CoreordersMarketkManager extends BaseManager{
 		}
 			return JSON.toJSON(msg);
 			
+	}
+	
+	public List<Kplanprocducts> qryProcDucts(){
+		String sql="from Kplanprocducts";
+		List<Kplanprocducts> l=this.coreOrderSerbice.getResultList(sql);
+		return l;
 	}
 }

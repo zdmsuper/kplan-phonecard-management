@@ -26,6 +26,7 @@ import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanChannelNumberDetail;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
+import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.kplanscorders;
 import com.kplan.phonecard.manager.ManagerInfoManager;
@@ -74,11 +75,13 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@RequestMapping("/edit")
 	public String edit(Map<String, Object> map, ManagerInfoQuery query) {
 		List<UnicomPostCityCode> l=this.unicompostcityManager.findByPrivoin();
-		List<KplanPhoneNumber> phoneList=this.kplanPhoneManager.findPhoneList("","981610241535");
+		List<Kplanprocducts> product=this.coreOrdersManager.qryProcDucts();
+		List<KplanPhoneNumber> phoneList=this.kplanPhoneManager.findPhoneList("",product.get(0).getProcduct_code());
 		List<KplanPhoneNumber> phoneRuleList=this.kplanPhoneManager.findPhoneRuleList();
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
+		map.put("product", product);
 		return "coreorders/edit";
 	}
 	@RequestMapping("/upedit")

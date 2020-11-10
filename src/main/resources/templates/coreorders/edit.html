@@ -76,12 +76,15 @@
 					class="c-red">*</span>产品：</label>
 				<div class="formControls col-xs-8 col-sm-9">
 					<select class="select select-box inline" style="width: 50" name="ordersource" id="ordersource">
-							<option value="981610241535">大王卡</option>
-							<option value="981702278573">天王卡</option>
-							<option value="981711282734">阿里大宝卡</option>
-							<option value ="981711282733">阿里小宝卡</option>
-							<option value ="981703239394">哔哩哔哩22卡</option>
-							<option value ="981703239395">哔哩哔哩33卡</option>
+<!-- 							<option value="">请选择</option> -->
+<!-- 							<option value="981702278573">天王卡</option> -->
+<!-- 							<option value="981711282734">阿里大宝卡</option> -->
+<!-- 							<option value ="981711282733">阿里小宝卡</option> -->
+<!-- 							<option value ="981703239394">哔哩哔哩22卡</option> -->
+<!-- 							<option value ="981703239395">哔哩哔哩33卡</option> -->
+							<option th:each="product:${product}"
+								th:value="${product.procduct_code}"
+								th:text="${product.procduct_name}" >&nbsp;</option>
 <!-- 							线下上门渠道 -->
 					</select>
 				</div>
