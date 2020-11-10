@@ -130,7 +130,6 @@
 							<td th:text="${item.createtime}"></td>
 							<td th:text="${item.remarks}"></td>
 							<td class="td-manage" th:if="${item.order_status.code}==21">
-							
 							<a style="display:block"
 								th:onclick="resSet([[${item.id}]])"  href="javascript:;"
 								title="重置">重置
