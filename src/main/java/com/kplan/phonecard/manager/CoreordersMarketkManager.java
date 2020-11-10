@@ -44,7 +44,7 @@ public class CoreordersMarketkManager extends BaseManager{
 				List<Predicate> list = new ArrayList<>();
 //				cb.equal(r.get("id"), 23L) "线下上门渠道"
 				if(query.getCreatedDateStart()!=null&&query.getCreatedDateEnd()!=null) {
-					list.add(cb.between(r.get("create_time"), query.getCreatedDateStart(), query.getCreatedDateEnd()));
+					list.add(cb.between(r.get("createtime"), query.getCreatedDateStart(), query.getCreatedDateEnd()));
 				}
 				if(StringUtils.trimToNull(query.getKeyword())!=null) {
 					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getKeyword()),cb.equal(r.get("order_number"), query.getKeyword())));
