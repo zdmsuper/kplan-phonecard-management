@@ -95,7 +95,7 @@
 							<td th:text="${item.kplanAgentName}">张三</td>
 							<td th:text="${item.deliveryOrder==-1?'不限量':item.deliveryOrder}">0</td>
 							<td th:text="${item.deliveryNum}">13000000000</td>
-							<td th:text="${item.creadDate}">admin@mail.com</td>
+							<td th:text="${#dates.format(item.creadDate,'yyyy-MM-dd')}">admin@mail.com</td>
 						</tr>
 					</tbody>
 				</table>

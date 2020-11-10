@@ -45,7 +45,7 @@
 <!-- 			<input type="hidden" name="id" th:value="${item.id}"> -->
 				<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span> 文件上车：</label>
+					class="c-red">*</span> 文件上传：</label>
 				<div class="formControls col-xs-8 col-sm-9">
 				<span class="btn-upload form-group"> <input
 						class="input-text upload-url" type="text"
@@ -159,17 +159,28 @@
 				var url="/coreorder/uploadFile";
 				var formData = new FormData($('#form')[0]); 
 				layer.confirm('是否提交上传文件', {
-					  btn: ['确定提交','取消'] //按钮
+// 					  btn: ['确定提交','取消'] //按钮
 					}, function(){
+						layer.closeAll();
+// 							$(document).hide();
+// 							debugger
+							var index=layer.msg('文件正在上传', {
+							   time: 3000, //20s后自动关闭
+// 							    btn: ['明白了', '']
+							  });
+							layer.load(1000000, {
+			 					  shade: [0.1,'#fff'] //0.1透明度的白色背景
+			 					});
 						$.ajax({
 							type:'post',
-							async:false,
+							async:true,
 							url:url,
 							data: formData, 
 						  	cache: false, 
 						  	processData: false, 
 						  	contentType: false, 
 							success:function(resp){
+								layer.close(index);
 									  layer.msg('上传成功', {
 										    icon: 1,
 										    time: 3000 //2秒关闭（如果不配置，默认是3秒）
@@ -184,7 +195,12 @@
 							
 							}
 						});
+							
+				
+						return true;
+						 
 					}, function(){
+						debugger
 					  layer.msg('订单已取消提交', {
 					    time: 1000, //20s后自动关闭
 //					    btn: ['明白了', '']

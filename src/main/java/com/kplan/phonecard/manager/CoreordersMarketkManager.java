@@ -71,6 +71,8 @@ public class CoreordersMarketkManager extends BaseManager{
 					msg.setMsg("选择的订购号码已被使用，请重新选号");
 					return JSON.toJSON(msg);
 				} else {
+					String phonesql="update kplan_phone_number set use_not=2 where phone_num='"+re_phone+"' and use_not=1";
+					this.coreOrderSerbice.exeNative(phonesql);
 					phone.setPhone_num(re_phone);
 					phone.setUse_not(1);
 					this.coreOrderSerbice.modify(phone);
@@ -134,11 +136,14 @@ public class CoreordersMarketkManager extends BaseManager{
 			return JSON.toJSON(msg);
 		}
 	}
-	public Object reSet(String orderNo) {
+	public Object reSet(String orderNo,String phone) {
 		String sql="update core_orders_market_k set export_status=1,initial_status=20,order_status=0,visit_code=1,order_number='' where order_no='"+orderNo+"' and order_status!=11";
+		String phonesql="update kplan_phone_number set use_not=2 where phone_num='"+phone+"'";
+		
 		msgRes msg = new msgRes();
 		try {
 			 this.coreOrderSerbice.exeNative(sql);
+			 this.coreOrderSerbice.exeNative(phonesql);
 				msg.setCode("200");
 				msg.setStatus("200");
 				msg.setMsg("订单重置成功");

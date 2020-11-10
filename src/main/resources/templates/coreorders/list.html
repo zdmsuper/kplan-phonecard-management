@@ -124,14 +124,20 @@
 							<td th:text="${item.receiver_address}"></td>
 							<td th:text="${item.order_source}"></td>
 							
-							<td >
-							<span th:text="${item.order_status.desc}"></span>
+							<td th:if="${item.order_status.desc} eq '成功'">
+							<span  style="color: green;font-weight: 600" th:text="${item.order_status.desc}"></span>
+<!-- 							<span  style="color: green;" th:text="${item.order_status.desc}"></span> -->
 							</td>
-							<td th:text="${item.createtime}"></td>
+							<td th:if="${item.order_status.desc} ne '成功'">
+							<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
+							</td>
+							
+							
+							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.remarks}"></td>
 							<td class="td-manage" th:if="${item.order_status.code}==21">
 							<a style="display:block"
-								th:onclick="resSet([[${item.id}]])"  href="javascript:;"
+								th:onclick="resSet([[${item.id}]],[[${item.receiver_phone}]])"  href="javascript:;"
 								title="重置">重置
 							</a> 
 							</td>
@@ -186,15 +192,14 @@
 			layer_show(title, url, w, h);
 		}
 		
-		function resSet(id) {
+		function resSet(id,phone) {
 			layer
 					.confirm(
 							'确认要重置订单 吗？',
 							function(index) {
-								$
-										.ajax({
+								$.ajax({
 											async:false,
-											url:"/coreorder/reSet?orderNo="+id,
+											url:"/coreorder/reSet?orderNo="+id+"&phone="+phone,
 											type : 'GET',
 											success : function(resp) {
 												if(resp.code==200){
@@ -202,11 +207,11 @@
 														    icon: 1,
 														    time: 3000 //2秒关闭（如果不配置，默认是3秒）
 														  }, function(){
-// 				 											window.parent.location.reload()
+				 											window.location.reload()
 															 
 														  });
 												}else{
-													parent.layer.alert(resp.msg, '提示信息')
+													layer.alert(resp.msg, '提示信息')
 												}
 											},
 											error : function(data) {

@@ -201,7 +201,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	}
 	@RequestMapping(method = RequestMethod.GET, value = "reSet")
 	@ResponseBody
-	public Object reSet(String orderNo) {
-		return this.coreOrdersManager.reSet(orderNo);
+	public Object reSet(String orderNo,String phone) {
+		return this.coreOrdersManager.reSet(orderNo,phone);
 	}
 }
