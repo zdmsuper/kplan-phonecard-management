@@ -4,7 +4,7 @@
 	<div th:fragment="pagination(page)">
 		<div class="dataTables_info" style="float: left;">
 			<label>每页 <select name="pageSize" onchange="changePageSize(this);">
-				<option th:each="p: ${T(java.util.Arrays).asList(10,25,50,100)}" th:selected="${page.size==p}" th:text="${p}" th:value="${p}"></option>
+				<option th:each="p: ${T(java.util.Arrays).asList(15,25,50,100)}" th:selected="${page.size==p}" th:text="${p}" th:value="${p}"></option>
 			</select> 条
 			</label>
 		</div>

@@ -161,11 +161,11 @@ public class AbstractBaseController {
 	}
 
 	private Integer parsePageSize() {
-		Integer pageSize = 10;
+		Integer pageSize = 15;
 		try {
 			pageSize = Integer.parseInt(this.getParameter("pageSize"));
 		} catch (Exception e) {
-			pageSize = 10;
+			pageSize = 15;
 		}
 		return pageSize;
 
