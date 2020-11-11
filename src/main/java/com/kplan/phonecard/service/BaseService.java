@@ -1,5 +1,6 @@
 package com.kplan.phonecard.service;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Date;
 import java.util.List;
@@ -219,5 +220,9 @@ public abstract class BaseService<T extends BaseDomain> {
 			}
 		}
 		return query.executeUpdate();
+	}
+	
+	public  void removeById(Serializable arg1, Class arg0) {
+		em.remove(em.getReference(arg0, arg1));
 	}
 }

@@ -1,0 +1,251 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico">
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui/css/H-ui.min.css}" href="ui/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/css/H-ui.admin.css}"
+	href="ui/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}"
+	href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/skin/default/skin.css}"
+	href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/css/style.css}"
+	href="ui/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+<title>添加用户 - H-ui.admin v3.1</title>
+<meta name="keywords"
+	content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+<meta name="description"
+	content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+	<article class="page-container">
+		<form method="post" class="form form-horizontal" id="form" autocomplete="off">
+<!-- 			<input type="hidden" name="id" th:value="${item.id}"> -->
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>渠道编码：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="channelcode" name="channelcode"
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>操作员：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="operator" name="operator"
+						>
+				</div>
+			</div>
+				<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>渠道属性：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="channelnature" name="channelnature"
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>分公司：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="branch" name="branch"
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>工号：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="jobnum" name="jobnum"
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+					<input class="btn btn-primary radius" type="button" id="saveBtn"
+						value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+				</div>
+			</div>
+		</form>
+	</article>
+
+	<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript"
+		th:src="@{/lib/jquery/1.9.1/jquery.min.js}"
+		src="lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}"
+		src="lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" th:src="@{/ui/h-ui/js/H-ui.min.js}"
+		src="ui/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript"
+		th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}"
+		src="ui/h-ui.admin/js/H-ui.admin.js"></script>
+	<!--/_footer 作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/jquery.validate.js}"
+		src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/validate-methods.js}"
+		src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/messages_zh.js}"
+		src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('.skin-minimal input').iCheck({
+				checkboxClass : 'icheckbox-blue',
+				radioClass : 'iradio-blue',
+				increaseArea : '20%'
+			});
+			$(".file-2").change(function() {
+				console.info(1)
+			});
+			$("#headImg").change(function() {
+				console.info(2)
+			});
+			$("#headImg").change(
+					function() {
+						$("#img").attr("src",
+								URL.createObjectURL($(this)[0].files[0]));
+					});
+			function validateForm() {
+				return $("#form").validate({
+					rules : {
+						'userName' : {
+							required : true,
+							minlength : 2,
+							maxlength : 16
+						},
+						'userid' : {
+							required : true,
+						},
+						'address' : {
+							required : true,
+							isMobile : true,
+						},
+						'province_code' : {
+							required : true,
+							province_code : true,
+						},
+						'district' : {
+							required : true,
+							district : true,
+						},
+						'city' : {
+							required : true,
+							city : true,
+						},
+						're_phone' : {
+							required : true,
+							re_phone : true,
+						},
+						'phone_Num' : {
+							required : true,
+							phone_Num : true,
+						},
+
+					},
+					onkeyup : false,
+					focusCleanup : true,
+					success : "valid"
+				}).form();
+
+			}
+
+			$('#saveBtn').click(function() {
+				
+				var url="/channel/savaBankJob";
+				var jobnum=$('#jobnum').val()
+				var branch=$('#branch').val()
+				var channelnature=$('#channelnature').val()
+				var operator=$('#operator').val()
+				var channelcode=$('#channelcode').val()
+				var pramStr="jobnum="+jobnum+"&branch="+branch+"&channelnature="+channelnature+"&operator="+operator+
+				"&channelcode="+channelcode;
+				var submitMsg="渠道编码："+channelcode+"<br/> 操作员:"+operator+"<br/> 渠道属性："+channelnature+"<br/>分公司:"+branch+"<br/>工号:"+jobnum;
+				if(jobnum==''||branch==''||channelnature==''||operator=='' ||channelcode==''){
+					layer.msg('请将工号信息填写完整', {
+						    time: 5000, //20s后自动关闭
+ 						    btn: ['确定', '取消']
+						  });
+						return;
+				}
+				
+				
+				layer.confirm(submitMsg, {
+					  btn: ['确定提交','取消'] //按钮
+					}, function(){
+						$.ajax({
+							type:'get',
+							async:false,
+							url:url+"?"+pramStr,
+							success:function(resp){
+								if(resp.status==200){
+									  layer.msg(resp.msg, {
+										    icon: 1,
+										    time: 3000 //2秒关闭（如果不配置，默认是3秒）
+										  }, function(){
+ 											window.parent.location.reload()
+											 
+										  });
+								}else{
+									
+									parent.layer.alert(resp.msg, '提示信息')
+								}
+							
+							
+							}
+						});
+					}, function(){
+					  layer.msg('订单已取消提交', {
+					    time: 1000, //20s后自动关闭
+//					    btn: ['明白了', '']
+					  });
+					});
+				
+
+			});
+
+		});
+		$('body').on("click", "input[name='phonesNum']",function(event) {
+			var smsstatus=$(this).val();
+			$("#phone_Num").val(smsstatus);
+			
+		});
+		
+		
+		
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
