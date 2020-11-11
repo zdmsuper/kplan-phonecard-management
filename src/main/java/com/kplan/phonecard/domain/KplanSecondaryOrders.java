@@ -3,6 +3,7 @@ package com.kplan.phonecard.domain;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.kplan.phonecard.base.BaseDomain;
+import com.kplan.phonecard.enums.OrderStatusEnum;
+import com.kplan.phonecard.enums.ProStatusEnum;
 @Entity
 @Table(name = "kplan_secondary_orders")
 public class KplanSecondaryOrders extends BaseDomain{
@@ -43,8 +46,9 @@ public class KplanSecondaryOrders extends BaseDomain{
 	private String phone_num;//	varchar	16	0	False		联系电话
 	@Column(name = "user_id", unique = true, length = 64)
 	private String user_id	;//varchar	24	0	False		身份证
+	@Convert(converter = ProStatusEnum.EnumConvert.class)
 	@Column(name = "pro_status", precision = 22, scale = 0)
-	private Integer pro_status;//	int2	16	0	False		处理状态1已处理，2未处理
+	private ProStatusEnum pro_status;//	int2	16	0	False		处理状态1已处理，2未处理
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "pro_date", length = 7)
 	private Date pro_date;//	timestamp	6	0	False		处理时间
@@ -163,10 +167,11 @@ public class KplanSecondaryOrders extends BaseDomain{
 			public void setUser_id(String user_id) {
 				this.user_id = user_id;
 			}
-			public Integer getPro_status() {
+			
+			public ProStatusEnum getPro_status() {
 				return pro_status;
 			}
-			public void setPro_status(Integer pro_status) {
+			public void setPro_status(ProStatusEnum pro_status) {
 				this.pro_status = pro_status;
 			}
 			public Date getPro_date() {

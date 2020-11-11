@@ -90,9 +90,9 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	}
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	@ResponseBody
-	public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+	public String uploadFile(@RequestParam("file") MultipartFile file,kplanscordersQuery query) throws IOException {
 		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 0));
-		return  kplanSecondaryOrdersManager.upLoadorDers(data);
+		return  kplanSecondaryOrdersManager.upLoadorDers(data,query);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhones")

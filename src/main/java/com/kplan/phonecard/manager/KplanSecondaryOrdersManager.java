@@ -10,6 +10,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,15 +22,17 @@ import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.msgRes;
+import com.kplan.phonecard.enums.ProStatusEnum;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.query.ManagerInfoQuery;
+import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.service.KplanSecondaryOrdersService;
 @Component
 @Transactional
 public class KplanSecondaryOrdersManager extends BaseManager{
 	@Autowired
 	KplanSecondaryOrdersService kplanSecondaryOrdersService;
-	public String upLoadorDers(List<Object> data) {
+	public String upLoadorDers(List<Object> data,kplanscordersQuery query) {
 		msgRes msg=new msgRes();
 		KplanSecondaryOrders o;
 		try {
@@ -39,8 +42,8 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 					o=new KplanSecondaryOrders();
 					o.setPlace_order_time(new Date());
 					o.setOrder_no(list.get(0));
-					o.setPro_status(0);
-					o.setOrder_source("CD");
+					o.setPro_status(ProStatusEnum.CREADORDER);
+					o.setOrder_source(query.getKeyword());
 					this.kplanSecondaryOrdersService.add(o);
 				}
 				msg.setCode("200");
@@ -70,8 +73,12 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 				List<Predicate> list = new ArrayList<>();
 				if(query.getCreatedDateStart()!=null&&query.getCreatedDateEnd()!=null) {
 					list.add(cb.between(r.get("place_order_time"), query.getCreatedDateStart(), query.getCreatedDateEnd()));
-				}else if(query.getKeyword()!=null) {
+				}
+				if(query.getKeyword()!=null) {
 					list.add(cb.equal(r.get("phone_num"), query.getKeyword()));
+				}
+				if(query.getDomain().getPro_status()!=null) {
+					list.add(cb.equal(r.get("pro_status"), query.getDomain().getPro_status()));
 				}
 //				list.add(cb.or(cb.equal(r.get("pro_status"), 1),cb.equal(r.get("pro_status"), 99)));
 //				list.add(cb.or(cb.equal(r.get("pro_status"), 99)));

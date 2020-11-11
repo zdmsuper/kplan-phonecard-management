@@ -44,6 +44,15 @@
 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
 					
+					
+					<select name="domain.pro_status" class="select select-box inline">
+						<option value="">全部状态</option>
+						<option th:each="procStatus:${T(com.kplan.phonecard.enums.ProStatusEnum).values()}" 
+						th:value="${procStatus}" th:text="${procStatus.desc}"
+						th:selected="${procStatus==query.domain.pro_status}"
+						>
+						</option>
+					</select>
 <!-- 					<select name="domain.userStatus" class="select select-box inline"> -->
 <!-- 						<option value="">全部状态</option> -->
 <!-- 						<option th:each="userStatus:${T(com.kplan.phonecard.enums.UserStatusEnum).values()}"  -->
@@ -69,7 +78,7 @@
 
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
 						<span class="l"> <a href="javascript:;"
-					onclick="upfile('文件上传','upedit','','200')"
+					onclick="upfile('文件上传','upedit','','300')"
 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
 						上传文件</a>
 				</span>
@@ -103,6 +112,7 @@
 							<th>省份</th>
 							<th>地市</th>
 							<th>详细地址</th>
+							<th>处理状态</th>
 							<th>产品</th>
 							<th>订单来源</th>
 							<th>恶意标签</th>
@@ -121,6 +131,12 @@
 							<td th:text="${item.post_province}"></td>
 							<td th:text="${item.post_city}"></td>
 							<td th:text="${item.post_district}"></td>
+							<td th:if="${item.pro_status.code} eq 99">
+							<span style="color: green;" th:text="${item.pro_status.desc}"></span>
+							</td>
+							<td th:if="${item.pro_status.code} ne 99">
+							<span style="color: red;" th:text="${item.pro_status.desc}"></span>
+							</td>
 							<td th:text="${item.procduct_name}"></td>
 							<td th:text="${item.order_source}"></td>
 							
@@ -128,9 +144,6 @@
 							<span th:text="${item.malicious_order}"></span>
 							</td>
 							<td th:text="${item.back_info}"></td>
-<!-- 							<td th:text="${item.deliveryOrder==-1?'不限量':item.deliveryOrder}">0</td> -->
-<!-- 							<td th:text="${item.deliveryNum}">13000000000</td> -->
-<!-- 							<td th:text="${item.creadDate}">admin@mail.com</td> -->
 						</tr>
 					</tbody>
 				</table>
