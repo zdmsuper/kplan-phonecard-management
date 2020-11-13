@@ -254,7 +254,6 @@ public class CoreordersMarketkManager extends BaseManager{
 		try {
 			
 			if(l!=null&&l.size()>0) {
-			
 				for(OrderRowModel o:l) {
 					UnicomPostCityCode c=this.unicomPostcityCodeManager.findById(o.getDistrictCode());
 					if(c!=null) {

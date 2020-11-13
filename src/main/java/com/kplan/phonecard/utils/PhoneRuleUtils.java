@@ -611,8 +611,8 @@ public class PhoneRuleUtils {
 		OrderRowModel m;
 		if(o!=null&&o.size()>0) {
 			l=new ArrayList<OrderRowModel>();
-			for(Object s:o) {
-				String info=String.valueOf(o);
+			for(int i=0;i<o.size();i++) {
+				String info=String.valueOf(o.get(i));
 				info = info.replace("[", "");
 				info = info.replace("]", "");
 				String[] str=info.split(",");
