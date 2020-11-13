@@ -43,7 +43,14 @@
 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;"> 
 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
-					
+					<select name="domain.order_status" class="select select-box inline">
+						<option value="">全部状态</option>
+						<option th:each="orderStatus:${T(com.kplan.phonecard.enums.OrderStatusEnum).values()}" 
+						th:value="${orderStatus}" th:text="${orderStatus.desc}"
+						th:selected="${orderStatus==query.domain.order_status}"
+						>
+						</option>
+					</select>
 <!-- 					<select name="domain.userStatus" class="select select-box inline"> -->
 <!-- 						<option value="">全部状态</option> -->
 <!-- 						<option th:each="userStatus:${T(com.kplan.phonecard.enums.UserStatusEnum).values()}"  -->
@@ -135,13 +142,15 @@
 							
 							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.remarks}"></td>
-							<td class="td-manage" th:if="${item.order_status.code}==21">
+							<td class="td-manage" th:if="${item.order_status.code} eq 21">
 							<a style="display:block"
 								th:onclick="resSet([[${item.id}]],[[${item.receiver_phone}]])"  href="javascript:;"
 								title="重置">重置
 							</a> 
 							</td>
-							<td></td>
+							<td class="td-manage" th:if="${item.order_status.code} ne 21">
+							<span></span>
+							</td>
 						</tr>
 					</tbody>
 				</table>

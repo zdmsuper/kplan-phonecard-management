@@ -49,6 +49,9 @@ public class CoreordersMarketkManager extends BaseManager{
 				if(StringUtils.trimToNull(query.getKeyword())!=null) {
 					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getKeyword()),cb.equal(r.get("order_number"), query.getKeyword())));
 				}
+				if(query.getDomain().getOrder_status()!=null) {
+					list.add(cb.equal(r.get("order_status"), query.getDomain().getOrder_status()));
+				}
 				list.add(cb.equal(r.get("order_source"),"线下上门渠道"));
 				return cb.and(list.toArray(new Predicate[0]));
 			}
