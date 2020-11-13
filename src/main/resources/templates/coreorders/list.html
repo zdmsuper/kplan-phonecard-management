@@ -82,12 +82,17 @@
 <!-- 						</span> -->
 <!-- 			</div> -->
 			<div class="cl pd-5 bg-1 bk-gray mt-20">
-				<span class="l"> <a href="javascript:;"
+					<span class="l"> <a href="javascript:;"
 					onclick="add('录入订单','edit','','850')"
 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
 						添加</a>
 						</span>
-						
+						<span class="l">&nbsp;&nbsp;&nbsp;</span>
+						<span class="l"> <a href="javascript:;"
+					onclick="upfile('文件上传','uporderedit','','300')"
+					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
+						上传文件</a>
+						</span>
 <!-- 						<span class="l">  -->
 <!-- 						</span> -->
 <!-- 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
@@ -148,7 +153,14 @@
 								title="重置">重置
 							</a> 
 							</td>
-							<td class="td-manage" th:if="${item.order_status.code} ne 21">
+							<td class="td-manage" th:if="${item.order_status.code} eq 4">
+							<a style="display:block"
+							
+								th:onclick="edit('编辑',   [['editorder?domain.id='+${item.id}]],'4','','850')"  href="javascript:;"
+								title="选号">选号
+							</a> 
+							</td>
+							<td class="td-manage" th:if="${item.order_status.code!=21 && item.order_status.code!=4}  " >
 							<span></span>
 							</td>
 						</tr>

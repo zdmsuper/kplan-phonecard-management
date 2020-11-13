@@ -12,8 +12,12 @@ public enum OrderStatusEnum {
 	/**
 	 * 初始化，待处理
 	 */
-	InitOrderStatus(0,"初始化，待处理"),
 	
+	InitOrderStatus(0,"初始化，待处理"),
+	/**
+	 * 待选号
+	 */
+	WAITPHONE(4,"待选号"),
 	/**
 	 * 待回导
 	 */

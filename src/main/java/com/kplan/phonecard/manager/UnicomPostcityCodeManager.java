@@ -141,4 +141,14 @@ public class UnicomPostcityCodeManager extends BaseManager{
 		return JSON.toJSON(msg);
 		
 	}
+	
+	public UnicomPostCityCode findById(String dirsCode) {
+		String sql="from UnicomPostCityCode where id='"+dirsCode.trim()+"'";
+	List<UnicomPostCityCode> l=this.unicomCityService.getResultList(sql);
+	if(l!=null&&l.size()>0) {
+		return l.get(0);
+	}else {
+		return null;
+	}
+	}
 }

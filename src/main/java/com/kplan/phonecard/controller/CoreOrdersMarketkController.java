@@ -1,6 +1,8 @@
 package com.kplan.phonecard.controller;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,14 +21,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.Sheet;
+import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanChannelNumberDetail;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.Kplanprocducts;
+import com.kplan.phonecard.domain.OrderRowModel;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.kplanscorders;
 import com.kplan.phonecard.manager.ManagerInfoManager;
@@ -43,6 +50,7 @@ import com.kplan.phonecard.query.KplanChannelNumberDetailQuery;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.utils.DateUtils;
+import com.kplan.phonecard.utils.PhoneRuleUtils;
 
 @Controller
 @RequestMapping("/coreorder")
@@ -84,6 +92,21 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		map.put("product", product);
 		return "coreorders/edit";
 	}
+	
+	@RequestMapping("/editorder")
+	public String editorder(Map<String, Object> map, CoreOrdersMarketkQuery query,String id) {
+		List<UnicomPostCityCode> l=this.unicompostcityManager.findByPrivoin();
+		List<Kplanprocducts> product=this.coreOrdersManager.qryProcDucts();
+		CoreOrdersMarketk order=this.coreOrdersManager.findById(query.getDomain().getId());
+		List<KplanPhoneNumber> phoneList=this.kplanPhoneManager.findPhoneList("",order.getProduct_code());
+		List<KplanPhoneNumber> phoneRuleList=this.kplanPhoneManager.findPhoneRuleList();
+		map.put("privoin", l);
+		map.put("phoneList", phoneList);
+		map.put("phoneRuleList", phoneRuleList);
+		map.put("product", product);
+		map.put("order", order);
+		return "coreorders/editorder";
+	}
 	@RequestMapping("/upedit")
 	public String upedit(Map<String, Object> map, ManagerInfoQuery query) {
 		return "coreorders/upedit";
@@ -93,6 +116,19 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	public String uploadFile(@RequestParam("file") MultipartFile file,kplanscordersQuery query) throws IOException {
 		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 0));
 		return  kplanSecondaryOrdersManager.upLoadorDers(data,query);
+	}
+	@RequestMapping("/uporderedit")
+	public String uporderedit(Map<String, Object> map, ManagerInfoQuery query) {
+		return "coreorders/uporderedit";
+	}
+	
+	@RequestMapping(value = "/uploadOrderFile", method = RequestMethod.POST)
+	@ResponseBody
+	public Object uploadOrderFile(@RequestParam("file") MultipartFile file,String keyword) throws IOException {
+		InputStream inputStream = new BufferedInputStream(file.getInputStream());
+		List<Object> data =	 EasyExcelFactory.read(inputStream, new Sheet(1, 0));
+		List<OrderRowModel> l=PhoneRuleUtils.orderToList(data);
+		return this.coreOrdersManager.addOrders(l, keyword);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhones")
@@ -151,6 +187,38 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 				+ " phone_Num:" + phone_Num + " city:" + city + " cityName:" + cityName + " district:" + district
 				+ " districtName:" + districtName+" phone_Num:"+phone_Num+"Productcode:"+Productcode+"Productname:"+Productname);
 		return this.coreOrdersManager.savaOrders(userName, userid, address, ordersource, province_code, province_name,
+				re_phone, city, cityName, district, districtName, phone_Num,smsstatus,Productcode,Productname);
+	}
+	
+	/**手工单导入选号
+	 * @param userName
+	 * @param userid
+	 * @param address
+	 * @param ordersource
+	 * @param province_code
+	 * @param province_name
+	 * @param re_phone
+	 * @param city
+	 * @param cityName
+	 * @param district
+	 * @param districtName
+	 * @param phone_Num
+	 * @param smsstatus
+	 * @param Productcode
+	 * @param Productname
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "savaNextOrders")
+	@ResponseBody
+	public Object savaNextOrders(String orderNo,String userName, String userid, String address, String ordersource, String province_code,
+			String province_name, String re_phone, String city, String cityName, String district, String districtName,
+			String phone_Num,String smsstatus,String Productcode,String Productname) {
+
+		logger.info("userName:" + userName + " userid:" + userid + " address:" + address + " ordersource:" + ordersource
+				+ " province_code:" + province_code + " province_name:" + province_name + " re_phone：" + re_phone
+				+ " phone_Num:" + phone_Num + " city:" + city + " cityName:" + cityName + " district:" + district
+				+ " districtName:" + districtName+" phone_Num:"+phone_Num+"Productcode:"+Productcode+"Productname:"+Productname);
+		return this.coreOrdersManager.savaNextOrders(orderNo,userName, userid, address, ordersource, province_code, province_name,
 				re_phone, city, cityName, district, districtName, phone_Num,smsstatus,Productcode,Productname);
 	}
 	/**回捞订单列表

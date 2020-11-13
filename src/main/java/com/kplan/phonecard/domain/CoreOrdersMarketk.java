@@ -12,6 +12,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.kplan.phonecard.base.BaseDomain;
+import com.kplan.phonecard.enums.ExportStatusEnum;
 import com.kplan.phonecard.enums.NewStatusEnum;
 import com.kplan.phonecard.enums.OrderStatusEnum;
 @Entity
@@ -70,8 +71,9 @@ public class CoreOrdersMarketk extends  BaseDomain{
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "auth_time", length = 7)
 	private Date auth_time;
+	@Convert(converter = ExportStatusEnum.EnumConvert.class)
 	@Column(name = "export_status", unique = true,   precision = 32, scale = 0)
-	private Integer export_status;
+	private ExportStatusEnum export_status;
 	@Column(name = "province_name", unique = true, length = 32)
 	private String province_name;
 	@Column(name = "city_name", unique = true, length = 32)
@@ -276,12 +278,17 @@ public class CoreOrdersMarketk extends  BaseDomain{
 	public void setAuth_time(Date auth_time) {
 		this.auth_time = auth_time;
 	}
-	public Integer getExport_status() {
+	
+	public ExportStatusEnum getExport_status() {
 		return export_status;
 	}
-	public void setExport_status(Integer export_status) {
+
+
+	public void setExport_status(ExportStatusEnum export_status) {
 		this.export_status = export_status;
 	}
+
+
 	public String getProvince_name() {
 		return province_name;
 	}

@@ -24,7 +24,10 @@ import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.Kplanprocducts;
+import com.kplan.phonecard.domain.OrderRowModel;
+import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.msgRes;
+import com.kplan.phonecard.enums.ExportStatusEnum;
 import com.kplan.phonecard.enums.OrderStatusEnum;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
@@ -36,6 +39,8 @@ public class CoreordersMarketkManager extends BaseManager{
 	private static final Logger logger = LoggerFactory.getLogger(CoreordersMarketkManager.class);
 	@Autowired
 	CoreordersMarketkService coreOrderSerbice;
+	@Autowired
+	UnicomPostcityCodeManager unicomPostcityCodeManager;
 	public Page<CoreOrdersMarketk> findOrder(@NotNull CoreOrdersMarketkQuery query, Pageable pageable){
 			Specification<CoreOrdersMarketk> spec=new Specification<CoreOrdersMarketk>() {
 			@Override
@@ -95,7 +100,7 @@ public class CoreordersMarketkManager extends BaseManager{
 					k.setOrder_number(phone_Num);
 					k.setInitial_status(20);
 					k.setOrder_status(OrderStatusEnum.InitOrderStatus);
-					k.setExport_status(1);
+					k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
 					k.setVisit_code(0);
 					k.setCreatetime(new Date());
 //					k.setProduct_code("981610241535");
@@ -139,6 +144,85 @@ public class CoreordersMarketkManager extends BaseManager{
 			return JSON.toJSON(msg);
 		}
 	}
+	
+	
+	
+	public Object savaNextOrders(String orderNo,String userName, String userid, String address, String ordersource, String province_code,
+			String province_name, String re_phone, String city, String cityName, String district, String districtName,
+			String phone_Num, String smsstatus,String Productcode,String Productname) {
+		try {
+			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById( phone_Num, KplanPhoneNumber.class);
+			if (phone != null) {
+				if (phone.getUse_not() != 0) {
+					msgRes msg = new msgRes();
+					msg.setCode("202");
+					msg.setStatus("202");
+					msg.setMsg("选择的订购号码已被使用，请重新选号");
+					return JSON.toJSON(msg);
+				} else {
+					String phonesql="update kplan_phone_number set use_not=2 where phone_num='"+re_phone+"' and use_not=1";
+					this.coreOrderSerbice.exeNative(phonesql);
+					phone.setPhone_num(re_phone);
+					phone.setUse_not(1);
+					this.coreOrderSerbice.modify(phone);
+					CoreOrdersMarketk k ;
+					String sql="from  CoreOrdersMarketk where id='"+orderNo+"'";
+					List<CoreOrdersMarketk> l=this.coreOrderSerbice.getResultList(sql);
+					if(l!=null&&l.size()>0) {
+						k=l.get(0);
+						k.setReceiver_name(userName);
+						k.setAccess_name(userName);
+						k.setAccess_id_number(userid);
+						k.setReceiver_address(address);
+						k.setOrder_source("线下上门渠道");
+						k.setProvince_code(province_code);
+						k.setProvince_name(province_name);
+						k.setReceiver_phone(re_phone);
+						k.setCity_code(city);
+						k.setCity_name(cityName);
+						k.setDistrict_code(district);
+						k.setDistrict_name(districtName);
+						k.setOrder_number(phone_Num);
+						k.setInitial_status(20);
+						k.setOrder_status(OrderStatusEnum.InitOrderStatus);
+//						k.setOrder_status(OrderStatusEnum.SUCCESSOrderStatus);
+						k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
+//						k.setExport_status(ExportStatusEnum.EXPORTSTATUS2);
+						k.setVisit_code(0);
+						k.setBusiness_type("K计划");
+						k.setDifferent_nets(-1);
+						this.coreOrderSerbice.modify(k);
+						msgRes msg = new msgRes();
+						msg.setCode("200");
+						msg.setStatus("200");
+						msg.setMsg("操作成功");
+						return JSON.toJSON(msg);
+					}
+					else {
+						msgRes msg = new msgRes();
+						msg.setCode("222");
+						msg.setStatus("222");
+						msg.setMsg("查找不到订单");
+						return JSON.toJSON(msg);
+					}
+				}
+			} else {
+				msgRes msg = new msgRes();
+				msg.setCode("201");
+				msg.setStatus("201");
+				msg.setMsg("选择的订购号码不存在");
+				return JSON.toJSON(msg);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			msgRes msg = new msgRes();
+			msg.setCode("222");
+			msg.setStatus("222");
+			msg.setMsg("系统异常请联系管理员");
+			return JSON.toJSON(msg);
+		}
+	}
+	
 	public Object reSet(String orderNo,String phone) {
 		String sql="update core_orders_market_k set export_status=1,initial_status=20,order_status=0,visit_code=1,order_number='' where order_no='"+orderNo+"' and order_status!=11";
 		String phonesql="update kplan_phone_number set use_not=2 where phone_num='"+phone+"'";
@@ -163,5 +247,76 @@ public class CoreordersMarketkManager extends BaseManager{
 		String sql="from Kplanprocducts";
 		List<Kplanprocducts> l=this.coreOrderSerbice.getResultList(sql);
 		return l;
+	}
+	
+	public Object addOrders(List<OrderRowModel> l,String proTag) {
+		msgRes msg = new msgRes();
+		try {
+			
+			if(l!=null&&l.size()>0) {
+			
+				for(OrderRowModel o:l) {
+					UnicomPostCityCode c=this.unicomPostcityCodeManager.findById(o.getDistrictCode());
+					if(c!=null) {
+						CoreOrdersMarketk k = new CoreOrdersMarketk();
+						k.setReceiver_name(o.getUserName().trim());
+						k.setAccess_name(o.getUserName().trim());
+						k.setAccess_id_number(o.getUserId().trim());
+						k.setReceiver_address(o.getAddress().trim());
+						k.setOrder_source("线下上门渠道");
+						k.setProvince_code(c.getProvince_code());
+						k.setProvince_name(c.getProvince_name());
+						k.setReceiver_phone(o.getPhone().trim());
+						k.setCity_code(c.getCity_code());
+						k.setCity_name(c.getCity_name());
+						k.setDistrict_code(c.getDistrict_code());
+						k.setDistrict_name(c.getDistrict_name());
+						k.setInitial_status(20);
+						if("1".equals(proTag)) {
+						k.setOrder_status(OrderStatusEnum.WAITPHONE);
+						k.setExport_status(ExportStatusEnum.EXPORTSTATUS4);
+						}else {
+							k.setOrder_status(OrderStatusEnum.InitOrderStatus);
+							k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
+						}
+					
+						k.setVisit_code(0);
+						k.setCreatetime(new Date());
+						k.setProduct_code(o.getProcductCode().trim());
+						k.setProduct_name(o.getProcductName().trim());
+						k.setBusiness_type("K计划");
+						k.setDifferent_nets(-1);
+						k.setId(SqeUtils.getBILIBILISqeNo());
+						this.coreOrderSerbice.add(k);
+						
+					}
+					else {
+						msg.setCode("200");
+						msg.setStatus("200");
+						msg.setMsg("获取地市信息失败");
+					}
+					msg.setCode("200");
+					msg.setStatus("200");
+					msg.setMsg("订单导入成功");
+				}
+				
+			}
+		} catch (Exception e) {
+			msg.setCode("222");
+			msg.setStatus("222");
+			msg.setMsg("系统异常请联系管理员");
+			logger.error(e.getMessage(),e);
+		}
+		
+		return JSON.toJSON(msg);
+	} 
+	
+	public CoreOrdersMarketk findById(String id) {
+		String sql="from  CoreOrdersMarketk where id='"+id+"'";
+		List<CoreOrdersMarketk> l=this.coreOrderSerbice.getResultList(sql);
+		if(l!=null&&l.size()>0) {
+			return l.get(0);
+		}
+	return 	null;
 	}
 }

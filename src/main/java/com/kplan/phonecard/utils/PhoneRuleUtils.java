@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
+import com.kplan.phonecard.domain.OrderRowModel;
 import com.kplan.phonecard.domain.PhoneRuleResult;
 
 import one.util.streamex.EntryStream;
@@ -603,6 +604,30 @@ public class PhoneRuleUtils {
 		}
 		
 		return phoneList;
+	}
+	
+	public static List<OrderRowModel> orderToList(List<Object> o){
+		List<OrderRowModel> l = null;
+		OrderRowModel m;
+		if(o!=null&&o.size()>0) {
+			l=new ArrayList<OrderRowModel>();
+			for(Object s:o) {
+				String info=String.valueOf(o);
+				info = info.replace("[", "");
+				info = info.replace("]", "");
+				String[] str=info.split(",");
+				m=new OrderRowModel();
+				m.setPhone(str[0]);
+				m.setUserName(str[1]);
+				m.setUserId(str[2]);
+				m.setAddress(str[3]);
+				m.setProcductCode(str[4]);
+				m.setProcductName(str[5]);
+				m.setDistrictCode(str[6]);
+				l.add(m);
+			}
+		}
+		return l;
 	}
 
 	public static void main(String[] args) {

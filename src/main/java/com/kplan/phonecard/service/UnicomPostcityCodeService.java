@@ -30,4 +30,16 @@ public class UnicomPostcityCodeService {
 		Object o = em.find(arg0, arg1);
 		return o;
 	}
+	
+	public  List getResultList( String sql, Object... paras) {
+		Query query = em.createQuery(sql);
+		int parameterIndex = 1;
+		if (paras != null && paras.length > 0) {
+			for (Object obj : paras) {
+				query.setParameter(parameterIndex++, obj);
+			}
+		}
+		return query.getResultList();
+	}
+	
 }
