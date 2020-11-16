@@ -141,8 +141,12 @@
 							<span  style="color: green;font-weight: 600" th:text="${item.order_status.desc}"></span>
 <!-- 							<span  style="color: green;" th:text="${item.order_status.desc}"></span> -->
 							</td>
-							<td th:if="${item.order_status.desc} ne '成功'">
-							<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
+							<td th:if="${item.order_status.code} eq 21">
+							<a style="display:block"
+								th:onclick="edit('失败原因',   [['editfialed?domain.id='+${item.id}]],'4','','650')"  href="javascript:;"
+								th:title="${item.fail_reasons}">
+								<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
+								</a>
 							</td>
 							<td th:text="${item.export_status.desc}"></td>
 							
@@ -156,7 +160,6 @@
 							</td>
 							<td class="td-manage" th:if="${item.order_status.code} eq 4">
 							<a style="display:block"
-							
 								th:onclick="edit('编辑',   [['editorder?domain.id='+${item.id}]],'4','','850')"  href="javascript:;"
 								title="选号">选号
 							</a> 

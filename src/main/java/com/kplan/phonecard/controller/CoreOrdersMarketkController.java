@@ -108,6 +108,12 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		map.put("order", order);
 		return "coreorders/editorder";
 	}
+	@RequestMapping("/editfialed")
+	public String editfialed(Map<String, Object> map, CoreOrdersMarketkQuery query,String id) {
+		CoreOrdersMarketk order=this.coreOrdersManager.findById(query.getDomain().getId());
+		map.put("order", order);
+		return "coreorders/editfialed";
+	}
 	@RequestMapping("/upedit")
 	public String upedit(Map<String, Object> map, ManagerInfoQuery query) {
 		return "coreorders/upedit";
