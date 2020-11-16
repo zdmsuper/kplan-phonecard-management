@@ -148,8 +148,11 @@
 								<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
 								</a>
 							</td>
-							<td th:text="${item.export_status.desc}"></td>
+							<td th:if="${item.order_status.code ne 21 && item.order_status.code ne 11}   ">
+							<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
+							</td>
 							
+							<td th:text="${item.export_status.desc}"></td>
 							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.remarks}"></td>
 							<td class="td-manage" th:if="${item.order_status.code} eq 21">
