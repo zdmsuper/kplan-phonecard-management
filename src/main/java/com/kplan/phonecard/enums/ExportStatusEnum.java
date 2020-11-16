@@ -16,16 +16,16 @@ public enum ExportStatusEnum {
 	/**
 	 * 待手工导出
 	 */
-	EXPORTSTATUS7(7,"待手工导出"),
+	EXPORTSTATUS7(7,"待手工导出7"),
 	/**
 	 * 待手工导出
 	 */
-	EXPORTSTATUS8(8,"待手工导出"),
+	EXPORTSTATUS8(8,"待手工导出8"),
 	
 	/**
 	 * 待手工导出
 	 */
-	EXPORTSTATUS9(9,"待手工导出"),
+	EXPORTSTATUS9(9,"待手工导出9"),
 	/**
 	 * ZOP平台下单处理中
 	 */

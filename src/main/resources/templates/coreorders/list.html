@@ -43,6 +43,11 @@
 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;"> 
 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
+					<select name="domain.order_source" class="select select-box inline">
+						<option value="">全部状态</option>
+						<option value="线下上门渠道" th:selected="${'线下上门渠道'==query.domain.order_source}">线下上门渠道</option>
+						<option value="交付上门渠道" th:selected="${'交付上门渠道'==query.domain.order_source}">交付上门渠道</option>
+					</select>
 					<select name="domain.order_status" class="select select-box inline">
 						<option value="">全部状态</option>
 						<option th:each="orderStatus:${T(com.kplan.phonecard.enums.OrderStatusEnum).values()}" 
@@ -51,14 +56,6 @@
 						>
 						</option>
 					</select>
-<!-- 					<select name="domain.userStatus" class="select select-box inline"> -->
-<!-- 						<option value="">全部状态</option> -->
-<!-- 						<option th:each="userStatus:${T(com.kplan.phonecard.enums.UserStatusEnum).values()}"  -->
-<!-- 						th:value="${userStatus}" th:text="${userStatus.desc}" -->
-<!-- 						th:selected="${userStatus==query.domain.userStatus}" -->
-<!-- 						> -->
-<!-- 						</option> -->
-<!-- 					</select> -->
 <!-- 					<select name="domain.basicUserInfo.gender" class="select select-box inline"> -->
 <!-- 						<option value="">全部性别</option> -->
 <!-- 						<option th:each="gender:${T(com.kplan.phonecard.enums.GenderEnum).values()}"  -->
@@ -115,8 +112,11 @@
 							<th>省份</th>
 							<th>地市</th>
 							<th>详细地址</th>
+							<th>产品名称</th>
+							<th>下单工号</th>
 							<th>订单来源</th>
 							<th>订单状态</th>
+							<th>导出状态</th>
 							<th>订单时间</th>
 							<th>备注</th>
 							<th>操作</th>
@@ -134,8 +134,9 @@
 							<td th:text="${item.province_name}"></td>
 							<td th:text="${item.city_name}"></td>
 							<td th:text="${item.receiver_address}"></td>
+							<td th:text="${item.product_name}"></td>
+							<td th:text="${item.external_company}"></td>
 							<td th:text="${item.order_source}"></td>
-							
 							<td th:if="${item.order_status.desc} eq '成功'">
 							<span  style="color: green;font-weight: 600" th:text="${item.order_status.desc}"></span>
 <!-- 							<span  style="color: green;" th:text="${item.order_status.desc}"></span> -->
@@ -143,7 +144,7 @@
 							<td th:if="${item.order_status.desc} ne '成功'">
 							<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
 							</td>
-							
+							<td th:text="${item.export_status.desc}"></td>
 							
 							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.remarks}"></td>

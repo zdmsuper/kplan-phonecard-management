@@ -75,6 +75,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@RequestMapping("/list")
 	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query){
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.findOrder(query, this.getPageRequest());
+		
 		map.put("query", query);
 		map.put("page", page);
 		return "coreorders/list";

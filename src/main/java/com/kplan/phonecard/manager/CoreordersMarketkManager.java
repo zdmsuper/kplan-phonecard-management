@@ -57,12 +57,12 @@ public class CoreordersMarketkManager extends BaseManager{
 				if(query.getDomain().getOrder_status()!=null) {
 					list.add(cb.equal(r.get("order_status"), query.getDomain().getOrder_status()));
 				}
-				list.add(cb.equal(r.get("order_source"),"线下上门渠道"));
+				if(query.getDomain().getOrder_source()!=null) {
+				list.add(cb.equal(r.get("order_source"),query.getDomain().getOrder_source()));
+				}
 				return cb.and(list.toArray(new Predicate[0]));
 			}
 		};
-//		String sql="select * from core_orders_market_k limit 10";
-//		List<Object[] > l=this.coreOrderSerbice.getNativeResultList(sql);
 		return this.coreOrderSerbice.findAll(spec, pageable);
 	}
 	
