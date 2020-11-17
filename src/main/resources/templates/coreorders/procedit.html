@@ -1,0 +1,473 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico">
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui/css/H-ui.min.css}" href="ui/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/css/H-ui.admin.css}"
+	href="ui/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}"
+	href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/skin/default/skin.css}"
+	href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/css/style.css}"
+	href="ui/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+<title>添加用户 - H-ui.admin v3.1</title>
+<meta name="keywords"
+	content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+<meta name="description"
+	content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+	<article class="page-container">
+		<form method="post" class="form form-horizontal" id="form" autocomplete="off">
+<!-- 			<input type="hidden" name="id" th:value="${item.id}"> -->
+		<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>订单号：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" th:value="${order.mall_order_no}" placeholder=""
+						id="" readonly="readonly" name=""
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>用户姓名：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+				<input type="hidden" th:value="${order.id}" id="orderNo">
+					<input type="text" class="input-text" th:value="${order.receiver_name}" placeholder=""
+						id="userName" name="userName"
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>身份证号码：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" th:value="${order.access_id_number}" placeholder=""
+						id="userid" name="userid"
+						>
+				</div>
+			</div>
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>产品：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" th:value="${order.product_name}" id="procductName" placeholder=""
+						readonly="readonly"
+						>
+				</div>
+			</div>
+			
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>地区：</label>
+				<div id="province" class="formControls col-xs-8 col-sm-9 skin-minimal">
+				
+						<span th:text="${order.province_name}"></span>
+						<span th:text="${order.city_name}"></span>
+						<span th:text="${order.district_name}"></span>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>详细地址：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" th:value="${order.receiver_address}" placeholder=""
+						id="address" name="address"
+						>
+				</div>
+			</div>
+			
+			<div></div>
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>联系号码：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" 
+						name="re_phone" id="re_phone" th:value="${order.receiver_phone}"
+						>
+				</div>
+			</div>
+				<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>处理方式：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<select class="select select-box inline" name="proctype" id="proctype">
+					<option value="">请选择</option>
+					<option value="1">办理</option>
+					<option value="2">不办理</option>
+					<option value="3">转运营</option>
+					<option value="4">二次联系</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+					<input class="btn btn-primary radius" type="button" id="saveBtn"
+						value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+				</div>
+			</div>
+		</form>
+	</article>
+
+	<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript"
+		th:src="@{/lib/jquery/1.9.1/jquery.min.js}"
+		src="lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}"
+		src="lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" th:src="@{/ui/h-ui/js/H-ui.min.js}"
+		src="ui/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript"
+		th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}"
+		src="ui/h-ui.admin/js/H-ui.admin.js"></script>
+	<!--/_footer 作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/jquery.validate.js}"
+		src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/validate-methods.js}"
+		src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/messages_zh.js}"
+		src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('.skin-minimal input').iCheck({
+				checkboxClass : 'icheckbox-blue',
+				radioClass : 'iradio-blue',
+				increaseArea : '20%'
+			});
+			$(".file-2").change(function() {
+				console.info(1)
+			});
+			$("#headImg").change(function() {
+				console.info(2)
+			});
+			$("#headImg").change(
+					function() {
+						$("#img").attr("src",
+								URL.createObjectURL($(this)[0].files[0]));
+					});
+			function validateForm() {
+				return $("#form").validate({
+					rules : {
+						'userName' : {
+							required : true,
+							minlength : 2,
+							maxlength : 16
+						},
+						'userid' : {
+							required : true,
+						},
+						'address' : {
+							required : true,
+							isMobile : true,
+						},
+						'province_code' : {
+							required : true,
+							province_code : true,
+						},
+						'district' : {
+							required : true,
+							district : true,
+						},
+						'city' : {
+							required : true,
+							city : true,
+						},
+						're_phone' : {
+							required : true,
+							re_phone : true,
+						},
+						'phone_Num' : {
+							required : true,
+							phone_Num : true,
+						},
+
+					},
+					onkeyup : false,
+					focusCleanup : true,
+					success : "valid"
+				}).form();
+
+			}
+
+			$('#saveBtn').click(function() {
+				
+				var url="/coreorder/procOrder";
+				var orderNo=$('#orderNo').val();
+				var userName=$('#userName').val()
+				var userid=$('#userid').val()
+				var address=$('#address').val()
+				var province=$('#province').text()
+				var re_phone=$('#re_phone').val();
+				var Productname=$('#procductName').val()
+				var proctype=$('#proctype').val();
+				var proctypeText=$('#proctype').find("option:selected").text();
+				var pramStr="orderNo="+orderNo+"&userName="+userName+"&userid="+userid+"&address="+address+
+				"&province="+province+"&Productname="+Productname+"&re_phone="+re_phone+"&proctype="+proctype;
+				var submitMsg="用户名："+userName+"<br/> 身份证："+userid+"<br/> 地区："+province+"<br/> 详细地址："+address+"<br/>联系电话："+re_phone+"<br/>产品名称："+Productname+"<br/>处理方式："+proctypeText;
+				if(userName==''||userid==''||address=='' ||re_phone==''){
+					layer.msg('请将订单信息填写完整', {
+						    time: 5000, //20s后自动关闭
+ 						    btn: ['确定']
+						  });
+						return;
+				}
+				if(proctype==''){
+					layer.msg('请选择处理方式', {
+					    time: 5000, //20s后自动关闭
+						    btn: ['确定']
+					  });
+					return;
+				}
+				
+				
+				layer.confirm(submitMsg, {
+					  btn: ['确定提交','取消'] //按钮
+					}, function(){
+						$.ajax({
+							type:'get',
+							async:false,
+							url:url+"?"+pramStr,
+							success:function(resp){
+								if(resp.status==200){
+									  layer.msg(resp.msg, {
+										    icon: 1,
+										    time: 3000 //2秒关闭（如果不配置，默认是3秒）
+										  }, function(){
+ 											window.parent.location.reload()
+											 
+										  });
+								}else{
+									
+									parent.layer.alert(resp.msg, '提示信息')
+								}
+							
+							
+							}
+						});
+					}, function(){
+					  layer.msg('订单已取消提交', {
+					    time: 1000, //20s后自动关闭
+//					    btn: ['明白了', '']
+					  });
+					});
+				
+
+			});
+
+		});
+		
+		
+		
+		$('#province_code').change(function(){
+			var province=$(this).val();
+			var city=$('#city');
+			$('#city option[value!=""]').remove();
+			$('#district option[value!=""]').remove();
+			var url="/coreorder/qryCity";
+			$.ajax({
+				type:'get',
+				url:url+'?province_code='+province,
+				success:function(resp){
+					$.each(resp,function(){
+						city.append('<option  value='+this.city_code+'>'+this.city_name+'</option>');
+						
+					});
+					
+				}
+			});
+		});
+		
+		
+		$('#city').change(function(){
+			var city_code=$(this).val();
+			var city=$('#district');
+			$('#district option[value!=""]').remove();
+			var url="/coreorder/qryDistrict";
+				
+// 				/*[[@{/klanBiliBili/qryDistrict}]]*/'';
+			var cityList=[];
+			$.ajax({
+				type:'get',
+				async:false,
+				url:url+'?city_code='+city_code,
+				success:function(resp){
+					cityList=resp;
+				}
+			});
+			$.each(cityList,function(){
+				city.append('<option value='+this.district_code+'>'+this.district_name+'</option>');
+				
+			});
+		});
+		
+		
+		
+			function  formatTime (time,shu) {//时间切换
+			            if (!time) {
+			            return
+			            }
+			            const timer = new Date(time)
+			            let year = timer.getFullYear()
+			            let month = timer.getMonth() + 1
+			            let date = timer.getDate()
+			            let hours = timer.getHours()
+			            let min = timer.getMinutes()
+						let second = timer.getSeconds()
+			            month < 10 ? month = `0${month}` : month = month
+			            date < 10 ? date = `0${date}` : date = date
+			            hours < 10 ? hours = `0${hours}` : hours = hours
+			            min < 10 ? min = `0${min}` : min = min
+			            if(shu == 1){
+			                return ` ${month}-${date} ${hours}:${min}`
+			            }else{
+			                return `${year} ${month}-${date} ${hours}:${min}:${second}`
+			            }
+			        }
+			
+			
+			$('#phoneRule').change(function(){
+				var phones=$('#phones');
+				var phoneRule=$('#phoneRule').val();
+				var procductCode=$('#ordersource').val();
+				var url="/coreorder/qryPhones"
+//	 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
+				var phone=[];
+				$.ajax({
+					type:'get',
+					async:false,
+					url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode,
+					success:function(resp){
+						phone=resp;
+					}
+				});
+				$('.text-c').remove();
+				$.each(phone,function(){
+					var dateStr=formatTime(this.last_date)
+					phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
+					
+				});
+			});
+			
+			$('#ordersource').change(function(){
+				var phones=$('#phones');
+				var phoneRule=$('#phoneRule').val();
+				var procductCode=$('#ordersource').val();
+				var url="/coreorder/qryPhones"
+//	 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
+				var phone=[];
+				$.ajax({
+					type:'get',
+					async:false,
+					url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode,
+					success:function(resp){
+						phone=resp;
+					}
+				});
+				$('.text-c').remove();
+				$.each(phone,function(){
+					var dateStr=formatTime(this.last_date)
+					phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
+					
+				});
+			});
+			
+			
+		
+		$('#phonescheck').click(function(){
+			var phones=$('#phones');
+			var phoneRule=$('#phoneRule').val();
+			var procductCode=$('#ordersource').val();
+			var url="/coreorder/qryPhones"
+// 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
+			var phone=[];
+			$.ajax({
+				type:'get',
+				async:false,
+				url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode,
+				success:function(resp){
+					phone=resp;
+				}
+			});
+			$('.text-c').remove();
+			$.each(phone,function(){
+				var dateStr=formatTime(this.last_date)
+				phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
+				
+			});
+		});
+		
+		$('body').on("click", "input[name='phonesNum']",function(event) {
+			var smsstatus=$(this).val();
+			$("#phone_Num").val(smsstatus);
+			
+		});
+		
+		
+		$('#id-disable-check').click(function(){
+			var phones=$('#phones');
+			var procductCode=$('#ordersource').val();
+			var procductName=$('#ordersource').find("option:selected").text();
+			var url="/coreorder/qryPhonesNum"
+// 			var url=/*[[@{/klanBiliBili/qryPhonesNum}]]*/'';
+			var phone=[];
+			var phoneNum=$('#phoneNum').val();
+			$.ajax({
+				type:'get',
+				async:false,
+				url:url+"?phoneNum="+phoneNum+"&procductCode="+procductCode+"&procductName="+procductName,
+				success:function(resp){
+					if(resp.status==201){
+						parent.layer.alert(resp.msg, '尾号匹配失败')
+						return;
+					}else{
+						phone=resp;
+						$('.text-c').remove();
+						$.each(phone,function(){
+							var dateStr=formatTime(this.last_date)
+							phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
+							
+						});
+					}
+					
+				}
+			});
+			
+		});
+		
+	</script>
+	<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

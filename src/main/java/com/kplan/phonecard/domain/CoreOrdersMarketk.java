@@ -112,6 +112,8 @@ public class CoreOrdersMarketk extends  BaseDomain{
 	private String place_order_time	;//varchar	32
 	@Column(name = "token", unique = true, length = 0)
 	private String token;
+	@Column(name = "malicious_tag", unique = true, length = 128)
+	private String malicious_tag;//	varchar	128	0	False		恶意标签
 	@Transient
 	public String getOrder_no() {
 		return id;
@@ -254,6 +256,16 @@ public class CoreOrdersMarketk extends  BaseDomain{
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	public String getMalicious_tag() {
+		return malicious_tag;
+	}
+
+
+	public void setMalicious_tag(String malicious_tag) {
+		this.malicious_tag = malicious_tag;
+	}
+
+
 	public String getIp() {
 		return ip;
 	}

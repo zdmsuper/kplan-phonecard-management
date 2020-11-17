@@ -279,4 +279,35 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	public Object reSet(String orderNo,String phone) {
 		return this.coreOrdersManager.reSet(orderNo,phone);
 	}
+	
+	/**重庆恶意订单
+	 * @param map
+	 * @param quer
+	 * @return
+	 */
+	@RequestMapping("/maliciousList")
+	public String maliciousList(Map<String, Object> map, CoreOrdersMarketkQuery query) {
+		Page<CoreOrdersMarketk> page = this.coreOrdersManager.maliciousList(query, this.getPageRequest());
+		map.put("page", page);
+		map.put("query", query);
+		return "coreorders/maliciousList";
+	}
+	@RequestMapping("/procedit")
+	public String procedit(Map<String, Object> map, CoreOrdersMarketkQuery query,String id) {
+		CoreOrdersMarketk order=this.coreOrdersManager.findById(query.getDomain().getId());
+		map.put("order", order);
+		return "coreorders/procedit";
+	}
+	@RequestMapping("/operate")
+	public String operate(Map<String, Object> map, CoreOrdersMarketkQuery query,String id) {
+		CoreOrdersMarketk order=this.coreOrdersManager.findById(query.getDomain().getId());
+		map.put("order", order);
+		return "coreorders/operate";
+	}
+	
+	@RequestMapping("/procOrder")
+	@ResponseBody
+	public Object procOrder(String orderNo,String userName,String userid,String address,String re_phone,String proctype) {
+	return this.coreOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype);
+	}
 }

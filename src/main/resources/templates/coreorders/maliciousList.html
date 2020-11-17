@@ -1,0 +1,313 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui/css/H-ui.min.css}" href="ui/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/H-ui.admin.css}" href="ui/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/skin/default/skin.css}" href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/style.css}" href="ui/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>用户管理</title>
+</head>
+<body>
+	<nav class="breadcrumb">
+		<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
+		用户中心 <span class="c-gray en">&gt;</span>订单列表 <a
+			class="btn btn-success radius r"
+			style="line-height: 1.6em; margin-top: 3px"
+			href="javascript:location.replace(location.href);" title="刷新"> <i
+			class="Hui-iconfont">&#xe68f;</i>
+		</a>
+
+	</nav>
+	<div class="page-container">
+		<form th:action="@{/coreorder/maliciousList}" method="get" autocomplete="off">
+			<div class="text">
+<!-- 				创建时间： <input type="text" -->
+<!-- 					id="datemin" class="input-text date" name="createdDateStart" -->
+<!-- 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;">  -->
+<!-- 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd" -->
+<!-- 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;"> -->
+					<select name="keyword" class="select select-box inline">
+						<option value="">全部状态</option>
+						<option value="1" th:selected="${'1'==query.keyword}">恶意订单</option>
+						<option value="2" th:selected="${'2'==query.keyword}">运营处理</option>
+					</select>
+					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
+						<i class="Hui-iconfont">&#xe665;</i> 查询
+					</button>
+			</div>
+			<div class="mt-20 dataTables_wrapper">
+				<table
+					class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead>
+						<tr class="text-c">
+							<th><input type="checkbox" name="" value=""></th>
+<!-- 							<th>订单号</th> -->
+							<th>姓名</th>
+							<th>联系电话</th>
+							<th>订购电话</th>
+							<th>省份</th>
+							<th>地市</th>
+							<th>详细地址</th>
+							<th>产品名称</th>
+							<th>下单工号</th>
+							<th>订单来源</th>
+							<th>订单状态</th>
+							<th>导出状态</th>
+							<th>订单时间</th>
+							<th>恶意标签</th>
+							<th>操作类型</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr class="text-c" th:each="item:${page}">
+							<td><input type="checkbox" value="1" name=""
+								th:value="${item.id}"></td>
+<!-- 							<td th:text="${item.id}">1</td> -->
+							<td th:text="${item.receiver_name}"></td>
+							<td th:text="${item.receiver_phone}"></td>
+							<td th:text="${item.order_number}"></td>
+							<td th:text="${item.province_name}"></td>
+							<td th:text="${item.city_name}"></td>
+							<td th:text="${item.receiver_address}"></td>
+							<td th:text="${item.product_name}"></td>
+							<td th:text="${item.external_company}"></td>
+							<td th:text="${item.order_source}"></td>
+							<td th:if="${item.order_status.desc} eq '成功'">
+							<span  style="color: green;font-weight: 600" th:text="${item.order_status.desc}"></span>
+<!-- 							<span  style="color: green;" th:text="${item.order_status.desc}"></span> -->
+							</td>
+							<td th:if="${item.order_status.code} eq 21">
+							<a style="display:block"
+								th:onclick="edit('失败原因',   [['editfialed?domain.id='+${item.id}]],'4','','650')"  href="javascript:;"
+								th:title="${item.fail_reasons}">
+								<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
+								</a>
+							</td>
+							<td th:if="${item.order_status.code ne 21 && item.order_status.code ne 11}   ">
+							<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
+							</td>
+							
+							<td th:text="${item.export_status.desc}"></td>
+							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
+							<td th:text="${item.malicious_tag}"></td>
+							<td th:if="${item.track_status==330 || item.track_status==9004}">
+							<span th:if="${item.track_status==9004}" style="color: red;">二次联系</span>
+							<span th:if="${item.track_status==330}" style="color: red;">客服处理</span>
+							</td>
+							<td th:if="${item.track_status==9003}">
+							<span style="color: green;">运营处理</span>
+							</td>
+							<td class="td-manage" th:if="${item.track_status} eq 330">
+							<a style="display:block;color:green;"
+								th:onclick="edit('编辑',[['procedit?domain.id='+${item.id}]],'4','','500')"  href="javascript:;"
+								title="处理">处理
+							</a> 
+							</td>
+							<td class="td-manage" th:if="${item.track_status} eq 9004">
+							<a style="display:block;color:green;"
+								th:onclick="edit('编辑',[['procedit?domain.id='+${item.id}]],'4','','500')"  href="javascript:;"
+								title="处理">处理
+							</a> 
+							</td>
+							<td class="td-manage" th:if="${item.track_status} eq 9003">
+							<a style="display:block;color:red;"
+								th:onclick="edit('编辑',[['operate?domain.id='+${item.id}]],'4','','500')"  href="javascript:;"
+								title="关闭">关闭
+							</a> 
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="pagination_div" th:include="fragments/page :: pagination(${page})"></div>
+			</div>
+		</form>
+	</div>
+		<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript" th:src="@{/lib/jquery/1.9.1/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}"></script>
+	<script type="text/javascript" th:src="@{/ui/h-ui/js/H-ui.min.js}"></script>
+	<script type="text/javascript" th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/laydate/laydate.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/laypage/1.2/laypage.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/js/web-global.js}"></script>
+	<!--/_footer 作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" th:inline="javascript">
+	$(function() {
+		lay('.date').each(function(){
+			  laydate.render({
+			    elem: this
+			    ,trigger: 'click'
+			  });
+			});
+	});
+		$('#searchBtn').click(function() {
+			var formObj = $(this).parents('form');
+			formObj.submit();
+			//var formData = new FormData(formObj[0]);
+		});
+
+		/*用户-添加*/
+		function add(title, url, w, h) {
+			layer_show(title, url, w, h);
+		}
+		
+		function upfile(title, url, w, h) {
+			layer_show(title, url, w, h);
+		}
+		/*用户-查看*/
+		function show(title, url, w, h) {
+
+			layer_show(title, url, w, h);
+		}
+		function edit(title, url, id, w, h) {
+			layer_show(title, url, w, h);
+		}
+		
+		function proc(id,phone) {
+// 			layer
+// 					.confirm(
+// 							'确认要重置订单 吗？',
+// 							function(index) {
+								$.ajax({
+											async:false,
+											url:"/coreorder/procedit?orderNo="+id+"&phone="+phone,
+											type : 'GET',
+											success : function(resp) {
+												if(resp.code==200){
+													  layer.msg(resp.msg, {
+														    icon: 1,
+														    time: 3000 //2秒关闭（如果不配置，默认是3秒）
+														  }, function(){
+				 											window.location.reload()
+															 
+														  });
+												}else{
+													layer.alert(resp.msg, '提示信息')
+												}
+											},
+											error : function(data) {
+												console.log(data.msg);
+											},
+										});
+// 							});
+		}
+		
+		/*用户-停用*/
+		function member_stop(obj, id) {
+			alert(id)
+			layer
+					.confirm(
+							'确认要停用吗？',
+							function(index) {
+								$
+										.ajax({
+											type : 'POST',
+											url : '/managerInfo/editInfo',
+											dataType : 'json',
+											data:{'id':id},
+											success : function(data) {
+												$(obj)
+														.parents("tr")
+														.find(".td-manage")
+														.prepend(
+																'<a style="text-decoration:none" onclick="member_start(this,'+id+')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
+												$(obj)
+														.parents("tr")
+														.find(".td-status")
+														.html(
+																'<span class="label label-defaunt radius">已停用</span>');
+												$(obj).remove();
+												layer.msg('已停用!', {
+													icon : 5,
+													time : 1000
+												});
+											},
+											error : function(data) {
+												console.log(data.msg);
+											},
+										});
+							});
+		}
+
+		/*用户-启用*/
+		function member_start(obj, id) {
+			layer
+					.confirm(
+							'确认要启用吗？',
+							function(index) {
+								$
+										.ajax({
+											type : 'POST',
+											url : '/managerInfo/enableInfo',
+											dataType : 'json',
+											data:{'id':id},
+											success : function(data) {
+												$(obj)
+														.parents("tr")
+														.find(".td-manage")
+														.prepend(
+																'<a style="text-decoration:none"  onclick="member_stop(this,'+id+')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
+												$(obj)
+														.parents("tr")
+														.find(".td-status")
+														.html(
+																'<span class="label label-success radius">已启用</span>');
+												$(obj).remove();
+												layer.msg('已启用!', {
+													icon : 6,
+													time : 1000
+												});
+											},
+											error : function(data) {
+												console.log(data.msg);
+											},
+										});
+							});
+		}
+		/*密码-修改*/
+		function change_password(title, url, id, w, h) {
+			layer_show(title, url, w, h);
+		}
+		/*用户-删除*/
+		function member_del(obj, id) {
+			layer.confirm('确认要删除吗？', function(index) {
+				$.ajax({
+					type : 'POST',
+					url : '',
+					dataType : 'json',
+					success : function(data) {
+						$(obj).parents("tr").remove();
+						layer.msg('已删除!', {
+							icon : 1,
+							time : 1000
+						});
+					},
+					error : function(data) {
+						console.log(data.msg);
+					},
+				});
+			});
+		}
+		
+	</script>
+</body>
+</html>

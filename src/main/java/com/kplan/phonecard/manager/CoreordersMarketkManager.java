@@ -1,5 +1,6 @@
 package com.kplan.phonecard.manager;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,46 +32,102 @@ import com.kplan.phonecard.enums.ExportStatusEnum;
 import com.kplan.phonecard.enums.OrderStatusEnum;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
+import com.kplan.phonecard.utils.DateUtils;
 import com.kplan.phonecard.utils.SqeUtils;
 
 @Component
 @Transactional
-public class CoreordersMarketkManager extends BaseManager{
+public class CoreordersMarketkManager extends BaseManager {
 	private static final Logger logger = LoggerFactory.getLogger(CoreordersMarketkManager.class);
 	@Autowired
 	CoreordersMarketkService coreOrderSerbice;
 	@Autowired
 	UnicomPostcityCodeManager unicomPostcityCodeManager;
-	public Page<CoreOrdersMarketk> findOrder(@NotNull CoreOrdersMarketkQuery query, Pageable pageable){
-			Specification<CoreOrdersMarketk> spec=new Specification<CoreOrdersMarketk>() {
+
+	public Page<CoreOrdersMarketk> findOrder(@NotNull CoreOrdersMarketkQuery query, Pageable pageable) {
+		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
 			@Override
-			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr,
-					CriteriaBuilder cb) {
+			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<>();
 //				cb.equal(r.get("id"), 23L) "线下上门渠道"
-				if(query.getCreatedDateStart()!=null&&query.getCreatedDateEnd()!=null) {
+				if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
 					list.add(cb.between(r.get("createtime"), query.getCreatedDateStart(), query.getCreatedDateEnd()));
 				}
-				if(StringUtils.trimToNull(query.getKeyword())!=null) {
-					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getKeyword()),cb.equal(r.get("order_number"), query.getKeyword())));
+				if (StringUtils.trimToNull(query.getKeyword()) != null) {
+					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getKeyword()),
+							cb.equal(r.get("order_number"), query.getKeyword())));
 				}
-				if(query.getDomain().getOrder_status()!=null) {
+				if (query.getDomain().getOrder_status() != null) {
 					list.add(cb.equal(r.get("order_status"), query.getDomain().getOrder_status()));
 				}
-				if(query.getDomain().getOrder_source()!=null) {
-				list.add(cb.equal(r.get("order_source"),query.getDomain().getOrder_source()));
+				if (query.getDomain().getOrder_source() != null) {
+					list.add(cb.equal(r.get("order_source"), query.getDomain().getOrder_source()));
 				}
 				return cb.and(list.toArray(new Predicate[0]));
 			}
 		};
 		return this.coreOrderSerbice.findAll(spec, pageable);
 	}
-	
+
+	public Page<CoreOrdersMarketk> maliciousList(@NotNull CoreOrdersMarketkQuery query, Pageable pageable) {
+		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
+			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<>();
+				try {
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNum(10000), DateUtils.getDayNum(48)));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				list.add(cb.equal(r.get("order_status"), OrderStatusEnum.SUCCESSOrderStatus));
+				if(query.getKeyword()==null) {
+				list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9003),cb.equal(r.get("track_status"), 9004)));
+				}if (query.getKeyword()!=null&&query.getKeyword().equals("1")){
+					list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9004)));
+				}
+				if (query.getKeyword()!=null&&query.getKeyword().equals("2")){
+					list.add(cb.equal(r.get("track_status"), 9003));
+				}
+				list.add(cb.or(cb.like(r.get("malicious_tag"), "公安证件号码与证件姓名不匹配"),
+						cb.like(r.get("malicious_tag"), "zop接入本地库校验失败")));
+
+				Predicate pred = cb.and(list.toArray(new Predicate[0]));
+				list.clear();
+				try {
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNum(10000), DateUtils.getDayNum(72)));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				list.add(cb.equal(r.get("order_status"), OrderStatusEnum.SUCCESSOrderStatus));
+				//list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9003),cb.equal(r.get("track_status"), 9004)));
+				
+				if(query.getKeyword()==null) {
+					list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9003),cb.equal(r.get("track_status"), 9004)));
+					}if (query.getKeyword()!=null&&query.getKeyword().equals("1")){
+						list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9004)));
+					}
+					if (query.getKeyword()!=null&&query.getKeyword().equals("2")){
+						list.add(cb.equal(r.get("track_status"), 9003));
+					}
+				list.add(cb.or(cb.like(r.get("malicious_tag"), "待确认地址"), cb.like(r.get("malicious_tag"), "恶意地址"),
+						cb.like(r.get("malicious_tag"), "配送地址冲突"), cb.like(r.get("malicious_tag"), "联系地址全是数字")));
+				try {
+					cb.between(r.get("createtime"), DateUtils.getDayNum(10000), DateUtils.getDayNum(48));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				Predicate pred2 = cb.and(list.toArray(new Predicate[0]));
+				return cb.or(pred, pred2);
+				// cb.and(list.toArray(new Predicate[0]));
+			}
+		};
+		return this.coreOrderSerbice.findAll(spec, pageable);
+	}
+
 	public Object savaOrders(String userName, String userid, String address, String ordersource, String province_code,
 			String province_name, String re_phone, String city, String cityName, String district, String districtName,
-			String phone_Num, String smsstatus,String Productcode,String Productname) {
+			String phone_Num, String smsstatus, String Productcode, String Productname) {
 		try {
-			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById( phone_Num, KplanPhoneNumber.class);
+			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById(phone_Num, KplanPhoneNumber.class);
 			if (phone != null) {
 				if (phone.getUse_not() != 0) {
 					msgRes msg = new msgRes();
@@ -79,7 +136,8 @@ public class CoreordersMarketkManager extends BaseManager{
 					msg.setMsg("选择的订购号码已被使用，请重新选号");
 					return JSON.toJSON(msg);
 				} else {
-					String phonesql="update kplan_phone_number set use_not=2 where phone_num='"+re_phone+"' and use_not=1";
+					String phonesql = "update kplan_phone_number set use_not=2 where phone_num='" + re_phone
+							+ "' and use_not=1";
 					this.coreOrderSerbice.exeNative(phonesql);
 					phone.setPhone_num(re_phone);
 					phone.setUse_not(1);
@@ -144,14 +202,12 @@ public class CoreordersMarketkManager extends BaseManager{
 			return JSON.toJSON(msg);
 		}
 	}
-	
-	
-	
-	public Object savaNextOrders(String orderNo,String userName, String userid, String address, String ordersource, String province_code,
-			String province_name, String re_phone, String city, String cityName, String district, String districtName,
-			String phone_Num, String smsstatus,String Productcode,String Productname) {
+
+	public Object savaNextOrders(String orderNo, String userName, String userid, String address, String ordersource,
+			String province_code, String province_name, String re_phone, String city, String cityName, String district,
+			String districtName, String phone_Num, String smsstatus, String Productcode, String Productname) {
 		try {
-			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById( phone_Num, KplanPhoneNumber.class);
+			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById(phone_Num, KplanPhoneNumber.class);
 			if (phone != null) {
 				if (phone.getUse_not() != 0) {
 					msgRes msg = new msgRes();
@@ -160,16 +216,17 @@ public class CoreordersMarketkManager extends BaseManager{
 					msg.setMsg("选择的订购号码已被使用，请重新选号");
 					return JSON.toJSON(msg);
 				} else {
-					String phonesql="update kplan_phone_number set use_not=2 where phone_num='"+re_phone+"' and use_not=1";
+					String phonesql = "update kplan_phone_number set use_not=2 where phone_num='" + re_phone
+							+ "' and use_not=1";
 					this.coreOrderSerbice.exeNative(phonesql);
 					phone.setPhone_num(re_phone);
 					phone.setUse_not(1);
 					this.coreOrderSerbice.modify(phone);
-					CoreOrdersMarketk k ;
-					String sql="from  CoreOrdersMarketk where id='"+orderNo+"'";
-					List<CoreOrdersMarketk> l=this.coreOrderSerbice.getResultList(sql);
-					if(l!=null&&l.size()>0) {
-						k=l.get(0);
+					CoreOrdersMarketk k;
+					String sql = "from  CoreOrdersMarketk where id='" + orderNo + "'";
+					List<CoreOrdersMarketk> l = this.coreOrderSerbice.getResultList(sql);
+					if (l != null && l.size() > 0) {
+						k = l.get(0);
 						k.setReceiver_name(userName);
 						k.setAccess_name(userName);
 						k.setAccess_id_number(userid);
@@ -197,8 +254,7 @@ public class CoreordersMarketkManager extends BaseManager{
 						msg.setStatus("200");
 						msg.setMsg("操作成功");
 						return JSON.toJSON(msg);
-					}
-					else {
+					} else {
 						msgRes msg = new msgRes();
 						msg.setCode("222");
 						msg.setStatus("222");
@@ -222,41 +278,42 @@ public class CoreordersMarketkManager extends BaseManager{
 			return JSON.toJSON(msg);
 		}
 	}
-	
-	public Object reSet(String orderNo,String phone) {
-		String sql="update core_orders_market_k set export_status=1,initial_status=20,order_status=0,visit_code=1,order_number='' where order_no='"+orderNo+"' and order_status!=11";
-		String phonesql="update kplan_phone_number set use_not=2 where phone_num='"+phone+"'";
-		
+
+	public Object reSet(String orderNo, String phone) {
+		String sql = "update core_orders_market_k set export_status=1,initial_status=20,order_status=0,visit_code=1,order_number='' where order_no='"
+				+ orderNo + "' and order_status!=11";
+		String phonesql = "update kplan_phone_number set use_not=2 where phone_num='" + phone + "'";
+
 		msgRes msg = new msgRes();
 		try {
-			 this.coreOrderSerbice.exeNative(sql);
-			 this.coreOrderSerbice.exeNative(phonesql);
-				msg.setCode("200");
-				msg.setStatus("200");
-				msg.setMsg("订单重置成功");
+			this.coreOrderSerbice.exeNative(sql);
+			this.coreOrderSerbice.exeNative(phonesql);
+			msg.setCode("200");
+			msg.setStatus("200");
+			msg.setMsg("订单重置成功");
 		} catch (Exception e) {
 			msg.setCode("222");
 			msg.setStatus("222");
 			msg.setMsg("系统异常请联系管理员");
 		}
-			return JSON.toJSON(msg);
-			
+		return JSON.toJSON(msg);
+
 	}
-	
-	public List<Kplanprocducts> qryProcDucts(){
-		String sql="from Kplanprocducts";
-		List<Kplanprocducts> l=this.coreOrderSerbice.getResultList(sql);
+
+	public List<Kplanprocducts> qryProcDucts() {
+		String sql = "from Kplanprocducts";
+		List<Kplanprocducts> l = this.coreOrderSerbice.getResultList(sql);
 		return l;
 	}
-	
-	public Object addOrders(List<OrderRowModel> l,String proTag) {
+
+	public Object addOrders(List<OrderRowModel> l, String proTag) {
 		msgRes msg = new msgRes();
 		try {
-			
-			if(l!=null&&l.size()>0) {
-				for(OrderRowModel o:l) {
-					UnicomPostCityCode c=this.unicomPostcityCodeManager.findById(o.getDistrictCode());
-					if(c!=null) {
+
+			if (l != null && l.size() > 0) {
+				for (OrderRowModel o : l) {
+					UnicomPostCityCode c = this.unicomPostcityCodeManager.findById(o.getDistrictCode());
+					if (c != null) {
 						CoreOrdersMarketk k = new CoreOrdersMarketk();
 						k.setReceiver_name(o.getUserName().trim());
 						k.setAccess_name(o.getUserName().trim());
@@ -271,14 +328,14 @@ public class CoreordersMarketkManager extends BaseManager{
 						k.setDistrict_code(c.getDistrict_code());
 						k.setDistrict_name(c.getDistrict_name());
 						k.setInitial_status(20);
-						if("1".equals(proTag)) {
-						k.setOrder_status(OrderStatusEnum.WAITPHONE);
-						k.setExport_status(ExportStatusEnum.EXPORTSTATUS4);
-						}else {
+						if ("1".equals(proTag)) {
+							k.setOrder_status(OrderStatusEnum.WAITPHONE);
+							k.setExport_status(ExportStatusEnum.EXPORTSTATUS4);
+						} else {
 							k.setOrder_status(OrderStatusEnum.InitOrderStatus);
 							k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
 						}
-					
+
 						k.setVisit_code(0);
 						k.setCreatetime(new Date());
 						k.setProduct_code(o.getProcductCode().trim());
@@ -287,9 +344,8 @@ public class CoreordersMarketkManager extends BaseManager{
 						k.setDifferent_nets(-1);
 						k.setId(SqeUtils.getBILIBILISqeNo());
 						this.coreOrderSerbice.add(k);
-						
-					}
-					else {
+
+					} else {
 						msg.setCode("200");
 						msg.setStatus("200");
 						msg.setMsg("获取地市信息失败");
@@ -298,24 +354,108 @@ public class CoreordersMarketkManager extends BaseManager{
 					msg.setStatus("200");
 					msg.setMsg("订单导入成功");
 				}
-				
+
 			}
 		} catch (Exception e) {
 			msg.setCode("222");
 			msg.setStatus("222");
 			msg.setMsg("系统异常请联系管理员");
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 		}
-		
+
 		return JSON.toJSON(msg);
-	} 
-	
+	}
+
 	public CoreOrdersMarketk findById(String id) {
-		String sql="from  CoreOrdersMarketk where id='"+id+"'";
-		List<CoreOrdersMarketk> l=this.coreOrderSerbice.getResultList(sql);
-		if(l!=null&&l.size()>0) {
+		String sql = "from  CoreOrdersMarketk where id='" + id + "'";
+		List<CoreOrdersMarketk> l = this.coreOrderSerbice.getResultList(sql);
+		if (l != null && l.size() > 0) {
 			return l.get(0);
 		}
-	return 	null;
+		return null;
 	}
+	
+	public Object procOrder(String orderNo,String userName,String userid,String address,String re_phone,String proctype) {
+		msgRes msg = new msgRes();
+		CoreOrdersMarketk order;
+		try {
+			String sql = "from  CoreOrdersMarketk where id='" + orderNo + "'";
+			List<CoreOrdersMarketk> l = this.coreOrderSerbice.getResultList(sql);
+			if (l != null && l.size() > 0) {
+				order= l.get(0);
+				if("1".equals(proctype)) {
+					order.setTrack_status(9001);
+					this.coreOrderSerbice.modify(order);
+					CoreOrdersMarketk k = new CoreOrdersMarketk();
+					k.setReceiver_name(userName);
+					k.setAccess_name(userName);
+					k.setAccess_id_number(userid);
+					k.setReceiver_address(address);
+					k.setOrder_source("标记订单");
+					k.setProvince_code(order.getProvince_code());
+					k.setProvince_name(order.getProvince_name());
+					k.setReceiver_phone(re_phone);
+					k.setCity_code(order.getCity_code());
+					k.setCity_name(order.getCity_name());
+					k.setDistrict_code(order.getDistrict_code());
+					k.setDistrict_name(order.getDistrict_name());
+					k.setInitial_status(20);
+					k.setOrder_status(OrderStatusEnum.InitOrderStatus);
+					k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
+					k.setVisit_code(0);
+					k.setCreatetime(new Date());
+					k.setProduct_code(order.getProduct_code());
+					k.setProduct_name(order.getProduct_name());
+					k.setBusiness_type("K计划");
+					k.setDifferent_nets(-1);
+					k.setId(SqeUtils.getBILIBILISqeNo("CQBACK"));
+					this.coreOrderSerbice.add(k);
+					msg.setCode("200");
+					msg.setStatus("200");
+					msg.setMsg("订单处理成功");
+				}
+				if("2".equals(proctype)) {
+					order.setTrack_status(9002);
+					this.coreOrderSerbice.modify(order);
+					msg.setCode("200");
+					msg.setStatus("200");
+					msg.setMsg("订单处理成功");
+				}
+				if("3".equals(proctype)) {
+					order.setTrack_status(9003);
+					this.coreOrderSerbice.modify(order);
+					msg.setCode("200");
+					msg.setStatus("200");
+					msg.setMsg("订单处理成功");
+				}
+				if("4".equals(proctype)) {
+					order.setTrack_status(9004);
+					this.coreOrderSerbice.modify(order);
+					msg.setCode("200");
+					msg.setStatus("200");
+					msg.setMsg("订单处理成功");
+				}
+				if("5".equals(proctype)) {
+					order.setTrack_status(9005);
+					this.coreOrderSerbice.modify(order);
+					msg.setCode("200");
+					msg.setStatus("200");
+					msg.setMsg("订单处理成功");
+				}
+			}else {
+				msg.setCode("200");
+				msg.setStatus("200");
+				msg.setMsg("查询不到该订单");
+				
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			msg.setCode("201");
+			msg.setStatus("201");
+			msg.setMsg("系统异常请联系管理员");
+			return JSON.toJSON(msg);
+		}
+		return JSON.toJSON(msg);
+	}
+	
 }

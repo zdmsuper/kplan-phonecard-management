@@ -43,6 +43,17 @@ public class SqeUtils {
 		return str.toString();
 	}
 	
+	public static String getBILIBILISqeNo(String title) {
+		String timestamp =new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		StringBuilder str=new StringBuilder();
+		str.append(title).append(timestamp);
+		Random random=new Random();
+		for(int i=0;i<8;i++){
+		str.append(random.nextInt(5));
+		}
+		return str.toString();
+	}
+	
 	public static int getDataAndTime() {
 		 int min = 1000;
 		 int max = 30000;
