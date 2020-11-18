@@ -141,12 +141,15 @@
 							<span  style="color: green;font-weight: 600" th:text="${item.order_status.desc}"></span>
 <!-- 							<span  style="color: green;" th:text="${item.order_status.desc}"></span> -->
 							</td>
-							<td th:if="${item.order_status.code} eq 21">
-							<a style="display:block"
+							<td th:if="${item.order_status.code} eq 21" th:id="s+${item.id}">
+							<a style="display:block" th:id="${item.id}"
 								th:onclick="edit('失败原因',   [['editfialed?domain.id='+${item.id}]],'4','','650')"  href="javascript:;"
-								th:title="${item.fail_reasons}">
+								th:title="${item.fail_reasons}"  th:onmousemove="op([[${item.id}]],[[${item.fail_reasons}]])">
+								
 								<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
+								
 								</a>
+								<input type="hidden"  th:value="${item.fail_reasons}"/>
 							</td>
 							<td th:if="${item.order_status.code ne 21 && item.order_status.code ne 11}   ">
 							<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
@@ -202,6 +205,17 @@
 			formObj.submit();
 			//var formData = new FormData(formObj[0]);
 		});
+		
+		
+		
+		function op(index,msg){
+			var id='s'+index;
+			layer.tips(msg, '#'+id+'',{
+				  tips: [1, '#3595CC'],
+				  time: 8000
+				});
+		}
+		 	
 
 		/*用户-添加*/
 		function add(title, url, w, h) {

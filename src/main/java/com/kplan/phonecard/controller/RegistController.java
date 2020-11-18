@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kplan.phonecard.domain.BasicUserInfo;
 import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.dto.RegistUserInfoDTO;
 
@@ -62,6 +63,7 @@ public class RegistController extends AbstractBaseController {
 		SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
 		super.getRequest().getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
 				SecurityContextHolder.getContext());
+		
 //		return new ModelAndView(new RedirectView("/login/success"));
 		return this.redirect("/login/success");
 	}

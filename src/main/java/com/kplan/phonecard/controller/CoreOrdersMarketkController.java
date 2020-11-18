@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +29,7 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.fastjson.JSON;
+import com.kplan.phonecard.domain.BasicUserInfo;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanChannelNumberDetail;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
@@ -75,7 +77,6 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@RequestMapping("/list")
 	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query){
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.findOrder(query, this.getPageRequest());
-		
 		map.put("query", query);
 		map.put("page", page);
 		return "coreorders/list";
@@ -91,6 +92,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
 		map.put("product", product);
+		map.put("managerinfo", super.getCurrentUserDetails().orElse(null));
 		return "coreorders/edit";
 	}
 	
