@@ -64,11 +64,15 @@ public class ManagerInfoManager extends BaseManager {
 				if (Objects.nonNull(dto.getBase64HeadImg())) {
 					managerInfo.getBasicUserInfo().setHeadImg(dto.getBase64HeadImg());
 				}
+				
 				this.basicUserInfoService.insert(managerInfo.getBasicUserInfo());
 				this.managerInfoService.insert(managerInfo);
 				return ResultMessageDTO.success(managerInfo);
 			} else {
 				ManagerInfo managerInfo = this.managerInfoService.findByIdOrException(dto.getId());
+				if(Objects.nonNull(dto.getLoginPwd())) {
+					managerInfo.setLoginPwd(dto.getLoginPwd());
+				}
 				this.basicUserInfoService.update(managerInfo.getBasicUserInfo());
 				this.managerInfoService.update(managerInfo);
 				return ResultMessageDTO.success(managerInfo);

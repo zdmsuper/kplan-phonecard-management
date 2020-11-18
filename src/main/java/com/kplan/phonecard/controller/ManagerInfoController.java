@@ -133,5 +133,4 @@ public class ManagerInfoController extends AbstractBaseController {
 		return "";
 
 	}
-
 }
