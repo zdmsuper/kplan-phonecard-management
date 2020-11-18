@@ -35,6 +35,7 @@ import com.kplan.phonecard.domain.KplanChannelNumberDetail;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.Kplanprocducts;
+import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.OrderRowModel;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.kplanscorders;
@@ -75,7 +76,12 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@Autowired
 	kplanscordersManager kplanscordersManager;
 	@RequestMapping("/list")
-	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query){
+	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query) throws ParseException{
+		if(query.getCreatedDateEnd()==null) {
+			Date d=DateUtils.getDayNumT(0);
+			query.setCreatedDateEnd(d);
+			query.setCreatedDateStart(d);
+		}
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.findOrder(query, this.getPageRequest());
 		map.put("query", query);
 		map.put("page", page);
@@ -124,7 +130,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@ResponseBody
 	public String uploadFile(@RequestParam("file") MultipartFile file,kplanscordersQuery query) throws IOException {
 		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 0));
-		return  kplanSecondaryOrdersManager.upLoadorDers(data,query);
+		ManagerInfo info=super.getCurrentUserDetails().orElse(null);
+		return  kplanSecondaryOrdersManager.upLoadorDers(data,query,info);
 	}
 	@RequestMapping("/uporderedit")
 	public String uporderedit(Map<String, Object> map, ManagerInfoQuery query) {
@@ -234,9 +241,16 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	 * @param map
 	 * @param query
 	 * @return
+	 * @throws ParseException 
 	 */
 	@RequestMapping("/secondarylist")
-	public String qrySeconDaryorDer(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+	public String qrySeconDaryorDer(Map<String, Object> map, KplanSecondaryOrdersQuery query) throws ParseException {
+		if(query.getCreatedDateEnd()==null) {
+			Date d=DateUtils.getDayNumT(0);
+			query.setCreatedDateEnd(d);
+			query.setCreatedDateStart(d);
+		}
+		
 		Page<KplanSecondaryOrders> orDers=this.kplanSecondaryOrdersManager.qrySeconadryorDer(query, this.getPageRequest());
 		map.put("page", orDers);
 		map.put("query", query);
@@ -247,9 +261,15 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	 * @param map
 	 * @param query
 	 * @return
+	 * @throws ParseException 
 	 */
 	@RequestMapping("/scorderlist")
-	public String qryScorDers(Map<String, Object> map, kplanscordersQuery query) {
+	public String qryScorDers(Map<String, Object> map, kplanscordersQuery query) throws ParseException {
+		if(query.getCreatedDateEnd()==null) {
+			Date d=DateUtils.getDayNumT(0);
+			query.setCreatedDateEnd(d);
+			query.setCreatedDateStart(d);
+		}
 		Page<kplanscorders> scoDers=this.kplanscordersManager.qryList(query, this.getPageRequest());
 		map.put("page", scoDers);
 		map.put("query", query);
@@ -289,6 +309,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	 */
 	@RequestMapping("/maliciousList")
 	public String maliciousList(Map<String, Object> map, CoreOrdersMarketkQuery query) {
+		
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.maliciousList(query, this.getPageRequest());
 		map.put("page", page);
 		map.put("query", query);

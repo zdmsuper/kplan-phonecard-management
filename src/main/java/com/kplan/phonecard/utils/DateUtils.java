@@ -22,6 +22,19 @@ public class DateUtils {
        return time;
 	}
 	
+	/**yyyyMMddHHmm
+	 * @return
+	 */
+	public static String getTodayDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");//时间格式化
+        Calendar calendar=Calendar.getInstance();
+        Date date=new Date();
+        calendar.setTime(date);
+//        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY) - 12);
+        String time = sdf.format(calendar.getTime());
+       return time;
+	}
+	
 	
 	public static String getDate24() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//时间格式化
@@ -35,6 +48,21 @@ public class DateUtils {
 	
 	public static Date getDayNum(int num) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//时间格式化
+        Calendar calendar=Calendar.getInstance();
+        Date date=new Date();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY) - num);
+        String time = sdf.format(calendar.getTime());
+       return sdf.parse(time);
+	}
+	
+	/**yyyy-MM-dd
+	 * @param num
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Date getDayNumT(int num) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//时间格式化
         Calendar calendar=Calendar.getInstance();
         Date date=new Date();
         calendar.setTime(date);

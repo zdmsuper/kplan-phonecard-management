@@ -53,6 +53,12 @@
 						>
 						</option>
 					</select>
+					
+					<select name="domain.order_source" class="select select-box inline">
+					<option value="">全部状态</option>
+					<option value="CD" th:selected="${'CD'==query.domain.order_source}">成都</option>
+					<option value="CQ" th:selected="${'CQ'==query.domain.order_source}">重庆</option>
+					</select>
 <!-- 					<select name="domain.userStatus" class="select select-box inline"> -->
 <!-- 						<option value="">全部状态</option> -->
 <!-- 						<option th:each="userStatus:${T(com.kplan.phonecard.enums.UserStatusEnum).values()}"  -->
@@ -117,6 +123,7 @@
 							<th>订单来源</th>
 							<th>恶意标签</th>
 							<th>反诈标签</th>
+							<th>操作人</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -144,6 +151,7 @@
 							<span th:text="${item.malicious_order}"></span>
 							</td>
 							<td th:text="${item.back_info}"></td>
+							<td th:text="${item.operator}"></td>
 						</tr>
 					</tbody>
 				</table>

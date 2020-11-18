@@ -21,18 +21,21 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
+import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.enums.ProStatusEnum;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.query.ManagerInfoQuery;
 import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.service.KplanSecondaryOrdersService;
+import com.kplan.phonecard.utils.DateUtils;
 @Component
 @Transactional
 public class KplanSecondaryOrdersManager extends BaseManager{
 	@Autowired
 	KplanSecondaryOrdersService kplanSecondaryOrdersService;
-	public String upLoadorDers(List<Object> data,kplanscordersQuery query) {
+	public String upLoadorDers(List<Object> data,kplanscordersQuery query,ManagerInfo info) {
+		
 		msgRes msg=new msgRes();
 		KplanSecondaryOrders o;
 		try {
@@ -44,6 +47,9 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 					o.setOrder_no(list.get(0));
 					o.setPro_status(ProStatusEnum.CREADORDER);
 					o.setOrder_source(query.getKeyword());
+					if(info!=null) {
+						o.setOperator(info.getBasicUserInfo().getUserRealName()+DateUtils.getTodayDate());
+					}
 					this.kplanSecondaryOrdersService.add(o);
 				}
 				msg.setCode("200");
@@ -76,6 +82,9 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 				}
 				if(query.getKeyword()!=null) {
 					list.add(cb.equal(r.get("phone_num"), query.getKeyword()));
+				}
+				if(query.getDomain().getOrder_source()!=null) {
+					list.add(cb.equal(r.get("order_source"), query.getDomain().getOrder_source()));
 				}
 				if(query.getDomain().getPro_status()!=null) {
 					list.add(cb.equal(r.get("pro_status"), query.getDomain().getPro_status()));
