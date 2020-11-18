@@ -45,7 +45,7 @@
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
 					
 					
-					<select name="domain.pro_status" class="select select-box inline">
+					<select name="domain.pro_status" id="pro_status" class="select select-box inline">
 						<option value="">全部状态</option>
 						<option th:each="procStatus:${T(com.kplan.phonecard.enums.ProStatusEnum).values()}" 
 						th:value="${procStatus}" th:text="${procStatus.desc}"
@@ -54,7 +54,7 @@
 						</option>
 					</select>
 					
-					<select name="domain.order_source" class="select select-box inline">
+					<select name="domain.order_source" id="order_source" class="select select-box inline">
 					<option value="">全部地区</option>
 					<option value="CD" th:selected="${'CD'==query.domain.order_source}">成都</option>
 					<option value="CQ" th:selected="${'CQ'==query.domain.order_source}">重庆</option>
@@ -183,6 +183,16 @@
 			var formObj = $(this).parents('form');
 			formObj.submit();
 			//var formData = new FormData(formObj[0]);
+		});
+		
+		$('#order_source').change(function(){
+			var formObj = $(this).parents('form');
+			formObj.submit();
+		});
+		
+		$('#pro_status').change(function(){
+			var formObj = $(this).parents('form');
+			formObj.submit();
 		});
 
 		/*用户-添加*/

@@ -25,7 +25,7 @@
 <body>
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
-		用户中心 <span class="c-gray en">&gt;</span>订单列表 <a
+		用户中心 <span class="c-gray en">&gt;</span>移网业务订单列表 <a
 			class="btn btn-success radius r"
 			style="line-height: 1.6em; margin-top: 3px"
 			href="javascript:location.replace(location.href);" title="刷新"> <i
@@ -43,12 +43,12 @@
 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;"> 
 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
-					<select name="domain.order_source" class="select select-box inline">
+					<select name="domain.order_source" id="order_source" class="select select-box inline">
 						<option value="">全部状态</option>
 						<option value="线下上门渠道" th:selected="${'线下上门渠道'==query.domain.order_source}">线下上门渠道</option>
 						<option value="交付上门渠道" th:selected="${'交付上门渠道'==query.domain.order_source}">交付上门渠道</option>
 					</select>
-					<select name="domain.order_status" class="select select-box inline">
+					<select name="domain.order_status" id="order_status" class="select select-box inline">
 						<option value="">全部状态</option>
 						<option th:each="orderStatus:${T(com.kplan.phonecard.enums.OrderStatusEnum).values()}" 
 						th:value="${orderStatus}" th:text="${orderStatus.desc}"
@@ -206,7 +206,19 @@
 			//var formData = new FormData(formObj[0]);
 		});
 		
+		$('#order_source').change(function(){
+			var formObj = $(this).parents('form');
+			formObj.submit();
+		});
+		$('#order_source').change(function(){
+			var formObj = $(this).parents('form');
+			formObj.submit();
+		});
 		
+		$('#order_status').change(function(){
+			var formObj = $(this).parents('form');
+			formObj.submit();
+		});
 		
 		function op(index,msg){
 			var id='s'+index;
