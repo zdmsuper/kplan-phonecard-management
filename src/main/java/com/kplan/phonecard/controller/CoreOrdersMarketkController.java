@@ -57,7 +57,7 @@ import com.kplan.phonecard.utils.PhoneRuleUtils;
 
 @Controller
 @RequestMapping("/coreorder")
-public class CoreOrdersMarketkController extends AbstractBaseController{
+public class CoreOrdersMarketkController extends AbstractBaseController {
 	private static final Logger logger = LoggerFactory.getLogger(CoreOrdersMarketkController.class);
 	@Autowired
 	CoreordersMarketkManager coreOrdersManager;
@@ -70,15 +70,16 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@Autowired
 	ManagerInfoManager managerInfoManager;
 	@Autowired
-	KplanSecondaryOrdersManager  kplanSecondaryOrdersManager;
+	KplanSecondaryOrdersManager kplanSecondaryOrdersManager;
 	@Autowired
 	KplanChannelNumberDetailManager kplanChannelNumberDetailManager;
 	@Autowired
 	kplanscordersManager kplanscordersManager;
+
 	@RequestMapping("/list")
-	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query) throws ParseException{
-		if(query.getCreatedDateEnd()==null) {
-			Date d=DateUtils.getDayNumT(0);
+	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query) throws ParseException {
+		if (query.getCreatedDateEnd() == null) {
+			Date d = DateUtils.getDayNumT(0);
 			query.setCreatedDateEnd(d);
 			query.setCreatedDateStart(d);
 		}
@@ -87,13 +88,13 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		map.put("page", page);
 		return "coreorders/list";
 	}
-	
+
 	@RequestMapping("/edit")
 	public String edit(Map<String, Object> map, ManagerInfoQuery query) {
-		List<UnicomPostCityCode> l=this.unicompostcityManager.findByPrivoin();
-		List<Kplanprocducts> product=this.coreOrdersManager.qryProcDucts();
-		List<KplanPhoneNumber> phoneList=this.kplanPhoneManager.findPhoneList("",product.get(0).getProcduct_code());
-		List<KplanPhoneNumber> phoneRuleList=this.kplanPhoneManager.findPhoneRuleList();
+		List<UnicomPostCityCode> l = this.unicompostcityManager.findByPrivoin();
+		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
+		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", product.get(0).getProcduct_code());
+		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList();
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
@@ -101,14 +102,14 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		map.put("managerinfo", super.getCurrentUserDetails().orElse(null));
 		return "coreorders/edit";
 	}
-	
+
 	@RequestMapping("/editorder")
-	public String editorder(Map<String, Object> map, CoreOrdersMarketkQuery query,String id) {
-		List<UnicomPostCityCode> l=this.unicompostcityManager.findByPrivoin();
-		List<Kplanprocducts> product=this.coreOrdersManager.qryProcDucts();
-		CoreOrdersMarketk order=this.coreOrdersManager.findById(query.getDomain().getId());
-		List<KplanPhoneNumber> phoneList=this.kplanPhoneManager.findPhoneList("",order.getProduct_code());
-		List<KplanPhoneNumber> phoneRuleList=this.kplanPhoneManager.findPhoneRuleList();
+	public String editorder(Map<String, Object> map, CoreOrdersMarketkQuery query, String id) {
+		List<UnicomPostCityCode> l = this.unicompostcityManager.findByPrivoin();
+		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
+		CoreOrdersMarketk order = this.coreOrdersManager.findById(query.getDomain().getId());
+		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", order.getProduct_code());
+		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList();
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
@@ -116,51 +117,54 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		map.put("order", order);
 		return "coreorders/editorder";
 	}
+
 	@RequestMapping("/editfialed")
-	public String editfialed(Map<String, Object> map, CoreOrdersMarketkQuery query,String id) {
-		CoreOrdersMarketk order=this.coreOrdersManager.findById(query.getDomain().getId());
+	public String editfialed(Map<String, Object> map, CoreOrdersMarketkQuery query, String id) {
+		CoreOrdersMarketk order = this.coreOrdersManager.findById(query.getDomain().getId());
 		map.put("order", order);
 		return "coreorders/editfialed";
 	}
+
 	@RequestMapping("/upedit")
 	public String upedit(Map<String, Object> map, ManagerInfoQuery query) {
 		return "coreorders/upedit";
 	}
+
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	@ResponseBody
-	public String uploadFile(@RequestParam("file") MultipartFile file,kplanscordersQuery query) throws IOException {
+	public String uploadFile(@RequestParam("file") MultipartFile file, kplanscordersQuery query) throws IOException {
 		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 0));
-		ManagerInfo info=super.getCurrentUserDetails().orElse(null);
-		return  kplanSecondaryOrdersManager.upLoadorDers(data,query,info);
+		ManagerInfo info = super.getCurrentUserDetails().orElse(null);
+		return kplanSecondaryOrdersManager.upLoadorDers(data, query, info);
 	}
+
 	@RequestMapping("/uporderedit")
 	public String uporderedit(Map<String, Object> map, ManagerInfoQuery query) {
 		return "coreorders/uporderedit";
 	}
-	
+
 	@RequestMapping(value = "/uploadOrderFile", method = RequestMethod.POST)
 	@ResponseBody
-	public Object uploadOrderFile(@RequestParam("file") MultipartFile file,String keyword) throws IOException {
+	public Object uploadOrderFile(@RequestParam("file") MultipartFile file, String keyword) throws IOException {
 		InputStream inputStream = new BufferedInputStream(file.getInputStream());
-		List<Object> data =	 EasyExcelFactory.read(inputStream, new Sheet(1, 0));
-		List<OrderRowModel> l=PhoneRuleUtils.orderToList(data);
+		List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 0));
+		List<OrderRowModel> l = PhoneRuleUtils.orderToList(data);
 		return this.coreOrdersManager.addOrders(l, keyword);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhones")
 	@ResponseBody
-	public Object qryPhones(String phoneRule,String procductCode) {
-		Object phoneList = this.kplanPhoneManager.findPhoneList(phoneRule,procductCode);
+	public Object qryPhones(String phoneRule, String procductCode) {
+		Object phoneList = this.kplanPhoneManager.findPhoneList(phoneRule, procductCode);
 		return phoneList;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "qryCity")
 	@ResponseBody
 	public Object qryCity(String province_code) {
 		Object l = this.unicompostcityManager.findBycity(province_code);
 		return l;
 	}
-	
 
 	@RequestMapping(method = RequestMethod.GET, value = "qryDistrict")
 	@ResponseBody
@@ -168,13 +172,13 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		Object l = this.unicompostcityManager.qryDistrict(city_code);
 		return l;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhonesNum")
 	@ResponseBody
-	public Object qryPhonesNum(String phoneNum,String procductCode,String procductName) {
-		return this.unicompostcityManager.qryPhonesNum(phoneNum,procductCode,procductName);
+	public Object qryPhonesNum(String phoneNum, String procductCode, String procductName) {
+		return this.unicompostcityManager.qryPhonesNum(phoneNum, procductCode, procductName);
 	}
-	
+
 	/**
 	 * 手工单录入
 	 * 
@@ -196,17 +200,21 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	@ResponseBody
 	public Object savaOrders(String userName, String userid, String address, String ordersource, String province_code,
 			String province_name, String re_phone, String city, String cityName, String district, String districtName,
-			String phone_Num,String smsstatus,String Productcode,String Productname) {
+			String phone_Num, String smsstatus, String Productcode, String Productname) {
 
 		logger.info("userName:" + userName + " userid:" + userid + " address:" + address + " ordersource:" + ordersource
 				+ " province_code:" + province_code + " province_name:" + province_name + " re_phone：" + re_phone
 				+ " phone_Num:" + phone_Num + " city:" + city + " cityName:" + cityName + " district:" + district
-				+ " districtName:" + districtName+" phone_Num:"+phone_Num+"Productcode:"+Productcode+"Productname:"+Productname);
+				+ " districtName:" + districtName + " phone_Num:" + phone_Num + "Productcode:" + Productcode
+				+ "Productname:" + Productname + " UserName:"
+				+ super.getCurrentUserDetails().orElse(null).getBasicUserInfo().getUserRealName());
 		return this.coreOrdersManager.savaOrders(userName, userid, address, ordersource, province_code, province_name,
-				re_phone, city, cityName, district, districtName, phone_Num,smsstatus,Productcode,Productname);
+				re_phone, city, cityName, district, districtName, phone_Num, smsstatus, Productcode, Productname);
 	}
-	
-	/**手工单导入选号
+
+	/**
+	 * 手工单导入选号
+	 * 
 	 * @param userName
 	 * @param userid
 	 * @param address
@@ -226,66 +234,77 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "savaNextOrders")
 	@ResponseBody
-	public Object savaNextOrders(String orderNo,String userName, String userid, String address, String ordersource, String province_code,
-			String province_name, String re_phone, String city, String cityName, String district, String districtName,
-			String phone_Num,String smsstatus,String Productcode,String Productname) {
+	public Object savaNextOrders(String orderNo, String userName, String userid, String address, String ordersource,
+			String province_code, String province_name, String re_phone, String city, String cityName, String district,
+			String districtName, String phone_Num, String smsstatus, String Productcode, String Productname) {
 
 		logger.info("userName:" + userName + " userid:" + userid + " address:" + address + " ordersource:" + ordersource
 				+ " province_code:" + province_code + " province_name:" + province_name + " re_phone：" + re_phone
 				+ " phone_Num:" + phone_Num + " city:" + city + " cityName:" + cityName + " district:" + district
-				+ " districtName:" + districtName+" phone_Num:"+phone_Num+"Productcode:"+Productcode+"Productname:"+Productname);
-		return this.coreOrdersManager.savaNextOrders(orderNo,userName, userid, address, ordersource, province_code, province_name,
-				re_phone, city, cityName, district, districtName, phone_Num,smsstatus,Productcode,Productname);
+				+ " districtName:" + districtName + " phone_Num:" + phone_Num + "Productcode:" + Productcode
+				+ "Productname:" + Productname);
+		return this.coreOrdersManager.savaNextOrders(orderNo, userName, userid, address, ordersource, province_code,
+				province_name, re_phone, city, cityName, district, districtName, phone_Num, smsstatus, Productcode,
+				Productname);
 	}
-	/**回捞订单列表
+
+	/**
+	 * 回捞订单列表
+	 * 
 	 * @param map
 	 * @param query
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@RequestMapping("/secondarylist")
 	public String qrySeconDaryorDer(Map<String, Object> map, KplanSecondaryOrdersQuery query) throws ParseException {
-		if(query.getCreatedDateEnd()==null) {
-			Date d=DateUtils.getDayNumT(0);
+		if (query.getCreatedDateEnd() == null) {
+			Date d = DateUtils.getDayNumT(0);
 			query.setCreatedDateEnd(d);
 			query.setCreatedDateStart(d);
 		}
-		
-		Page<KplanSecondaryOrders> orDers=this.kplanSecondaryOrdersManager.qrySeconadryorDer(query, this.getPageRequest());
+
+		Page<KplanSecondaryOrders> orDers = this.kplanSecondaryOrdersManager.qrySeconadryorDer(query,
+				this.getPageRequest());
 		map.put("page", orDers);
 		map.put("query", query);
 		return "coreorders/secondarylist";
-		
+
 	}
-	/**移网审单列表
+
+	/**
+	 * 移网审单列表
+	 * 
 	 * @param map
 	 * @param query
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@RequestMapping("/scorderlist")
 	public String qryScorDers(Map<String, Object> map, kplanscordersQuery query) throws ParseException {
-		if(query.getCreatedDateEnd()==null) {
-			Date d=DateUtils.getDayNumT(0);
+		if (query.getCreatedDateEnd() == null) {
+			Date d = DateUtils.getDayNumT(0);
 			query.setCreatedDateEnd(d);
 			query.setCreatedDateStart(d);
 		}
-		Page<kplanscorders> scoDers=this.kplanscordersManager.qryList(query, this.getPageRequest());
+		Page<kplanscorders> scoDers = this.kplanscordersManager.qryList(query, this.getPageRequest());
 		map.put("page", scoDers);
 		map.put("query", query);
 		return "coreorders/scorderlist";
 	}
+
 	@RequestMapping("/reportForm")
 	public String reportForm(Map<String, Object> map, KplanChannelNumberDetailQuery query) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		query.setCreatedDateStart(sdf.parse(DateUtils.getoDay()));
 		query.setCreatedDateEnd(sdf.parse(DateUtils.getyesterDay()));
-		Page<KplanChannelNumberDetail> page=this.kplanChannelNumberDetailManager.findChannelInfos(query, this.getPageRequest());
+		Page<KplanChannelNumberDetail> page = this.kplanChannelNumberDetailManager.findChannelInfos(query,
+				this.getPageRequest());
 		map.put("page", page);
 		map.put("query", query);
 		return "test/a";
 	}
-	
+
 	@RequestMapping("/reportFormList")
 	@ResponseBody
 	public Object reportFormList(Map<String, Object> map, KplanChannelNumberDetailQuery query) throws ParseException {
@@ -293,44 +312,50 @@ public class CoreOrdersMarketkController extends AbstractBaseController{
 		System.out.println(DateUtils.getSevenDay(3));
 		query.setCreatedDateStart(sdf.parse(DateUtils.getSevenDay(7)));
 		query.setCreatedDateEnd(sdf.parse(DateUtils.getoDay()));
-	
+
 		return this.kplanChannelNumberDetailManager.findList(query);
 	}
+
 	@RequestMapping(method = RequestMethod.GET, value = "reSet")
 	@ResponseBody
-	public Object reSet(String orderNo,String phone) {
-		return this.coreOrdersManager.reSet(orderNo,phone);
+	public Object reSet(String orderNo, String phone) {
+		return this.coreOrdersManager.reSet(orderNo, phone);
 	}
-	
-	/**重庆恶意订单
+
+	/**
+	 * 重庆恶意订单
+	 * 
 	 * @param map
 	 * @param quer
 	 * @return
 	 */
 	@RequestMapping("/maliciousList")
 	public String maliciousList(Map<String, Object> map, CoreOrdersMarketkQuery query) {
-		
+
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.maliciousList(query, this.getPageRequest());
 		map.put("page", page);
 		map.put("query", query);
 		return "coreorders/maliciousList";
 	}
+
 	@RequestMapping("/procedit")
-	public String procedit(Map<String, Object> map, CoreOrdersMarketkQuery query,String id) {
-		CoreOrdersMarketk order=this.coreOrdersManager.findById(query.getDomain().getId());
+	public String procedit(Map<String, Object> map, CoreOrdersMarketkQuery query, String id) {
+		CoreOrdersMarketk order = this.coreOrdersManager.findById(query.getDomain().getId());
 		map.put("order", order);
 		return "coreorders/procedit";
 	}
+
 	@RequestMapping("/operate")
-	public String operate(Map<String, Object> map, CoreOrdersMarketkQuery query,String id) {
-		CoreOrdersMarketk order=this.coreOrdersManager.findById(query.getDomain().getId());
+	public String operate(Map<String, Object> map, CoreOrdersMarketkQuery query, String id) {
+		CoreOrdersMarketk order = this.coreOrdersManager.findById(query.getDomain().getId());
 		map.put("order", order);
 		return "coreorders/operate";
 	}
-	
+
 	@RequestMapping("/procOrder")
 	@ResponseBody
-	public Object procOrder(String orderNo,String userName,String userid,String address,String re_phone,String proctype) {
-	return this.coreOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype);
+	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
+			String proctype) {
+		return this.coreOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype);
 	}
 }
