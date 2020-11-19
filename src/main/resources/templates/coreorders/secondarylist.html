@@ -138,11 +138,14 @@
 							<td th:text="${item.post_province}"></td>
 							<td th:text="${item.post_city}"></td>
 							<td th:text="${item.post_district}"></td>
-							<td th:if="${item.pro_status.code} eq 99">
+							<td th:if="${item.pro_status.code} eq 99" >
 							<span style="color: green;" th:text="${item.pro_status.desc}"></span>
 							</td>
-							<td th:if="${item.pro_status.code} ne 99">
-							<span style="color: red;" th:text="${item.pro_status.desc}"></span>
+							<td th:if="${item.pro_status.code} ne 99" th:id="s+${item.id}">
+							<a th:id="${item.id}" th:onmousemove="op([[${item.id}]],[[${item.pro_status.code}]])">
+							<span  style="color: red;" th:text="${item.pro_status.desc}" ></span>
+							</a>
+							
 							</td>
 							<td th:text="${item.procduct_name}"></td>
 							<td th:text="${item.order_source}"></td>
@@ -179,6 +182,15 @@
 			  });
 			});
 	});
+	
+	function op(index,msg){
+		var id='s'+index;
+		msg="状态编码："+msg;
+		layer.tips(msg, '#'+id+'',{
+			  tips: [1, '#3595CC'],
+			  time: 5000
+			});
+	}
 		$('#searchBtn').click(function() {
 			var formObj = $(this).parents('form');
 			formObj.submit();

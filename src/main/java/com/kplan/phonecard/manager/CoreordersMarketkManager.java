@@ -74,7 +74,7 @@ public class CoreordersMarketkManager extends BaseManager {
 			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<>();
 				try {
-					list.add(cb.between(r.get("createtime"), DateUtils.getDayNum(10000), DateUtils.getDayNum(48)));
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNum(100000), DateUtils.getDayNum(48)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -93,7 +93,7 @@ public class CoreordersMarketkManager extends BaseManager {
 				Predicate pred = cb.and(list.toArray(new Predicate[0]));
 				list.clear();
 				try {
-					list.add(cb.between(r.get("createtime"), DateUtils.getDayNum(10000), DateUtils.getDayNum(72)));
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNum(100000), DateUtils.getDayNum(72)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -111,13 +111,12 @@ public class CoreordersMarketkManager extends BaseManager {
 				list.add(cb.or(cb.like(r.get("malicious_tag"), "待确认地址"), cb.like(r.get("malicious_tag"), "恶意地址"),
 						cb.like(r.get("malicious_tag"), "配送地址冲突"), cb.like(r.get("malicious_tag"), "联系地址全是数字")));
 				try {
-					cb.between(r.get("createtime"), DateUtils.getDayNum(10000), DateUtils.getDayNum(48));
+					cb.between(r.get("createtime"), DateUtils.getDayNum(100000), DateUtils.getDayNum(48));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 				Predicate pred2 = cb.and(list.toArray(new Predicate[0]));
 				return cb.or(pred, pred2);
-				// cb.and(list.toArray(new Predicate[0]));
 			}
 		};
 		return this.coreOrderSerbice.findAll(spec, pageable);

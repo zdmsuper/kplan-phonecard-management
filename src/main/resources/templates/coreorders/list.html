@@ -105,7 +105,7 @@
 					<thead>
 						<tr class="text-c">
 							<th><input type="checkbox" name="" value=""></th>
-							<th>订单号</th>
+<!-- 							<th>订单号</th> -->
 							<th>姓名</th>
 							<th>联系电话</th>
 							<th>订购电话</th>
@@ -127,7 +127,7 @@
 						<tr class="text-c" th:each="item:${page}">
 							<td><input type="checkbox" value="1" name=""
 								th:value="${item.id}"></td>
-							<td th:text="${item.id}">1</td>
+<!-- 							<td th:text="${item.id}">1</td> -->
 							<td th:text="${item.receiver_name}"></td>
 							<td th:text="${item.receiver_phone}"></td>
 							<td th:text="${item.order_number}"></td>
@@ -151,8 +151,10 @@
 								</a>
 								<input type="hidden"  th:value="${item.fail_reasons}"/>
 							</td>
-							<td th:if="${item.order_status.code ne 21 && item.order_status.code ne 11}   ">
+							<td th:if="${item.order_status.code ne 21 && item.order_status.code ne 11}" th:id="s+${item.id}">
+							<a style="display:block" th:id="${item.id}"  href="javascript:;"  th:onmousemove="ot([[${item.id}]],[[${item.order_status.code}]],[[${item.export_status.code}]],[[${item.initial_status}]])">
 							<span  style="color:red;;font-weight: 600" th:text="${item.order_status.desc}"></span>
+							</a>
 							</td>
 							
 							<td th:text="${item.export_status.desc}"></td>
@@ -219,6 +221,15 @@
 			var formObj = $(this).parents('form');
 			formObj.submit();
 		});
+		
+		function ot(index,orderStatus,exStatus,initStatus){
+			var id='s'+index;
+			var msg="订单状态："+orderStatus+" 导出状态："+exStatus+" 初始状态："+initStatus;
+			layer.tips(msg, '#'+id+'',{
+				  tips: [1, '#3595CC'],
+				  time: 8000
+				});
+		}
 		
 		function op(index,msg){
 			var id='s'+index;

@@ -107,12 +107,16 @@
 							<td th:text="${item.export_status.desc}"></td>
 							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.malicious_tag}"></td>
-							<td th:if="${item.track_status==330 || item.track_status==9004}">
+							<td th:if="${item.track_status==330 || item.track_status==9004}"  th:id="s+${item.id}">
+							<a th:id="${item.id}" th:onmousemove="op([[${item.id}]],[[${item.track_status}]])">
 							<span th:if="${item.track_status==9004}" style="color: red;">二次联系</span>
 							<span th:if="${item.track_status==330}" style="color: red;">客服处理</span>
+							</a>
 							</td>
-							<td th:if="${item.track_status==9003}">
+							<td th:if="${item.track_status==9003}" th:id="s+${item.id}">
+							<a th:id="${item.id}" th:onmousemove="op([[${item.id}]],[[${item.track_status}]])">
 							<span style="color: green;">运营处理</span>
+							</a>
 							</td>
 							<td class="td-manage" th:if="${item.track_status} eq 330">
 							<a style="display:block;color:green;"
@@ -159,6 +163,16 @@
 			  });
 			});
 	});
+	
+	function op(index,msg){
+		var id='s'+index;
+		msg="状态编码："+msg;
+		layer.tips(msg, '#'+id+'',{
+			  tips: [1, '#3595CC'],
+			  time: 5000
+			});
+	}
+	
 		$('#searchBtn').click(function() {
 			var formObj = $(this).parents('form');
 			formObj.submit();
