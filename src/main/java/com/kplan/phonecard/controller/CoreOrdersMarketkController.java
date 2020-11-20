@@ -248,7 +248,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 				+ " province_code:" + province_code + " province_name:" + province_name + " re_phone：" + re_phone
 				+ " phone_Num:" + phone_Num + " city:" + city + " cityName:" + cityName + " district:" + district
 				+ " districtName:" + districtName + " phone_Num:" + phone_Num + "Productcode:" + Productcode
-				+ "Productname:" + Productname);
+				+ "Productname:" + Productname+" UserName:"
+						+ super.getCurrentUserDetails().orElse(null).getBasicUserInfo().getUserRealName());
 		return this.coreOrdersManager.savaNextOrders(orderNo, userName, userid, address, ordersource, province_code,
 				province_name, re_phone, city, cityName, district, districtName, phone_Num, smsstatus, Productcode,
 				Productname);

@@ -165,6 +165,10 @@
 								th:onclick="resSet([[${item.id}]],[[${item.receiver_phone}]])"  href="javascript:;"
 								title="重置">重置
 							</a> 
+							<a style="display:block"
+								th:onclick="edit('编辑',   [['editorder?domain.id='+${item.id}]],'4','','850')"  href="javascript:;"
+								title="选号">选号
+							</a> 
 							</td>
 							<td class="td-manage" th:if="${item.order_status.code} eq 4">
 							<a style="display:block"
