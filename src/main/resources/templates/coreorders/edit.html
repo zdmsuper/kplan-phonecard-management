@@ -172,7 +172,7 @@
 <!-- 			</div> -->
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3">
-				<select style="width: 50"  class="select select-box inline" id="phoneRule" name="phoneRule" >
+				<select style="width: 30"  class="select select-box inline" id="phoneRule" name="phoneRule" >
 							<option value="">请选择</option>
 							<option th:each="channel:${phoneRuleList}"
 								th:value="${channel.rule_name}"
@@ -465,9 +465,29 @@
 			});
 			
 			$('#ordersource').change(function(){
+				var phoneRules=$('#phoneRule');
+				var ruleUrl="/coreorder/qryRuleList"
+				var procductCode=$('#ordersource').val();
+				var rule=[];
+				$.ajax({
+					type:'get',
+					async:false,
+					url:ruleUrl+"?procDuctCode="+procductCode,
+					success:function(resp){
+						rule=resp;
+					}
+				});
+				phoneRules.empty();
+				phoneRules.append("<option value=''>请选择</option>");
+				
+				$.each(rule,function(){
+					phoneRules.append('<option  value='+this.rule_name+'  >'+this.rule_name+'</option>');
+					
+				});
+				
+				
 				var phones=$('#phones');
 				var phoneRule=$('#phoneRule').val();
-				var procductCode=$('#ordersource').val();
 				var url="/coreorder/qryPhones"
 //	 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
 				var phone=[];

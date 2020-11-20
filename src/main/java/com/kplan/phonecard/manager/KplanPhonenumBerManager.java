@@ -43,8 +43,8 @@ KplanPhoneNumberService kplanPhoneService;
 		return resultList;
 	}
 	
-	public List<KplanPhoneNumber> findPhoneRuleList(){
-		String sql = "select rule_name from kplan_phone_number where province_code='81' and city_code='810' and use_not=0 and rule_name!='尾号匹配'  group by rule_name";
+	public List<KplanPhoneNumber> findPhoneRuleList(String product_code){
+		String sql = "select rule_name from kplan_phone_number where province_code='81' and city_code='810' and use_not=0 and rule_name!='尾号匹配'  and product_code='"+product_code+"'  group by rule_name";
 		List<Object> result =this.kplanPhoneService.getNativeResultList(sql);
 		List<KplanPhoneNumber> resultList = StreamEx.of(result).map(r -> {
 			KplanPhoneNumber b = new KplanPhoneNumber();

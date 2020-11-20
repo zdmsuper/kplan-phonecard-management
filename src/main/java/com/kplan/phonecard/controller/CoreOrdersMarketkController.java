@@ -94,7 +94,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		List<UnicomPostCityCode> l = this.unicompostcityManager.findByPrivoin();
 		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
 		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", product.get(0).getProcduct_code());
-		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList();
+		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(product.get(0).getProcduct_code());
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
@@ -109,7 +109,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
 		CoreOrdersMarketk order = this.coreOrdersManager.findById(query.getDomain().getId());
 		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", order.getProduct_code());
-		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList();
+		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(order.getProduct_code());
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
@@ -157,6 +157,12 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	public Object qryPhones(String phoneRule, String procductCode) {
 		Object phoneList = this.kplanPhoneManager.findPhoneList(phoneRule, procductCode);
 		return phoneList;
+	}
+	@RequestMapping(method = RequestMethod.GET, value = "qryRuleList")
+	@ResponseBody
+	public Object qryRuleList(String procDuctCode) {
+		Object ruleList=this.kplanPhoneManager.findPhoneRuleList(procDuctCode);
+		return ruleList;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "qryCity")
