@@ -46,6 +46,9 @@
 						<option value="1" th:selected="${'1'==query.keyword}">恶意订单</option>
 						<option value="2" th:selected="${'2'==query.keyword}">运营处理</option>
 					</select>
+					
+					<input type="text" class="input-text" style="width: 250px" 
+					placeholder="输入联系电话、订购电话、身份证号码" id="" name="domain.malicious_tag" th:value="${query.domain.malicious_tag}">
 					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
 						<i class="Hui-iconfont">&#xe665;</i> 查询
 					</button>

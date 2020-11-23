@@ -80,13 +80,20 @@ public class CoreordersMarketkManager extends BaseManager {
 					e.printStackTrace();
 				}
 				list.add(cb.equal(r.get("order_status"), OrderStatusEnum.SUCCESSOrderStatus));
-				if(query.getKeyword()==null) {
-				list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9003),cb.equal(r.get("track_status"), 9004)));
-				}if (query.getKeyword()!=null&&query.getKeyword().equals("1")){
-					list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9004)));
+				if (query.getKeyword() == null) {
+					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9003),
+							cb.equal(r.get("track_status"), 9004)));
 				}
-				if (query.getKeyword()!=null&&query.getKeyword().equals("2")){
+				if (query.getKeyword() != null && query.getKeyword().equals("1")) {
+					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9004)));
+				}
+				if (query.getKeyword() != null && query.getKeyword().equals("2")) {
 					list.add(cb.equal(r.get("track_status"), 9003));
+				}
+				if (query.getDomain().getMalicious_tag() != null) {
+					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getDomain().getMalicious_tag()),
+							cb.equal(r.get("order_number"), query.getDomain().getMalicious_tag()),
+							cb.equal(r.get("access_id_number"), query.getDomain().getMalicious_tag())));
 				}
 				list.add(cb.or(cb.like(r.get("malicious_tag"), "公安证件号码与证件姓名不匹配"),
 						cb.like(r.get("malicious_tag"), "zop接入本地库校验失败")));
@@ -99,16 +106,25 @@ public class CoreordersMarketkManager extends BaseManager {
 					e.printStackTrace();
 				}
 				list.add(cb.equal(r.get("order_status"), OrderStatusEnum.SUCCESSOrderStatus));
-				//list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9003),cb.equal(r.get("track_status"), 9004)));
-				
-				if(query.getKeyword()==null) {
-					list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9003),cb.equal(r.get("track_status"), 9004)));
-					}if (query.getKeyword()!=null&&query.getKeyword().equals("1")){
-						list.add(cb.or(cb.equal(r.get("track_status"), 330),cb.equal(r.get("track_status"), 9004)));
-					}
-					if (query.getKeyword()!=null&&query.getKeyword().equals("2")){
-						list.add(cb.equal(r.get("track_status"), 9003));
-					}
+				// list.add(cb.or(cb.equal(r.get("track_status"),
+				// 330),cb.equal(r.get("track_status"), 9003),cb.equal(r.get("track_status"),
+				// 9004)));
+
+				if (query.getKeyword() == null) {
+					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9003),
+							cb.equal(r.get("track_status"), 9004)));
+				}
+				if (query.getKeyword() != null && query.getKeyword().equals("1")) {
+					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9004)));
+				}
+				if (query.getKeyword() != null && query.getKeyword().equals("2")) {
+					list.add(cb.equal(r.get("track_status"), 9003));
+				}
+				if (query.getDomain().getMalicious_tag() != null) {
+					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getDomain().getMalicious_tag()),
+							cb.equal(r.get("order_number"), query.getDomain().getMalicious_tag()),
+							cb.equal(r.get("access_id_number"), query.getDomain().getMalicious_tag())));
+				}
 				list.add(cb.or(cb.like(r.get("malicious_tag"), "待确认地址"), cb.like(r.get("malicious_tag"), "恶意地址"),
 						cb.like(r.get("malicious_tag"), "配送地址冲突"), cb.like(r.get("malicious_tag"), "联系地址全是数字")));
 				try {
@@ -374,16 +390,17 @@ public class CoreordersMarketkManager extends BaseManager {
 		}
 		return null;
 	}
-	
-	public Object procOrder(String orderNo,String userName,String userid,String address,String re_phone,String proctype) {
+
+	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
+			String proctype) {
 		msgRes msg = new msgRes();
 		CoreOrdersMarketk order;
 		try {
 			String sql = "from  CoreOrdersMarketk where id='" + orderNo + "'";
 			List<CoreOrdersMarketk> l = this.coreOrderSerbice.getResultList(sql);
 			if (l != null && l.size() > 0) {
-				order= l.get(0);
-				if("1".equals(proctype)) {
+				order = l.get(0);
+				if ("1".equals(proctype)) {
 					order.setTrack_status(9001);
 					this.coreOrderSerbice.modify(order);
 					CoreOrdersMarketk k = new CoreOrdersMarketk();
@@ -414,42 +431,42 @@ public class CoreordersMarketkManager extends BaseManager {
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
 				}
-				if("2".equals(proctype)) {
+				if ("2".equals(proctype)) {
 					order.setTrack_status(9002);
 					this.coreOrderSerbice.modify(order);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
 				}
-				if("3".equals(proctype)) {
+				if ("3".equals(proctype)) {
 					order.setTrack_status(9003);
 					this.coreOrderSerbice.modify(order);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
 				}
-				if("4".equals(proctype)) {
+				if ("4".equals(proctype)) {
 					order.setTrack_status(9004);
 					this.coreOrderSerbice.modify(order);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
 				}
-				if("5".equals(proctype)) {
+				if ("5".equals(proctype)) {
 					order.setTrack_status(9005);
 					this.coreOrderSerbice.modify(order);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
 				}
-			}else {
+			} else {
 				msg.setCode("200");
 				msg.setStatus("200");
 				msg.setMsg("查询不到该订单");
-				
+
 			}
 		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 			msg.setCode("201");
 			msg.setStatus("201");
 			msg.setMsg("系统异常请联系管理员");
@@ -457,23 +474,24 @@ public class CoreordersMarketkManager extends BaseManager {
 		}
 		return JSON.toJSON(msg);
 	}
-	
-	
-	public Object uploadChangeOrders(List<Object> data,kplanscordersQuery query) {
-		msgRes msg=new msgRes();
-		int proCount=0;
-		String sql="";
+
+	public Object uploadChangeOrders(List<Object> data, kplanscordersQuery query) {
+		msgRes msg = new msgRes();
+		int proCount = 0;
+		String sql = "";
 		try {
-			for(Object l:data) {
-				List<String> list=(List<String>) l;
-				if("08-2278-2948-a0bg".equals(list.get(20))) {
-					if("成功关闭".equals(list.get(7))) {
-						sql="update core_orders_market_k set export_status=6 where mall_order_no='"+list.get(1)+"'";
+			for (Object l : data) {
+				List<String> list = (List<String>) l;
+				if ("08-2278-2948-a0bg".equals(list.get(20))) {
+					if ("成功关闭".equals(list.get(7))) {
+						sql = "update core_orders_market_k set export_status=6 where mall_order_no='" + list.get(1)
+								+ "'";
 						this.coreOrderSerbice.exeNative(sql);
 						proCount++;
 					}
-					if("新订单中心退单".equals(list.get(7))) {
-						sql="update core_orders_market_k set export_status=11 where mall_order_no='"+list.get(1)+"'";
+					if ("新订单中心退单".equals(list.get(7))) {
+						sql = "update core_orders_market_k set export_status=11 where mall_order_no='" + list.get(1)
+								+ "'";
 						this.coreOrderSerbice.exeNative(sql);
 						proCount++;
 					}
@@ -481,8 +499,8 @@ public class CoreordersMarketkManager extends BaseManager {
 			}
 			msg.setCode("200");
 			msg.setStatus("200");
-			msg.setMsg("文件上传成功,成功处理"+proCount+"笔订单");
-			logger.info("文件上传成功,成功处理"+proCount+"笔订单");
+			msg.setMsg("文件上传成功,成功处理" + proCount + "笔订单");
+			logger.info("文件上传成功,成功处理" + proCount + "笔订单");
 		} catch (Exception e) {
 			msg.setCode("999");
 			msg.setStatus("999");
