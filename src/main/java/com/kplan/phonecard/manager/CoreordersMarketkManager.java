@@ -459,7 +459,7 @@ public class CoreordersMarketkManager extends BaseManager {
 	}
 	
 	
-	public String uploadChangeOrders(List<Object> data,kplanscordersQuery query) {
+	public Object uploadChangeOrders(List<Object> data,kplanscordersQuery query) {
 		msgRes msg=new msgRes();
 		int proCount=0;
 		String sql="";
@@ -481,14 +481,14 @@ public class CoreordersMarketkManager extends BaseManager {
 			}
 			msg.setCode("200");
 			msg.setStatus("200");
-			msg.setMsg("文件上传成功");
+			msg.setMsg("文件上传成功,成功处理"+proCount+"笔订单");
 			logger.info("文件上传成功,成功处理"+proCount+"笔订单");
 		} catch (Exception e) {
 			msg.setCode("999");
 			msg.setStatus("999");
 			msg.setMsg("系统异常，请稍后重试");
-			return JSON.toJSONString(msg);
+			return JSON.toJSON(msg);
 		}
-		return JSON.toJSONString(msg);
+		return JSON.toJSON(msg);
 	}
 }
