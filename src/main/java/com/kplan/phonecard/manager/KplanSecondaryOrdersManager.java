@@ -71,6 +71,10 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 		
 	}
 	
+	
+	
+	
+	
 	public Page<KplanSecondaryOrders> qrySeconadryorDer(@NotNull KplanSecondaryOrdersQuery query, Pageable pageable){
 		Specification<KplanSecondaryOrders> spec=new Specification<KplanSecondaryOrders>() {
 			@Override

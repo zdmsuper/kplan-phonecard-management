@@ -31,6 +31,7 @@ import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.enums.ExportStatusEnum;
 import com.kplan.phonecard.enums.OrderStatusEnum;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
+import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.utils.DateUtils;
 import com.kplan.phonecard.utils.SqeUtils;
@@ -457,4 +458,37 @@ public class CoreordersMarketkManager extends BaseManager {
 		return JSON.toJSON(msg);
 	}
 	
+	
+	public String uploadChangeOrders(List<Object> data,kplanscordersQuery query) {
+		msgRes msg=new msgRes();
+		int proCount=0;
+		String sql="";
+		try {
+			for(Object l:data) {
+				List<String> list=(List<String>) l;
+				if("08-2278-2948-a0bg".equals(list.get(20))) {
+					if("成功关闭".equals(list.get(7))) {
+						sql="update core_orders_market_k set export_status=6 where mall_order_no='"+list.get(1)+"'";
+						this.coreOrderSerbice.exeNative(sql);
+						proCount++;
+					}
+					if("新订单中心退单".equals(list.get(7))) {
+						sql="update core_orders_market_k set export_status=11 where mall_order_no='"+list.get(1)+"'";
+						this.coreOrderSerbice.exeNative(sql);
+						proCount++;
+					}
+				}
+			}
+			msg.setCode("200");
+			msg.setStatus("200");
+			msg.setMsg("文件上传成功");
+			logger.info("文件上传成功,成功处理"+proCount+"笔订单");
+		} catch (Exception e) {
+			msg.setCode("999");
+			msg.setStatus("999");
+			msg.setMsg("系统异常，请稍后重试");
+			return JSON.toJSONString(msg);
+		}
+		return JSON.toJSONString(msg);
+	}
 }

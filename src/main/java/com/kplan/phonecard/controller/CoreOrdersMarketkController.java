@@ -365,4 +365,16 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 			String proctype) {
 		return this.coreOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype);
 	}
+	@RequestMapping("/changeOrders")
+	public String changeOrders() {
+		return "coreorders/changeOrders";
+	}
+	
+
+	@RequestMapping(value = "/uploadChangeOrders", method = RequestMethod.POST)
+	@ResponseBody
+	public String uploadChangeOrders(@RequestParam("file") MultipartFile file, kplanscordersQuery query) throws IOException {
+		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 2));
+		return coreOrdersManager.uploadChangeOrders(data, query);
+	}
 }
