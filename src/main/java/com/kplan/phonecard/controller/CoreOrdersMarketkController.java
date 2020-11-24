@@ -348,7 +348,13 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@RequestMapping("/procedit")
 	public String procedit(Map<String, Object> map, CoreOrdersMarketkQuery query, String id) {
 		CoreOrdersMarketk order = this.coreOrdersManager.findById(query.getDomain().getId());
+		List<UnicomPostCityCode> province = this.unicompostcityManager.findByPrivoin();
+		List<UnicomPostCityCode> city =this.unicompostcityManager.findBycity(order.getProvince_code());
+		List<UnicomPostCityCode> disr =this.unicompostcityManager.qryDistrict(order.getCity_code());
 		map.put("order", order);
+		map.put("province", province);
+		map.put("city", city);
+		map.put("disr", disr);
 		return "coreorders/procedit";
 	}
 
@@ -362,8 +368,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@RequestMapping("/procOrder")
 	@ResponseBody
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
-			String proctype) {
-		return this.coreOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype);
+			String proctype,String province,String provinceCode,String city,String cityCode,String district,String districtCode) {
+		return this.coreOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,province, provinceCode, city, cityCode, district, districtCode);
 	}
 	@RequestMapping("/changeOrders")
 	public String changeOrders() {

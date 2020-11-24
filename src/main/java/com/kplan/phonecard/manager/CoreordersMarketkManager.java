@@ -90,6 +90,9 @@ public class CoreordersMarketkManager extends BaseManager {
 				if (query.getKeyword() != null && query.getKeyword().equals("2")) {
 					list.add(cb.equal(r.get("track_status"), 9003));
 				}
+				if (query.getKeyword() != null && query.getKeyword().equals("3")) {
+					list.add(cb.equal(r.get("track_status"), 9004));
+				}
 				if (query.getDomain().getMalicious_tag() != null) {
 					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getDomain().getMalicious_tag()),
 							cb.equal(r.get("order_number"), query.getDomain().getMalicious_tag()),
@@ -119,6 +122,9 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if (query.getKeyword() != null && query.getKeyword().equals("2")) {
 					list.add(cb.equal(r.get("track_status"), 9003));
+				}
+				if (query.getKeyword() != null && query.getKeyword().equals("3")) {
+					list.add(cb.equal(r.get("track_status"), 9004));
 				}
 				if (query.getDomain().getMalicious_tag() != null) {
 					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getDomain().getMalicious_tag()),
@@ -392,7 +398,7 @@ public class CoreordersMarketkManager extends BaseManager {
 	}
 
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
-			String proctype) {
+			String proctype,String province,String provinceCode,String city,String cityCode,String district,String districtCode) {
 		msgRes msg = new msgRes();
 		CoreOrdersMarketk order;
 		try {
@@ -409,13 +415,13 @@ public class CoreordersMarketkManager extends BaseManager {
 					k.setAccess_id_number(userid);
 					k.setReceiver_address(address);
 					k.setOrder_source("标记订单");
-					k.setProvince_code(order.getProvince_code());
-					k.setProvince_name(order.getProvince_name());
+					k.setProvince_code(provinceCode);
+					k.setProvince_name(province);
 					k.setReceiver_phone(re_phone);
-					k.setCity_code(order.getCity_code());
-					k.setCity_name(order.getCity_name());
-					k.setDistrict_code(order.getDistrict_code());
-					k.setDistrict_name(order.getDistrict_name());
+					k.setCity_code(cityCode);
+					k.setCity_name(city);
+					k.setDistrict_code(districtCode);
+					k.setDistrict_name(district);
 					k.setInitial_status(20);
 					k.setOrder_status(OrderStatusEnum.InitOrderStatus);
 					k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
