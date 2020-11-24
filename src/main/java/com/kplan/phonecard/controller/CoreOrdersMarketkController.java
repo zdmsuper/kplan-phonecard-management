@@ -47,6 +47,7 @@ import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.manager.kplanscordersManager;
 import com.kplan.phonecard.query.ManagerInfoQuery;
+import com.kplan.phonecard.query.UnicomPostCityCodeQuery;
 import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.KplanChannelNumberDetailQuery;
@@ -382,5 +383,32 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	public Object uploadChangeOrders(@RequestParam("file") MultipartFile file, kplanscordersQuery query) throws IOException {
 		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 2));
 		return coreOrdersManager.uploadChangeOrders(data, query);
+	}
+	@RequestMapping("/city")
+	public String city(Map<String, Object> map,UnicomPostCityCodeQuery query) {
+		List<UnicomPostCityCode> province = this.unicompostcityManager.findByPrivoin();
+		List<UnicomPostCityCode> listCode=this.unicompostcityManager.city();
+		map.put("province", province);
+		map.put("listCode", listCode);
+		map.put("query", query);
+		return "coreorders/city";
+	}
+	
+	@RequestMapping("/cityDetail")
+	public String cityDetail(Map<String, Object> map,UnicomPostCityCodeQuery query) {
+		List<UnicomPostCityCode> province = this.unicompostcityManager.findByPrivoin();
+		List<UnicomPostCityCode> listCode=this.unicompostcityManager.cityDetail(query.getDomain().getProvince_code(), query.getDomain().getCity_code());
+		if(query.getDomain().getProvince_code()!=null) {
+			List<UnicomPostCityCode> city =this.unicompostcityManager.findBycity(query.getDomain().getProvince_code());
+			map.put("city", city);
+		}
+		if(query.getDomain().getCity_code()!=null) {
+			List<UnicomPostCityCode> disr =this.unicompostcityManager.qryDistrict(query.getDomain().getCity_code());
+			map.put("disr", disr);
+		}
+		map.put("province", province);
+		map.put("listCode", listCode);
+		map.put("query", query);
+		return "coreorders/city";
 	}
 }
