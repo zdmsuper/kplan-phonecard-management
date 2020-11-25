@@ -370,7 +370,9 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@ResponseBody
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
 			String proctype,String province,String provinceCode,String city,String cityCode,String district,String districtCode) {
-		return this.coreOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,province, provinceCode, city, cityCode, district, districtCode);
+		ManagerInfo managerInfo=super.getCurrentUserDetails().orElse(null);
+		
+		return this.coreOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,province, provinceCode, city, cityCode, district, districtCode,managerInfo);
 	}
 	@RequestMapping("/changeOrders")
 	public String changeOrders() {

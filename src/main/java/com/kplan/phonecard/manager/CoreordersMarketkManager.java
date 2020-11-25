@@ -23,8 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
+import com.kplan.phonecard.domain.CoreordersTrackLog;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.Kplanprocducts;
+import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.OrderRowModel;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.msgRes;
@@ -33,6 +35,7 @@ import com.kplan.phonecard.enums.OrderStatusEnum;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
+import com.kplan.phonecard.service.CoreordersTrackLogService;
 import com.kplan.phonecard.utils.DateUtils;
 import com.kplan.phonecard.utils.SqeUtils;
 
@@ -44,6 +47,8 @@ public class CoreordersMarketkManager extends BaseManager {
 	CoreordersMarketkService coreOrderSerbice;
 	@Autowired
 	UnicomPostcityCodeManager unicomPostcityCodeManager;
+	@Autowired
+	CoreordersTrackLogService logService;
 
 	public Page<CoreOrdersMarketk> findOrder(@NotNull CoreOrdersMarketkQuery query, Pageable pageable) {
 		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
@@ -398,12 +403,14 @@ public class CoreordersMarketkManager extends BaseManager {
 	}
 
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
-			String proctype,String province,String provinceCode,String city,String cityCode,String district,String districtCode) {
+			String proctype, String province, String provinceCode, String city, String cityCode, String district,
+			String districtCode, ManagerInfo managerInfo) {
 		msgRes msg = new msgRes();
 		CoreOrdersMarketk order;
 		try {
 			String sql = "from  CoreOrdersMarketk where id='" + orderNo + "'";
 			List<CoreOrdersMarketk> l = this.coreOrderSerbice.getResultList(sql);
+			CoreordersTrackLog log;
 			if (l != null && l.size() > 0) {
 				order = l.get(0);
 				if ("1".equals(proctype)) {
@@ -431,8 +438,15 @@ public class CoreordersMarketkManager extends BaseManager {
 					k.setProduct_name(order.getProduct_name());
 					k.setBusiness_type("K计划");
 					k.setDifferent_nets(-1);
-					k.setId(SqeUtils.getBILIBILISqeNo("CQBACK"));
+					k.setId("CQBACK"+order.getOrder_no());
+					k.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.add(k);
+					log=new CoreordersTrackLog();
+					log.setDelivery_order_no(order.getOrder_no());
+					log.setCreate_time(new Date());
+					log.setLog_info("9001");
+					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					this.logService.add(log);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -442,11 +456,23 @@ public class CoreordersMarketkManager extends BaseManager {
 					this.coreOrderSerbice.modify(order);
 					msg.setCode("200");
 					msg.setStatus("200");
+					log=new CoreordersTrackLog();
+					log.setDelivery_order_no(order.getOrder_no());
+					log.setCreate_time(new Date());
+					log.setLog_info("9002");
+					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					this.logService.add(log);
 					msg.setMsg("订单处理成功");
 				}
 				if ("3".equals(proctype)) {
 					order.setTrack_status(9003);
 					this.coreOrderSerbice.modify(order);
+					log=new CoreordersTrackLog();
+					log.setDelivery_order_no(order.getOrder_no());
+					log.setCreate_time(new Date());
+					log.setLog_info("9003");
+					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					this.logService.add(log);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -454,6 +480,12 @@ public class CoreordersMarketkManager extends BaseManager {
 				if ("4".equals(proctype)) {
 					order.setTrack_status(9004);
 					this.coreOrderSerbice.modify(order);
+					log=new CoreordersTrackLog();
+					log.setDelivery_order_no(order.getOrder_no());
+					log.setCreate_time(new Date());
+					log.setLog_info("9004");
+					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					this.logService.add(log);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -461,6 +493,13 @@ public class CoreordersMarketkManager extends BaseManager {
 				if ("5".equals(proctype)) {
 					order.setTrack_status(9005);
 					this.coreOrderSerbice.modify(order);
+					
+					log=new CoreordersTrackLog();
+					log.setDelivery_order_no(order.getOrder_no());
+					log.setCreate_time(new Date());
+					log.setLog_info("9005");
+					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					this.logService.add(log);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
