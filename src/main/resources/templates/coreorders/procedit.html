@@ -58,14 +58,14 @@
 				<div class="formControls col-xs-8 col-sm-9">
 					<input type="text" class="input-text"
 						th:value="${order.mall_order_no}" placeholder="" id=""
-						readonly="readonly" name="orderNo">
+						readonly="readonly" name="">
 				</div>
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
 					class="c-red">*</span>用户姓名：</label>
 				<div class="formControls col-xs-8 col-sm-9">
-					<input type="hidden" th:value="${order.id}" id="orderNo"> <input
+					<input type="hidden" th:value="${order.id}" id="orderNo" name="orderNo"> <input
 						type="text" class="input-text" th:value="${order.receiver_name}"
 						placeholder="" id="userName" name="userName">
 				</div>
@@ -328,44 +328,48 @@
 									});
 									return;
 								}
+								
+								
+								$.ajax({
+									type:'post',
+									async:true,
+									url:url,
+									data: formData, 
+								  	cache: false, 
+								  	processData: false, 
+								  	contentType: false, 
+									success : function(resp) {
+										if (resp.status == 200) {
+											layer.msg(resp.msg, {
+												icon : 1,
+												time : 3000
+											//2秒关闭（如果不配置，默认是3秒）
+											}, function() {
+												window.parent.location
+														.reload()
 
-								layer.confirm(submitMsg, {
-									btn : [ '确定提交', '取消' ]
-								//按钮
-								}, function() {
-									$.ajax({
-										type:'post',
-										async:true,
-										url:url,
-										data: formData, 
-									  	cache: false, 
-									  	processData: false, 
-									  	contentType: false, 
-										success : function(resp) {
-											if (resp.status == 200) {
-												layer.msg(resp.msg, {
-													icon : 1,
-													time : 3000
-												//2秒关闭（如果不配置，默认是3秒）
-												}, function() {
-													window.parent.location
-															.reload()
+											});
+										} else {
 
-												});
-											} else {
-
-												parent.layer.alert(resp.msg,
-														'提示信息')
-											}
-
+											parent.layer.alert(resp.msg,
+													'提示信息')
 										}
-									});
-								}, function() {
-									layer.msg('订单已取消提交', {
-										time : 1000, //20s后自动关闭
-										//					    btn: ['明白了', '']
-									});
+
+									}
 								});
+								
+
+// 								layer.confirm(submitMsg, {
+// 									btn : [ '确定提交', '取消' ]
+// 								//按钮
+// 								}, function() {
+									
+// 								}, function() {
+// 									layer.msg('订单已取消提交', {
+// 										time : 1000, //20s后自动关闭
+// 										//					    btn: ['明白了', '']
+// 									});
+// 								});
 
 							});
 

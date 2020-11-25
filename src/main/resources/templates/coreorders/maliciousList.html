@@ -118,10 +118,11 @@
 							<td th:text="${item.export_status.desc}"></td>
 							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.malicious_tag}"></td>
-							<td th:if="${item.track_status==330 || item.track_status==9004}"  th:id="s+${item.id}">
+							<td th:if="${item.track_status==330 || item.track_status==9004||item.track_status==9006}"  th:id="s+${item.id}">
 							<a th:id="${item.id}" th:onmousemove="op([[${item.id}]],[[${item.track_status}]])">
-							<span th:if="${item.track_status==9004}" style="color: red;">二次联系</span>
+							<span th:if="${item.track_status==9004}" style="color: red;">二次回访</span>
 							<span th:if="${item.track_status==330}" style="color: red;">客服处理</span>
+							<span th:if="${item.track_status==9006}" style="color: red;">三次回访</span>
 							</a>
 							</td>
 							<td th:if="${item.track_status==9003}" th:id="s+${item.id}">
@@ -137,13 +138,13 @@
 							</td>
 							<td class="td-manage" th:if="${item.track_status} eq 9004">
 							<a style="display:block;color:green;"
-								th:onclick="edit('编辑',[['procedit?domain.id='+${item.id}]],'4','','500')"  href="javascript:;"
+								th:onclick="edit('编辑',[['procedit?domain.id='+${item.id}]],'4','','650')"  href="javascript:;"
 								title="处理">处理
 							</a> 
 							</td>
 							<td class="td-manage" th:if="${item.track_status} eq 9003">
 							<a style="display:block;color:red;"
-								th:onclick="edit('编辑',[['operate?domain.id='+${item.id}]],'4','','500')"  href="javascript:;"
+								th:onclick="edit('编辑',[['operate?domain.id='+${item.id}]],'4','','650')"  href="javascript:;"
 								title="关闭">关闭
 							</a> 
 							</td>
