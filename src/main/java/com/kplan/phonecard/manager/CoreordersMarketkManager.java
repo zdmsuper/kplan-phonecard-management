@@ -98,6 +98,9 @@ public class CoreordersMarketkManager extends BaseManager {
 				if (query.getKeyword() != null && query.getKeyword().equals("3")) {
 					list.add(cb.equal(r.get("track_status"), 9004));
 				}
+				if (query.getKeyword() != null && query.getKeyword().equals("4")) {
+					list.add(cb.equal(r.get("track_status"), 9006));
+				}
 				if (query.getDomain().getMalicious_tag() != null) {
 					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getDomain().getMalicious_tag()),
 							cb.equal(r.get("order_number"), query.getDomain().getMalicious_tag()),
@@ -130,6 +133,9 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if (query.getKeyword() != null && query.getKeyword().equals("3")) {
 					list.add(cb.equal(r.get("track_status"), 9004));
+				}
+				if (query.getKeyword() != null && query.getKeyword().equals("4")) {
+					list.add(cb.equal(r.get("track_status"), 9006));
 				}
 				if (query.getDomain().getMalicious_tag() != null) {
 					list.add(cb.or(cb.equal(r.get("receiver_phone"), query.getDomain().getMalicious_tag()),
@@ -407,7 +413,17 @@ public class CoreordersMarketkManager extends BaseManager {
 			String districtCode, ManagerInfo managerInfo) {
 		msgRes msg = new msgRes();
 		CoreOrdersMarketk order;
+		UnicomPostCityCode dir = null;
 		try {
+			if(StringUtils.trimToNull(districtCode)!=null) {
+				 dir=this.unicomPostcityCodeManager.findById(districtCode);
+				 if(dir==null) {
+					msg.setCode("223");
+					msg.setStatus("223");
+					msg.setMsg("获取区县地市编码出错！");
+					return JSON.toJSON(msg);
+				 }
+			}
 			String sql = "from  CoreOrdersMarketk where id='" + orderNo + "'";
 			List<CoreOrdersMarketk> l = this.coreOrderSerbice.getResultList(sql);
 			CoreordersTrackLog log;
@@ -422,13 +438,13 @@ public class CoreordersMarketkManager extends BaseManager {
 					k.setAccess_id_number(userid);
 					k.setReceiver_address(address);
 					k.setOrder_source("标记订单");
-					k.setProvince_code(provinceCode);
-					k.setProvince_name(province);
+					k.setProvince_code(dir.getProvince_code());
+					k.setProvince_name(dir.getProvince_name());
 					k.setReceiver_phone(re_phone);
-					k.setCity_code(cityCode);
-					k.setCity_name(city);
-					k.setDistrict_code(districtCode);
-					k.setDistrict_name(district);
+					k.setCity_code(dir.getCity_code());
+					k.setCity_name(dir.getCity_name());
+					k.setDistrict_code(dir.getDistrict_code());
+					k.setDistrict_name(dir.getDistrict_name());
 					k.setInitial_status(20);
 					k.setOrder_status(OrderStatusEnum.InitOrderStatus);
 					k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
@@ -440,6 +456,11 @@ public class CoreordersMarketkManager extends BaseManager {
 					k.setDifferent_nets(-1);
 					k.setId("CQBACK"+order.getOrder_no());
 					k.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
+						k.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单办理");
+					}else {
+						k.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单办理");
+					}
 					this.coreOrderSerbice.add(k);
 					log=new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
@@ -453,6 +474,11 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("2".equals(proctype)) {
 					order.setTrack_status(9002);
+					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
+						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单不办理");
+					}else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单不办理");
+					}
 					this.coreOrderSerbice.modify(order);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -466,6 +492,11 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("3".equals(proctype)) {
 					order.setTrack_status(9003);
+					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
+						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单转运营");
+					}else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单转运营");
+					}
 					this.coreOrderSerbice.modify(order);
 					log=new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
@@ -479,6 +510,11 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("4".equals(proctype)) {
 					order.setTrack_status(9004);
+					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
+						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单转二次回访");
+					}else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单转二次回访");
+					}
 					this.coreOrderSerbice.modify(order);
 					log=new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
@@ -492,12 +528,35 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("5".equals(proctype)) {
 					order.setTrack_status(9005);
+					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
+						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单关闭");
+					}else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单关闭");
+					}
 					this.coreOrderSerbice.modify(order);
 					
 					log=new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
 					log.setLog_info("9005");
+					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					this.logService.add(log);
+					msg.setCode("200");
+					msg.setStatus("200");
+					msg.setMsg("订单处理成功");
+				}
+				if("6".equals(proctype)) {
+					order.setTrack_status(9006);
+					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
+						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单转三次联系");
+					}else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单转三次联系");
+					}
+					this.coreOrderSerbice.modify(order);
+					log=new CoreordersTrackLog();
+					log.setDelivery_order_no(order.getOrder_no());
+					log.setCreate_time(new Date());
+					log.setLog_info("9006");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
 					msg.setCode("200");

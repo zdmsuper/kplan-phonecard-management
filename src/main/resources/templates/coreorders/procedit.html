@@ -50,7 +50,7 @@
 				<div class="formControls col-xs-8 col-sm-9">
 					<input type="text" class="input-text"
 						th:value="${order.mall_order_no}" placeholder="" id=""
-						readonly="readonly" name="">
+						readonly="readonly" name="orderNo">
 				</div>
 			</div>
 			<div class="row cl">
@@ -95,20 +95,20 @@
 
 
 					<select style="width: 50" id="province_code"
-						class="select select-box inline" name="province_code">
+						class="select select-box inline" name="provinceCode">
 						<option value="">请选择</option>
 						<option th:each="channel:${province}"
 							th:value="${channel.province_code}"
 							th:text="${channel.province_name}"
 							th:selected="${order.province_code==channel.province_code}">&nbsp;</option>
 					</select> <select class="select select-box inline" style="width: 50"
-						id="city" name="city">
+						id="city" name="cityCode">
 						<option value="">请选择</option>
 						<option th:each="channel:${city}" th:value="${channel.city_code}"
 							th:text="${channel.city_name}"
 							th:selected="${order.city_code==channel.city_code}"></option>
 					</select> <select style="width: 50" class="select select-box inline"
-						id="district" name="district">
+						id="district" name="districtCode">
 						<option value="">请选择</option>
 						<option th:each="channel:${disr}" th:value="${channel.id}"
 							th:text="${channel.district_name}"
@@ -127,7 +127,14 @@
 			</div>
 
 			<div></div>
-
+		<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>短信：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="radio" class="radio-box" name="smsstatus"  value="1">发送
+					<input type="radio" class="radio-box" name="smsstatus" checked="checked" value="2">不发送
+				</div>
+			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
 					class="c-red">*</span>联系号码：</label>
@@ -146,8 +153,21 @@
 						<option value="1">办理</option>
 						<option value="2">不办理</option>
 						<option value="3">转运营</option>
-						<option value="4">二次联系</option>
+						<option value="4">二次回访</option>
+						<option value="6">三次回访</option>
 					</select>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3">备注：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<textarea name="remarks" id="remark" cols="" rows="" 
+						class="textarea" placeholder="说点什么...最少输入10个字符"
+						onKeyUp="$.Huitextarealength(this,100)" th:text="${order.remarks}">
+						</textarea>
+					<p class="textarea-numberbar">
+						<em class="textarea-length">0</em>/100
+					</p>
 				</div>
 			</div>
 
@@ -248,7 +268,7 @@
 			$('#saveBtn')
 					.click(
 							function() {
-
+								var formData = new FormData($('#form')[0]); 
 								var url = "/coreorder/procOrder";
 								var orderNo = $('#orderNo').val();
 								var userName = $('#userName').val()
@@ -271,6 +291,8 @@
 								var proctype = $('#proctype').val();
 								var proctypeText = $('#proctype').find(
 										"option:selected").text();
+								var remark=$('#remark').val();
+								alert(remark)
 								var pramStr = "orderNo=" + orderNo
 										+ "&userName=" + userName + "&userid="
 										+ userid + "&address=" + address
@@ -282,7 +304,7 @@
 										+ city + "&province=" + province
 										+ "&provinceCode=" + provinceCode
 										+ "&district=" + district
-										+ "&districtCode=" + districtCode;
+										+ "&districtCode=" + districtCode+"&remark="+remark;
 								var submitMsg = "用户名：" + userName
 										+ "<br/> 身份证：" + userid + "<br/> 地区："
 										+ province + "&nbsp;" + city + "&nbsp;"
@@ -313,9 +335,13 @@
 								//按钮
 								}, function() {
 									$.ajax({
-										type : 'get',
-										async : false,
-										url : url + "?" + pramStr,
+										type:'post',
+										async:true,
+										url:url,
+										data: formData, 
+									  	cache: false, 
+									  	processData: false, 
+									  	contentType: false, 
 										success : function(resp) {
 											if (resp.status == 200) {
 												layer.msg(resp.msg, {
