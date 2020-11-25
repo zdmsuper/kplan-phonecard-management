@@ -85,7 +85,13 @@
 							<td><input type="checkbox" value="1" name=""
 								th:value="${item.id}"></td>
 <!-- 							<td th:text="${item.id}">1</td> -->
-							<td th:text="${item.receiver_name}"></td>
+							<td  th:id="t+${item.id}">
+							<a style="display:block" th:id="${item.id}"
+								  href="javascript:;"
+								th:title="${item.fail_reasons}"  th:onmousemove="opp([[${item.id}]],[[${item.fail_reasons}]])">
+								<span  style="color:blue;;font-weight: 600" th:text="${item.receiver_name}"></span>
+								</a>
+							</td>
 							<td th:text="${item.receiver_phone}"></td>
 							<td th:text="${item.order_number}"></td>
 							<td th:text="${item.province_name}"></td>
@@ -175,6 +181,14 @@
 		layer.tips(msg, '#'+id+'',{
 			  tips: [1, '#3595CC'],
 			  time: 5000
+			});
+	}
+	
+	function opp(index,msg){
+		var id='t'+index;
+		layer.tips(msg, '#'+id+'',{
+			  tips: [1, '#3595CC'],
+			  time: 8000
 			});
 	}
 	
