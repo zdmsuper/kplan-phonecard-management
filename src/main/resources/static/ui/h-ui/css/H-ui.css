@@ -1298,7 +1298,7 @@ table.dataTable thead .sorting_desc {background-image:url(../images/dataTable/so
 */
 /*3.4.1 input,textarea 文本域 文本区域*/
 /*默认状态*/
-.input-text,.textarea{box-sizing:border-box;border:solid 1px #ddd;width:100%;
+.input-text,.textarea{box-sizing:border-box;border:solid 1px #ddd;width:60%;
     -webkit-transition:all 0.2s linear 0s;
        -moz-transition:all 0.2s linear 0s;
          -o-transition:all 0.2s linear 0s;
@@ -1850,11 +1850,12 @@ squid.swing.jselect()
 .ncb-down .ncb_ico{background-position: 1px center}
 .ncb_btn_hover{border:1px solid #9dc7e7;background-color:#dff2fc;background:-moz-linear-gradient(top,rgb(255,255,255) 0%,rgb(210,237,250) 50%,rgb(255,255,255) 100%)}
 .ncb_btn_selected{border:1px solid #6198c2;background-color:#aee1fb;background:-moz-linear-gradient(top,rgb(255,255,255) 0%,rgb(174,225,251) 50%,rgb(255,255,255) 100%)}
-.input-text[type="number"]{width:80px}
+.input-text[type="number"]{width:60px}
+/* .input-text1[type="number"]{width:60px} */
 
 /*3.4.5 spinner 控件*/
 .spinner{display:block;overflow:hidden;width:100px; position:relative; padding-left:29px; padding-right:29px;}
-.spinner .input-text{height:30px; text-align:center; width:100%}
+.spinner .input-text{height:30px; text-align:center; width:60%}
 .spinner a{display:inline-block; position:absolute;top:0; bottom:0; height:28px;line-height:28px;width:28px;cursor:pointer;outline:0; text-decoration:none;text-align:center;font-size:16px;border:1px solid #ddd;background-color:#f7f7f7;}
 .spinner a:hover{ text-decoration:none}
 .spinner a i{ font-style:normal;}

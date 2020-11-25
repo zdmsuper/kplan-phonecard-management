@@ -87,10 +87,10 @@ public class CoreordersMarketkManager extends BaseManager {
 				list.add(cb.equal(r.get("order_status"), OrderStatusEnum.SUCCESSOrderStatus));
 				if (query.getKeyword() == null) {
 					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9003),
-							cb.equal(r.get("track_status"), 9004)));
+							cb.equal(r.get("track_status"), 9004),cb.equal(r.get("track_status"), 9006)));
 				}
 				if (query.getKeyword() != null && query.getKeyword().equals("1")) {
-					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9004)));
+					list.add(cb.equal(r.get("track_status"), 330));
 				}
 				if (query.getKeyword() != null && query.getKeyword().equals("2")) {
 					list.add(cb.equal(r.get("track_status"), 9003));
@@ -123,10 +123,10 @@ public class CoreordersMarketkManager extends BaseManager {
 
 				if (query.getKeyword() == null) {
 					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9003),
-							cb.equal(r.get("track_status"), 9004)));
+							cb.equal(r.get("track_status"), 9004),cb.equal(r.get("track_status"), 9006)));
 				}
 				if (query.getKeyword() != null && query.getKeyword().equals("1")) {
-					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9004)));
+					list.add(cb.equal(r.get("track_status"), 330));
 				}
 				if (query.getKeyword() != null && query.getKeyword().equals("2")) {
 					list.add(cb.equal(r.get("track_status"), 9003));
