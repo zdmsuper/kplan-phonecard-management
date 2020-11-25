@@ -1,7 +1,9 @@
 package com.kplan.phonecard.service;
 
-import com.kplan.phonecard.domain.CoreordersTrackLog;
+import org.springframework.stereotype.Service;
 
+import com.kplan.phonecard.domain.CoreordersTrackLog;
+@Service
 public class CoreordersTrackLogService extends BaseService<CoreordersTrackLog>{
 
 	public CoreordersTrackLogService() {
