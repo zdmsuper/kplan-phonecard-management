@@ -458,7 +458,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 				        		 e.setOrderSurce(o.getOrder_source());
 				        		 e.setPhone(o.getOrder_number());
 				        		 e.setProChannel(o.getExternal_company());
-				        		 e.setTracTime(o.getTrack_time());
+				        		 e.setTracTime(o.getTracktime());
 				        		 e.setProvicnName(o.getProvince_name());
 				        		 e.setUserId(o.getAccess_id_number());
 				        		 e.setUserName(o.getAccess_name());
@@ -473,7 +473,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 			        		 e.setOrderSurce(k.getOrder_source());
 			        		 e.setPhone(k.getOrder_number());
 			        		 e.setProChannel(k.getExternal_company());
-			        		 e.setTracTime(k.getTrack_time());
+			        		 e.setTracTime(k.getTracktime());
 			        		 e.setProvicnName(k.getProvince_name());
 			        		 e.setUserId(k.getAccess_id_number());
 			        		 e.setUserName(k.getAccess_name());
@@ -490,7 +490,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 			        		 e.setOrderSurce(k.getOrder_source());
 			        		 e.setPhone(k.getOrder_number());
 			        		 e.setProChannel(k.getExternal_company());
-			        		 e.setTracTime(k.getTrack_time());
+			        		 e.setTracTime(k.getTracktime());
 			        		 e.setProvicnName(k.getProvince_name());
 			        		 e.setUserId(k.getAccess_id_number());
 			        		 e.setUserName(k.getAccess_name());

@@ -92,7 +92,7 @@ public class CoreOrdersMarketk extends  BaseDomain{
 	private Integer track_status;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "track_time", length = 7)
-	private Date 	track_time;
+	private Date 	tracktime;
 	@Column(name = "operator", unique = true, length = 32)
 	private String operator;
 	@Column(name = "initial_status", precision = 22, scale = 0)
@@ -349,12 +349,16 @@ public class CoreOrdersMarketk extends  BaseDomain{
 	public void setTrack_status(Integer track_status) {
 		this.track_status = track_status;
 	}
-	public Date getTrack_time() {
-		return track_time;
+	public Date getTracktime() {
+		return tracktime;
 	}
-	public void setTrack_time(Date track_time) {
-		this.track_time = track_time;
+
+
+	public void setTracktime(Date tracktime) {
+		this.tracktime = tracktime;
 	}
+
+
 	public String getOperator() {
 		return operator;
 	}

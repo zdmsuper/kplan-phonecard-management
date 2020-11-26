@@ -250,9 +250,9 @@
 				}
 				
 				
-				layer.confirm(submitMsg, {
-					  btn: ['确定提交','取消'] //按钮
-					}, function(){
+// 				layer.confirm(submitMsg, {
+// 					  btn: ['确定提交','取消'] //按钮
+// 					}, function(){
 						$.ajax({
 							type:'get',
 							async:false,
@@ -274,12 +274,12 @@
 							
 							}
 						});
-					}, function(){
-					  layer.msg('订单已取消提交', {
-					    time: 1000, //20s后自动关闭
-//					    btn: ['明白了', '']
-					  });
-					});
+// 					}, function(){
+// 					  layer.msg('订单已取消提交', {
+// 					    time: 1000, //20s后自动关闭
+// //					    btn: ['明白了', '']
+// 					  });
+// 					});
 				
 
 			});

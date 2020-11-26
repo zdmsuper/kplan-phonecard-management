@@ -35,6 +35,8 @@
 	</nav>
 	<div class="page-container">
 		<form th:action="@{/coreorder/maliciousList}" id="form" method="get" autocomplete="off">
+			<input type="hidden" name="sortName" value="tracktime"/>
+				<input type="hidden" name="sortOrder" value="desc"/>
 			<div class="text">
 				创建时间： <input type="text"
 					id="datemin" class="input-text date" name="createdDateStart"
@@ -128,7 +130,7 @@
 							
 							<td th:text="${item.export_status.desc}"></td>
 							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
-							<td th:text="${#dates.format(item.track_time,'yyyy-MM-dd HH:mm:ss')}"></td>
+							<td th:text="${#dates.format(item.tracktime,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.malicious_tag}"></td>
 							<td th:if="${item.track_status==330 || item.track_status==9004||item.track_status==9006}"  th:id="s+${item.id}">
 							<a th:id="${item.id}">
@@ -149,7 +151,7 @@
 								title="处理">处理
 							</a> 
 							</td>
-							<td class="td-manage" th:if="${item.track_status} eq 9004">
+							<td class="td-manage" th:if="${item.track_status==9004 || item.track_status==9006}">
 							<a style="display:block;color:green;"
 								th:onclick="edit('编辑',[['procedit?domain.id='+${item.id}]],'4','','700')"  href="javascript:;"
 								title="处理">处理
