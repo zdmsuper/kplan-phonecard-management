@@ -431,7 +431,7 @@ public class CoreordersMarketkManager extends BaseManager {
 				order = l.get(0);
 				if ("1".equals(proctype)) {
 					order.setTrack_status(9001);
-					order.setTrack_time(new Date());
+					order.setTracktime(new Date());
 					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
 					CoreOrdersMarketk k = new CoreOrdersMarketk();
@@ -483,7 +483,7 @@ public class CoreordersMarketkManager extends BaseManager {
 					} else {
 						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单不办理");
 					}
-					order.setTrack_time(new Date());
+					order.setTracktime(new Date());
 					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
 					msg.setCode("200");
@@ -504,7 +504,7 @@ public class CoreordersMarketkManager extends BaseManager {
 					} else {
 						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转运营");
 					}
-					order.setTrack_time(new Date());
+					order.setTracktime(new Date());
 					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
 					log = new CoreordersTrackLog();
@@ -519,7 +519,7 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("4".equals(proctype)) {
 					order.setTrack_status(9004);
-					order.setTrack_time(new Date());
+					order.setTracktime(new Date());
 					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
 						order.setFail_reasons(order.getFail_reasons() + " "
@@ -540,7 +540,7 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("5".equals(proctype)) {
 					order.setTrack_status(9005);
-					order.setTrack_time(new Date());
+					order.setTracktime(new Date());
 					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
 						order.setFail_reasons(order.getFail_reasons() + " "
@@ -561,7 +561,7 @@ public class CoreordersMarketkManager extends BaseManager {
 					msg.setMsg("订单处理成功");
 				}
 				if ("6".equals(proctype)) {
-					order.setTrack_time(new Date());
+					order.setTracktime(new Date());
 					order.setTrack_status(9006);
 					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
