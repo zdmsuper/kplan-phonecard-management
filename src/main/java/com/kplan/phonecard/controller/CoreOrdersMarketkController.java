@@ -3,12 +3,17 @@ package com.kplan.phonecard.controller;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +30,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.BasicUserInfo;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
@@ -38,6 +45,7 @@ import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.OrderRowModel;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
+import com.kplan.phonecard.domain.excelOrder;
 import com.kplan.phonecard.domain.kplanscorders;
 import com.kplan.phonecard.manager.ManagerInfoManager;
 import com.kplan.phonecard.manager.CoreordersMarketkManager;
@@ -54,6 +62,7 @@ import com.kplan.phonecard.query.KplanChannelNumberDetailQuery;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.utils.DateUtils;
+import com.kplan.phonecard.utils.ExcelUtil;
 import com.kplan.phonecard.utils.PhoneRuleUtils;
 
 @Controller
@@ -336,10 +345,13 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	 * @param map
 	 * @param quer
 	 * @return
+	 * @throws ParseException 
 	 */
 	@RequestMapping("/maliciousList")
-	public String maliciousList(Map<String, Object> map, CoreOrdersMarketkQuery query) {
-
+	public String maliciousList(Map<String, Object> map, CoreOrdersMarketkQuery query) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		query.setCreatedDateStart(sdf.parse(DateUtils.getSevenDay(1)));
+		query.setCreatedDateEnd(sdf.parse(DateUtils.getoDay()));
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.maliciousList(query, this.getPageRequest());
 		map.put("page", page);
 		map.put("query", query);
@@ -371,7 +383,6 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
 			String proctype,String province,String provinceCode,String city,String cityCode,String district,String districtCode,String remarks) {
 		ManagerInfo managerInfo=super.getCurrentUserDetails().orElse(null);
-		
 		return this.coreOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,province, provinceCode, city, cityCode, district, districtCode,managerInfo);
 	}
 	@RequestMapping("/changeOrders")
@@ -412,5 +423,81 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		map.put("listCode", listCode);
 		map.put("query", query);
 		return "coreorders/city";
+	}
+	@RequestMapping("/exExcel")
+	public void exExcel( String projectName,
+            HttpServletResponse response,CoreOrdersMarketkQuery query) throws IOException {
+		 String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		    String fileName = date + "，" + "数据报表";
+		    try {
+		        response.setCharacterEncoding("UTF-8");
+		        response.setContentType("application/vnd.ms-excel");
+		        fileName = new String(fileName.getBytes("UTF-8"), "UTF-8");
+		        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+		        List<CoreOrdersMarketk> l=this.coreOrdersManager.qryExorDer(query);
+		        List<excelOrder> ex = new ArrayList<excelOrder>();
+		        if(l!=null) {
+		        	excelOrder e;
+		        	for(CoreOrdersMarketk k:l) {
+		        		 e = new excelOrder();
+		        		 e.setAddress(k.getReceiver_address());
+		        		 e.setCityName(k.getCity_name());
+		        		 e.setDirName(k.getDistrict_name());
+		        		 e.setMaliciousTag(k.getMalicious_tag());
+		        		 e.setMobile(k.getReceiver_phone());
+		        		 e.setOperator(k.getOperator());
+		        		 if(330==k.getTrack_status()) {
+		        		 e.setOperatorType("客服处理");
+		        		 	}
+		        		 if(9001==k.getTrack_status()) {
+			        		 e.setOperatorType("订单重新办理");
+			        		 }
+		        		 if(9002==k.getTrack_status()) {
+			        		 e.setOperatorType("订单不办理");
+			        		 }
+		        		 if(9003==k.getTrack_status()) {
+			        		 e.setOperatorType("订单转运营");
+			        		 }
+		        		 if(9004==k.getTrack_status()) {
+			        		 e.setOperatorType("订单二次回访");
+			        		 }
+		        		 if(9005==k.getTrack_status()) {
+			        		 e.setOperatorType("订单关闭");
+			        		}
+		        		 if(9006==k.getTrack_status()) {
+			        		 e.setOperatorType("订单三次回访");
+			        		}
+		        		 e.setOrderNo(k.getOrder_no());
+		        		 e.setCreaTime(k.getCreatetime());
+		        		 e.setOrderStatus(k.getOrder_status().getDesc());
+		        		 e.setOrderSurce(k.getOrder_source());
+		        		 e.setPhone(k.getOrder_number());
+		        		 e.setProcductName(k.getProduct_name());
+		        		 e.setProChannel(k.getExternal_company());
+		        		 e.setProvicnName(k.getProvince_name());
+		        		 e.setRemarks(k.getRemarks());
+		        		 e.setRespon(k.getFail_reasons());
+		        		 e.setTracTime(k.getTrack_time());
+		        		 e.setUserId(k.getAccess_id_number());
+		        		 e.setUserName(k.getAccess_name());
+		        		 ex.add(e);
+		        	}
+		        }
+		        
+		        OutputStream outputStream = response.getOutputStream();
+		        EasyExcel.write(outputStream, excelOrder.class) 
+		                .excelType(ExcelTypeEnum.XLSX)
+		                .sheet("恶意订单")
+		                .doWrite(ex);
+		        outputStream.flush();
+		        outputStream.close();
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+	}
+
+	private List<List<String>> createTestListStringHead() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

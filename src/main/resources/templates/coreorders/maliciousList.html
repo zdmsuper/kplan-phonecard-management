@@ -34,14 +34,14 @@
 
 	</nav>
 	<div class="page-container">
-		<form th:action="@{/coreorder/maliciousList}" method="get" autocomplete="off">
+		<form th:action="@{/coreorder/maliciousList}" id="form" method="get" autocomplete="off">
 			<div class="text">
-<!-- 				创建时间： <input type="text" -->
-<!-- 					id="datemin" class="input-text date" name="createdDateStart" -->
-<!-- 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;">  -->
-<!-- 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd" -->
-<!-- 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;"> -->
-					状态 ：<select name="keyword" id="keyword" class="select select-box inline">
+				创建时间： <input type="text"
+					id="datemin" class="input-text date" name="createdDateStart"
+					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;"> 
+					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
+					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
+					<select name="keyword" id="keyword" class="select select-box inline">
 						<option value="">全部状态</option>
 						<option value="1" th:selected="${'1'==query.keyword}">恶意订单</option>
 						<option value="3" th:selected="${'3'==query.keyword}">二次回访</option>
@@ -54,7 +54,17 @@
 					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
 						<i class="Hui-iconfont">&#xe665;</i> 查询
 					</button>
+					<a href="javascript:;" id="excel"
+					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i>
+						导出</a>
+						
 			</div>
+			
+			
+					
+						
+			</div>
+			
 			<div class="mt-20 dataTables_wrapper">
 				<table
 					class="table table-border table-bordered table-hover table-bg table-sort">
@@ -74,6 +84,7 @@
 							<th>订单状态</th>
 							<th>导出状态</th>
 							<th>订单时间</th>
+							<th>跟单时间</th>
 							<th>恶意标签</th>
 							<th>操作类型</th>
 							<th>操作</th>
@@ -117,16 +128,18 @@
 							
 							<td th:text="${item.export_status.desc}"></td>
 							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
+							<td th:text="${#dates.format(item.track_time,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.malicious_tag}"></td>
 							<td th:if="${item.track_status==330 || item.track_status==9004||item.track_status==9006}"  th:id="s+${item.id}">
-							<a th:id="${item.id}" th:onmousemove="op([[${item.id}]],[[${item.track_status}]])">
+							<a th:id="${item.id}">
 							<span th:if="${item.track_status==9004}" style="color: red;">二次回访</span>
 							<span th:if="${item.track_status==330}" style="color: red;">客服处理</span>
 							<span th:if="${item.track_status==9006}" style="color: red;">三次回访</span>
 							</a>
 							</td>
+<!-- 							th:onmousemove="op([[${item.id}]],[[${item.track_status}]])" -->
 							<td th:if="${item.track_status==9003}" th:id="s+${item.id}">
-							<a th:id="${item.id}" th:onmousemove="op([[${item.id}]],[[${item.track_status}]])">
+							<a th:id="${item.id}" >
 							<span style="color: green;">运营处理</span>
 							</a>
 							</td>
@@ -219,6 +232,13 @@
 		$('#keyword').change(function(){
 			var formObj = $(this).parents('form');
 			formObj.submit();
+		});
+		
+		$('#excel').click(function(){
+			var formObj = $(this).parents('form');
+			formObj.attr( 'action' ,"/coreorder/exExcel");
+			formObj.submit();
+			formObj.attr( 'action' ,"/coreorder/maliciousList");
 		});
 		
 		function proc(id,phone) {

@@ -87,7 +87,7 @@ public class CoreordersMarketkManager extends BaseManager {
 				list.add(cb.equal(r.get("order_status"), OrderStatusEnum.SUCCESSOrderStatus));
 				if (query.getKeyword() == null) {
 					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9003),
-							cb.equal(r.get("track_status"), 9004),cb.equal(r.get("track_status"), 9006)));
+							cb.equal(r.get("track_status"), 9004), cb.equal(r.get("track_status"), 9006)));
 				}
 				if (query.getKeyword() != null && query.getKeyword().equals("1")) {
 					list.add(cb.equal(r.get("track_status"), 330));
@@ -123,7 +123,7 @@ public class CoreordersMarketkManager extends BaseManager {
 
 				if (query.getKeyword() == null) {
 					list.add(cb.or(cb.equal(r.get("track_status"), 330), cb.equal(r.get("track_status"), 9003),
-							cb.equal(r.get("track_status"), 9004),cb.equal(r.get("track_status"), 9006)));
+							cb.equal(r.get("track_status"), 9004), cb.equal(r.get("track_status"), 9006)));
 				}
 				if (query.getKeyword() != null && query.getKeyword().equals("1")) {
 					list.add(cb.equal(r.get("track_status"), 330));
@@ -415,14 +415,14 @@ public class CoreordersMarketkManager extends BaseManager {
 		CoreOrdersMarketk order;
 		UnicomPostCityCode dir = null;
 		try {
-			if(StringUtils.trimToNull(districtCode)!=null) {
-				 dir=this.unicomPostcityCodeManager.findById(districtCode);
-				 if(dir==null) {
+			if (StringUtils.trimToNull(districtCode) != null) {
+				dir = this.unicomPostcityCodeManager.findById(districtCode);
+				if (dir == null) {
 					msg.setCode("223");
 					msg.setStatus("223");
 					msg.setMsg("获取区县地市编码出错！");
 					return JSON.toJSON(msg);
-				 }
+				}
 			}
 			String sql = "from  CoreOrdersMarketk where id='" + orderNo + "'";
 			List<CoreOrdersMarketk> l = this.coreOrderSerbice.getResultList(sql);
@@ -431,6 +431,8 @@ public class CoreordersMarketkManager extends BaseManager {
 				order = l.get(0);
 				if ("1".equals(proctype)) {
 					order.setTrack_status(9001);
+					order.setTrack_time(new Date());
+					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
 					CoreOrdersMarketk k = new CoreOrdersMarketk();
 					k.setReceiver_name(userName);
@@ -454,15 +456,16 @@ public class CoreordersMarketkManager extends BaseManager {
 					k.setProduct_name(order.getProduct_name());
 					k.setBusiness_type("K计划");
 					k.setDifferent_nets(-1);
-					k.setId("CQBACK"+order.getOrder_no());
+					k.setId("CQBACK" + order.getOrder_no());
 					k.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
-					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
-						k.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单办理");
-					}else {
-						k.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单办理");
+					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
+						k.setFail_reasons(order.getFail_reasons() + " "
+								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
+					} else {
+						k.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
 					}
 					this.coreOrderSerbice.add(k);
-					log=new CoreordersTrackLog();
+					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
 					log.setLog_info("9001");
@@ -474,15 +477,18 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("2".equals(proctype)) {
 					order.setTrack_status(9002);
-					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
-						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单不办理");
-					}else {
-						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单不办理");
+					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
+						order.setFail_reasons(order.getFail_reasons() + " "
+								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单不办理");
+					} else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单不办理");
 					}
+					order.setTrack_time(new Date());
+					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
 					msg.setCode("200");
 					msg.setStatus("200");
-					log=new CoreordersTrackLog();
+					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
 					log.setLog_info("9002");
@@ -492,13 +498,16 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("3".equals(proctype)) {
 					order.setTrack_status(9003);
-					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
-						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单转运营");
-					}else {
-						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单转运营");
+					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
+						order.setFail_reasons(order.getFail_reasons() + " "
+								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单转运营");
+					} else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转运营");
 					}
+					order.setTrack_time(new Date());
+					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
-					log=new CoreordersTrackLog();
+					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
 					log.setLog_info("9003");
@@ -510,13 +519,16 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("4".equals(proctype)) {
 					order.setTrack_status(9004);
-					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
-						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单转二次回访");
-					}else {
-						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单转二次回访");
+					order.setTrack_time(new Date());
+					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
+						order.setFail_reasons(order.getFail_reasons() + " "
+								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单转二次回访");
+					} else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转二次回访");
 					}
 					this.coreOrderSerbice.modify(order);
-					log=new CoreordersTrackLog();
+					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
 					log.setLog_info("9004");
@@ -528,14 +540,17 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				if ("5".equals(proctype)) {
 					order.setTrack_status(9005);
-					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
-						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单关闭");
-					}else {
-						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单关闭");
+					order.setTrack_time(new Date());
+					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
+						order.setFail_reasons(order.getFail_reasons() + " "
+								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单关闭");
+					} else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单关闭");
 					}
 					this.coreOrderSerbice.modify(order);
-					
-					log=new CoreordersTrackLog();
+
+					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
 					log.setLog_info("9005");
@@ -545,15 +560,18 @@ public class CoreordersMarketkManager extends BaseManager {
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
 				}
-				if("6".equals(proctype)) {
+				if ("6".equals(proctype)) {
+					order.setTrack_time(new Date());
 					order.setTrack_status(9006);
-					if(StringUtils.trimToNull(order.getFail_reasons())!=null) {
-						order.setFail_reasons(order.getFail_reasons()+" "+managerInfo.getBasicUserInfo().getUserRealName()+" 订单转三次联系");
-					}else {
-						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName()+" 订单转三次联系");
+					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
+						order.setFail_reasons(order.getFail_reasons() + " "
+								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单转三次联系");
+					} else {
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转三次联系");
 					}
 					this.coreOrderSerbice.modify(order);
-					log=new CoreordersTrackLog();
+					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
 					log.setLog_info("9006");
@@ -612,5 +630,25 @@ public class CoreordersMarketkManager extends BaseManager {
 			return JSON.toJSON(msg);
 		}
 		return JSON.toJSON(msg);
+	}
+
+	/**
+	 * @param query
+	 * @return
+	 */
+	public List<CoreOrdersMarketk> qryExorDer(CoreOrdersMarketkQuery query) {
+		if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
+			String sql = "from CoreOrdersMarketk where track_time>='" + query.getCreatedDateStart()
+					+ "' and track_time<='" + query.getCreatedDateEnd()
+					+ "' and malicious_tag is not null or ((track_status=330 or track_status=9003 or track_status=9004 or track_status=9006) and (malicious_tag like '%公安证件号码与证件姓名不匹配%' or malicious_tag like '%zop接入本地库校验失败%')  and createtime>'"
+					+ DateUtils.getSevenDay(3)
+					+ "' )  or ((track_status=330 or track_status=9003 or track_status=9004 or track_status=9006) and (malicious_tag like '%待确认地址%' or malicious_tag like '%恶意地址%' or malicious_tag like '%配送地址冲突%' or malicious_tag like '%联系地址全是数字%')  and createtime>'"
+					+ DateUtils.getSevenDay(2) + "')";
+			return this.coreOrderSerbice.getResultList(sql);
+		} else {
+			String sql = "from CoreOrdersMarketk where  and malicious_tag is not null and (track_status=330 or track_status=9003 or track_status=9004 or track_status=9006)";
+			return this.coreOrderSerbice.getResultList(sql);
+		}
+
 	}
 }
