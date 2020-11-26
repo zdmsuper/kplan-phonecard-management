@@ -71,5 +71,6 @@ public class CoreordersMarketkService {
 		}
 		return query.getResultList();
 	}
+	
 
 }

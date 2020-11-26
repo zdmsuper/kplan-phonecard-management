@@ -440,12 +440,62 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		        	excelOrder e;
 		        	for(CoreOrdersMarketk k:l) {
 		        		 e = new excelOrder();
-		        		 e.setAddress(k.getReceiver_address());
-		        		 e.setCityName(k.getCity_name());
-		        		 e.setDirName(k.getDistrict_name());
-		        		 e.setMaliciousTag(k.getMalicious_tag());
-		        		 e.setMobile(k.getReceiver_phone());
-		        		 e.setOperator(k.getOperator());
+		        		 if(9001==k.getTrack_status()) {
+		        			 String orderNo="CQBACK"+k.getOrder_no();
+		        				String sql="from CoreOrdersMarketk where id='"+orderNo+"'";
+		        				List<CoreOrdersMarketk> li=this.coreOrderSerbice.getResultList(sql);
+		        				 CoreOrdersMarketk o = null;
+		        				if(li!=null&&li.size()>0) {
+		        					o=li.get(0);
+		        				}
+		        			if(o!=null) {
+		        				e.setAddress(o.getReceiver_address());
+				        		 e.setCityName(o.getCity_name());
+				        		 e.setDirName(o.getDistrict_name());
+				        		 e.setMobile(o.getReceiver_phone());
+				        		 e.setOperator(o.getOperator());
+				        		 e.setOrderNo(o.getOrder_no());
+				        		 e.setOrderSurce(o.getOrder_source());
+				        		 e.setPhone(o.getOrder_number());
+				        		 e.setProChannel(o.getExternal_company());
+				        		 e.setTracTime(o.getTrack_time());
+				        		 e.setProvicnName(o.getProvince_name());
+				        		 e.setUserId(o.getAccess_id_number());
+				        		 e.setUserName(o.getAccess_name());
+				        		 e.setOrderStatus(o.getOrder_status().getDesc());
+		        			}else {
+		        			 e.setAddress(k.getReceiver_address());
+			        		 e.setCityName(k.getCity_name());
+			        		 e.setDirName(k.getDistrict_name());
+			        		 e.setMobile(k.getReceiver_phone());
+			        		 e.setOperator(k.getOperator());
+			        		 e.setOrderNo(k.getOrder_no());
+			        		 e.setOrderSurce(k.getOrder_source());
+			        		 e.setPhone(k.getOrder_number());
+			        		 e.setProChannel(k.getExternal_company());
+			        		 e.setTracTime(k.getTrack_time());
+			        		 e.setProvicnName(k.getProvince_name());
+			        		 e.setUserId(k.getAccess_id_number());
+			        		 e.setUserName(k.getAccess_name());
+			        		 e.setOrderStatus(k.getOrder_status().getDesc());
+		        			}
+		        		 }
+		        		 if(9001!=k.getTrack_status()) {
+		        			 e.setAddress(k.getReceiver_address());
+			        		 e.setCityName(k.getCity_name());
+			        		 e.setDirName(k.getDistrict_name());
+			        		 e.setMobile(k.getReceiver_phone());
+			        		 e.setOperator(k.getOperator());
+			        		 e.setOrderNo(k.getOrder_no());
+			        		 e.setOrderSurce(k.getOrder_source());
+			        		 e.setPhone(k.getOrder_number());
+			        		 e.setProChannel(k.getExternal_company());
+			        		 e.setTracTime(k.getTrack_time());
+			        		 e.setProvicnName(k.getProvince_name());
+			        		 e.setUserId(k.getAccess_id_number());
+			        		 e.setUserName(k.getAccess_name());
+			        		 e.setOrderStatus(k.getOrder_status().getDesc());
+		        		 }
 		        		 if(330==k.getTrack_status()) {
 		        		 e.setOperatorType("客服处理");
 		        		 	}
@@ -467,19 +517,11 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		        		 if(9006==k.getTrack_status()) {
 			        		 e.setOperatorType("订单三次回访");
 			        		}
-		        		 e.setOrderNo(k.getOrder_no());
 		        		 e.setCreaTime(k.getCreatetime());
-		        		 e.setOrderStatus(k.getOrder_status().getDesc());
-		        		 e.setOrderSurce(k.getOrder_source());
-		        		 e.setPhone(k.getOrder_number());
 		        		 e.setProcductName(k.getProduct_name());
-		        		 e.setProChannel(k.getExternal_company());
-		        		 e.setProvicnName(k.getProvince_name());
 		        		 e.setRemarks(k.getRemarks());
 		        		 e.setRespon(k.getFail_reasons());
-		        		 e.setTracTime(k.getTrack_time());
-		        		 e.setUserId(k.getAccess_id_number());
-		        		 e.setUserName(k.getAccess_name());
+		        		 e.setMaliciousTag(k.getMalicious_tag());
 		        		 ex.add(e);
 		        	}
 		        }
