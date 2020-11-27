@@ -45,8 +45,10 @@ import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.OrderRowModel;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
-import com.kplan.phonecard.domain.excelOrder;
 import com.kplan.phonecard.domain.kplanscorders;
+import com.kplan.phonecard.domain.entity.BackTitle;
+import com.kplan.phonecard.domain.entity.excelBackOrder;
+import com.kplan.phonecard.domain.entity.excelOrder;
 import com.kplan.phonecard.manager.ManagerInfoManager;
 import com.kplan.phonecard.manager.CoreordersMarketkManager;
 import com.kplan.phonecard.manager.KplanChannelNumberDetailManager;
@@ -276,15 +278,15 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@RequestMapping("/secondarylist")
 	public String qrySeconDaryorDer(Map<String, Object> map, KplanSecondaryOrdersQuery query) throws ParseException {
 		if (query.getCreatedDateEnd() == null) {
-			Date d = DateUtils.getDayNumT(0);
-			query.setCreatedDateEnd(d);
-			query.setCreatedDateStart(d);
+			query.setCreatedDateEnd(DateUtils.getDayNum(0));
+			query.setCreatedDateStart(DateUtils.getDayNum(3));
 		}
-
+		List<BackTitle> lti=this.kplanSecondaryOrdersManager.qryTitle(query.getCreatedDateStart(), query.getCreatedDateEnd());
 		Page<KplanSecondaryOrders> orDers = this.kplanSecondaryOrdersManager.qrySeconadryorDer(query,
 				this.getPageRequest());
 		map.put("page", orDers);
 		map.put("query", query);
+		map.put("lti", lti);
 		return "coreorders/secondarylist";
 
 	}
@@ -300,11 +302,15 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@RequestMapping("/scorderlist")
 	public String qryScorDers(Map<String, Object> map, kplanscordersQuery query) throws ParseException {
 		if (query.getCreatedDateEnd() == null) {
+			query.setCreatedDateEnd(DateUtils.getDayNum(0));
+			query.setCreatedDateStart(DateUtils.getDayNum(3));
+		}
+		Page<kplanscorders> scoDers = this.kplanscordersManager.qryList(query, this.getPageRequest());
+		if(query.getCreatedDateStart()==null||query.getCreatedDateEnd()==null) {
 			Date d = DateUtils.getDayNumT(0);
 			query.setCreatedDateEnd(d);
 			query.setCreatedDateStart(d);
 		}
-		Page<kplanscorders> scoDers = this.kplanscordersManager.qryList(query, this.getPageRequest());
 		map.put("page", scoDers);
 		map.put("query", query);
 		return "coreorders/scorderlist";
@@ -350,8 +356,10 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@RequestMapping("/maliciousList")
 	public String maliciousList(Map<String, Object> map, CoreOrdersMarketkQuery query) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(query.getCreatedDateStart()==null ||query.getCreatedDateEnd()==null) {
 		query.setCreatedDateStart(sdf.parse(DateUtils.getSevenDay(1)));
 		query.setCreatedDateEnd(sdf.parse(DateUtils.getoDay()));
+		}
 		Page<CoreOrdersMarketk> page = this.coreOrdersManager.maliciousList(query, this.getPageRequest());
 		map.put("page", page);
 		map.put("query", query);
@@ -530,6 +538,59 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		        EasyExcel.write(outputStream, excelOrder.class) 
 		                .excelType(ExcelTypeEnum.XLSX)
 		                .sheet("恶意订单")
+		                .doWrite(ex);
+		        outputStream.flush();
+		        outputStream.close();
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+	}
+	
+	/**回捞订单导出
+	 * @param projectName
+	 * @param response
+	 * @param query
+	 * @throws IOException
+	 */
+	@RequestMapping("/exBackExcel")
+	public void exBackExcel( String projectName,
+            HttpServletResponse response,CoreOrdersMarketkQuery query) throws IOException {
+		 String date = new SimpleDateFormat("yyyy-MM-dd HHmm").format(new Date());
+		    String fileName = date + "数据报表";
+		    try {
+		        response.setCharacterEncoding("UTF-8");
+		        response.setContentType("application/vnd.ms-excel");
+		        fileName = new String(fileName.getBytes("UTF-8"), "UTF-8");
+		        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+		        List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersManager.exExcel(query.getDomain().getOperator());
+		        List<excelBackOrder> ex = new ArrayList<excelBackOrder>();
+		        if(l!=null) {
+		        	excelBackOrder e;
+		        	for(KplanSecondaryOrders k:l) {
+		        		 e = new excelBackOrder();
+		        		 e.setBack_info(k.getBack_info());
+		        		 e.setDistribution_addres(k.getDistribution_addres());
+		        		 e.setMalicious_order(k.getMalicious_order());
+		        		 e.setORDER_NO(k.getOrder_no());
+		        		 e.setORDER_STATUS(k.getOrder_status());
+		        		 e.setPHONE_NUM(k.getPhone_num());
+		        		 e.setPost_city(k.getPost_city());
+		        		 e.setPost_district(k.getPost_district());
+		        		 e.setPost_province(k.getPost_province());
+		        		 e.setPRO_DATE(k.getPro_date());
+		        		 e.setProcduct_name(k.getProcduct_name());
+		        		 e.setReject_info(k.getReject_info());
+		        		 e.setREMARKS(k.getRemarks());
+		        		 e.setUSER_ID(k.getUser_id());
+		        		 e.setUSER_NAME(k.getUser_name());
+		        		 ex.add(e);
+		        	}
+		        }
+		        
+		        OutputStream outputStream = response.getOutputStream();
+		        EasyExcel.write(outputStream, excelBackOrder.class) 
+		                .excelType(ExcelTypeEnum.XLSX)
+		                .sheet("回捞订单")
 		                .doWrite(ex);
 		        outputStream.flush();
 		        outputStream.close();

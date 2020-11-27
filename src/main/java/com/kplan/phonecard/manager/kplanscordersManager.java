@@ -51,4 +51,6 @@ public class kplanscordersManager extends BaseManager{
 		};
 		return this.KplanScordersService.findAll(spec, pageable);
 	}
+	
+	
 }

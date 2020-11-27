@@ -80,7 +80,7 @@ public class CoreordersMarketkManager extends BaseManager {
 			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<>();
 				try {
-					list.add(cb.between(r.get("createtime"), DateUtils.getDayNum(100000), DateUtils.getDayNum(48)));
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000), DateUtils.getDayNumT(48)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -112,7 +112,7 @@ public class CoreordersMarketkManager extends BaseManager {
 				Predicate pred = cb.and(list.toArray(new Predicate[0]));
 				list.clear();
 				try {
-					list.add(cb.between(r.get("createtime"), DateUtils.getDayNum(100000), DateUtils.getDayNum(72)));
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000), DateUtils.getDayNumT(72)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -432,6 +432,12 @@ public class CoreordersMarketkManager extends BaseManager {
 				if ("1".equals(proctype)) {
 					order.setTrack_status(9001);
 					order.setTracktime(new Date());
+					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
+					order.setFail_reasons(order.getFail_reasons() + " "
+								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
+					} else {
+					order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
+					}
 					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
 					CoreOrdersMarketk k = new CoreOrdersMarketk();
@@ -458,12 +464,6 @@ public class CoreordersMarketkManager extends BaseManager {
 					k.setDifferent_nets(-1);
 					k.setId("CQBACK" + order.getOrder_no());
 					k.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
-					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
-						k.setFail_reasons(order.getFail_reasons() + " "
-								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
-					} else {
-						k.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
-					}
 					this.coreOrderSerbice.add(k);
 					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());

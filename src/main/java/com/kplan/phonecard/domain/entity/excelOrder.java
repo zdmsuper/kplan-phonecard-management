@@ -1,4 +1,4 @@
-package com.kplan.phonecard.domain;
+package com.kplan.phonecard.domain.entity;
 
 import java.util.Date;
 

@@ -22,13 +22,17 @@ import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.ManagerInfo;
+import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.msgRes;
+import com.kplan.phonecard.domain.entity.BackTitle;
 import com.kplan.phonecard.enums.ProStatusEnum;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.query.ManagerInfoQuery;
 import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.service.KplanSecondaryOrdersService;
 import com.kplan.phonecard.utils.DateUtils;
+
+import one.util.streamex.StreamEx;
 @Component
 @Transactional
 public class KplanSecondaryOrdersManager extends BaseManager{
@@ -87,6 +91,9 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 				if(query.getKeyword()!=null) {
 					list.add(cb.equal(r.get("phone_num"), query.getKeyword()));
 				}
+				if(query.getDomain().getOperator()!=null) {
+					list.add(cb.equal(r.get("operator"), query.getDomain().getOperator()));
+				}
 				if(query.getDomain().getOrder_source()!=null) {
 					list.add(cb.equal(r.get("order_source"), query.getDomain().getOrder_source()));
 				}
@@ -102,5 +109,20 @@ public class KplanSecondaryOrdersManager extends BaseManager{
 		return this.kplanSecondaryOrdersService.findAll(spec, pageable);
 	}
 	
+	public List<BackTitle> qryTitle(Date date,Date date2){
+		String sql="select operator from kplan_secondary_orders where pro_date>='"+date+"' and  pro_date<='"+date2+"' group by operator ";
+		List<Object> l = this.kplanSecondaryOrdersService.getNativeResultList(sql);
+		List<BackTitle> resultList = StreamEx.of(l).map(r -> {
+			BackTitle b = new BackTitle();
+			b.setExportFileTitle(r.toString() );
+			return b;
+		}).toList();
+		return resultList;
+				
+	}
+	public List<KplanSecondaryOrders> exExcel(String operator){
+		String sql="from KplanSecondaryOrders where operator='"+operator+"'";
+		return this.kplanSecondaryOrdersService.getResultList(sql);
+	}
 	
 }
