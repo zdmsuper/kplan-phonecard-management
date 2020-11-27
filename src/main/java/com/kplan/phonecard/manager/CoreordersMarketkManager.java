@@ -640,13 +640,13 @@ public class CoreordersMarketkManager extends BaseManager {
 		if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
 			String sql = "from CoreOrdersMarketk where track_time>='" + query.getCreatedDateStart()
 					+ "' and track_time<='" + query.getCreatedDateEnd()
-					+ "' and malicious_tag is not null or ((track_status=330 or track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006) and (malicious_tag like '%公安证件号码与证件姓名不匹配%' or malicious_tag like '%zop接入本地库校验失败%')  and createtime>'"
+					+ "' and malicious_tag is not null or ((track_status=330 or track_status=9001 or track_status=9002 or track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006) and (malicious_tag like '%公安证件号码与证件姓名不匹配%' or malicious_tag like '%zop接入本地库校验失败%')  and createtime>'"
 					+ DateUtils.getSevenDay(3)
-					+ "' )  or ((track_status=330 or track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006 ) and (malicious_tag like '%待确认地址%' or malicious_tag like '%恶意地址%' or malicious_tag like '%配送地址冲突%' or malicious_tag like '%联系地址全是数字%')  and createtime>'"
+					+ "' )  or ((track_status=330 or or track_status=9001 or track_status=9002 track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006 ) and (malicious_tag like '%待确认地址%' or malicious_tag like '%恶意地址%' or malicious_tag like '%配送地址冲突%' or malicious_tag like '%联系地址全是数字%')  and createtime>'"
 					+ DateUtils.getSevenDay(2) + "')";
 			return this.coreOrderSerbice.getResultList(sql);
 		} else {
-			String sql = "from CoreOrdersMarketk where  and malicious_tag is not null and (track_status=330 or track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006)";
+			String sql = "from CoreOrdersMarketk where  and malicious_tag is not null and (track_status=330 or or track_status=9001 or track_status=9002 track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006)";
 			return this.coreOrderSerbice.getResultList(sql);
 		}
 
