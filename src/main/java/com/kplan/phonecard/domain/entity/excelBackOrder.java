@@ -19,7 +19,7 @@ public class excelBackOrder {
 	private String USER_ID;// AS 身份证,
 	@ExcelProperty(value="处理时间")
 	private Date PRO_DATE;// AS 处理时间,
-	@ExcelProperty(value="配送地址,")
+	@ExcelProperty(value="配送地址")
 	private String distribution_addres;// AS 配送地址,
 	@ExcelProperty(value="配送省份")
 	private String post_province;// AS 配送省份,
