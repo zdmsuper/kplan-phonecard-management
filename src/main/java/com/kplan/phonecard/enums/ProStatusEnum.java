@@ -24,7 +24,7 @@ public enum ProStatusEnum {
 	/**
 	 * 订单处理完成
 	 */
-	ENDPROSTATUS(99,"订单处理完成"),
+	ENDPROSTATUS(99,"订单数据处理完成"),
 	/**
 	 * 等待创建订单
 	 */

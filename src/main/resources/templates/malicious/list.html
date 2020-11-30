@@ -125,6 +125,7 @@
 							<th>订单来源</th>
 							<th>恶意标签</th>
 							<th>反诈标签</th>
+							<th>回访状态</th>
 							<th>操作人</th>
 							<th>操作</th>
 						</tr>
@@ -156,7 +157,11 @@
 							<td >
 							<span th:text="${item.malicious_order}"></span>
 							</td>
+							
 							<td th:text="${item.back_info}"></td>
+							<td >
+							<span style="color: red" th:text="${item.track_status.desc}"></span>
+							</td>
 							<td th:text="${item.operator}"></td>
 							<td class="td-manage" >
 							<a style="display:block;color:green;"
