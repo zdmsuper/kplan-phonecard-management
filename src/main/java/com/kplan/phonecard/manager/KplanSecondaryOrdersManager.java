@@ -196,7 +196,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 				return JSON.toJSON(msg);
 			}
 
-			String sql = "from  CoreOrdersMarketk where id='" + orderNo + "'";
+			String sql = "from  KplanSecondaryOrders where id=" + Integer.parseInt(orderNo) + "";
 			List<KplanSecondaryOrders> l = this.kplanSecondaryOrdersService.getResultList(sql);
 			CoreordersTrackLog log;
 			if (l != null && l.size() > 0) {
