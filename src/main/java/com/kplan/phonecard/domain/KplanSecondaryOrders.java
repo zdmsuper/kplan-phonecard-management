@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.kplan.phonecard.base.BaseDomain;
+import com.kplan.phonecard.enums.KplanSeconDarytracStatusEnum;
 import com.kplan.phonecard.enums.OrderStatusEnum;
 import com.kplan.phonecard.enums.ProStatusEnum;
 @Entity
@@ -90,8 +91,9 @@ public class KplanSecondaryOrders extends BaseDomain{
 	private String logistics_info;//	varchar	255	0	False		物流信息 物流公司+物流单号+物流状态
 	@Column(name = "remarks", unique = true, length = 255)
 	private String remarks;//	varchar	255	0	False		备注
+	@Convert(converter = KplanSeconDarytracStatusEnum.EnumConvert.class)
 	@Column(name = "track_status", precision = 32, scale = 0)
-	private Integer track_status;//	int4	32	0	False		跟单状态
+	private KplanSeconDarytracStatusEnum track_status;//	int4	32	0	False		跟单状态
 	@Column(name = "operator", unique = true, length = 16)
 	private String operator;//	varchar	16	0	False		操作人
 
@@ -288,10 +290,11 @@ public class KplanSecondaryOrders extends BaseDomain{
 			public void setRemarks(String remarks) {
 				this.remarks = remarks;
 			}
-			public Integer getTrack_status() {
+			
+			public KplanSeconDarytracStatusEnum getTrack_status() {
 				return track_status;
 			}
-			public void setTrack_status(Integer track_status) {
+			public void setTrack_status(KplanSeconDarytracStatusEnum track_status) {
 				this.track_status = track_status;
 			}
 			public String getOperator() {

@@ -504,7 +504,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 			        		 e.setUserName(k.getAccess_name());
 			        		 e.setOrderStatus(k.getOrder_status().getDesc());
 		        		 }
-		        		 if(330==k.getTrack_status()) {
+        			if(330==k.getTrack_status()) {
 		        		 e.setOperatorType("客服处理");
 		        		 	}
 		        		 if(9001==k.getTrack_status()) {

@@ -225,4 +225,7 @@ public abstract class BaseService<T extends BaseDomain> {
 	public  void removeById(Serializable arg1, Class arg0) {
 		em.remove(em.getReference(arg0, arg1));
 	}
+	public  void modify( Object arg0) {
+		em.merge(arg0);
+	}
 }

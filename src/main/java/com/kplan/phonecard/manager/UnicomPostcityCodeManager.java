@@ -38,6 +38,16 @@ public class UnicomPostcityCodeManager extends BaseManager {
 		}).toList();
 		return resultList;
 	}
+	
+	public UnicomPostCityCode findByPrivoin(String cityName,String dirName){
+		String sql = "from UnicomPostCityCode where city_name like '%"+cityName+"%' and district_name like '%"+dirName+"%'";
+		List<UnicomPostCityCode> city=this.unicomCityService.getResultList(sql);
+		if(city!=null&&city.size()>0) {
+			return city.get(0);
+			
+		}
+		return null;
+	}
 
 	public List<UnicomPostCityCode> city() {
 		String sql = "SELECT province_code,province_name,city_code,city_name,district_code,district_name FROM unicom_post_city_code  GROUP BY province_code,province_name,city_code,city_name,district_code,district_name";
