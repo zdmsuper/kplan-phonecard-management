@@ -210,7 +210,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					} else {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
 					}
-					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					this.kplanSecondaryOrdersService.modify(order);
 					CoreOrdersMarketk k = new CoreOrdersMarketk();
 					k.setReceiver_name(userName);
@@ -234,7 +234,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					k.setProduct_name(pocDuct.getProcduct_name());
 					k.setBusiness_type("K计划");
 					k.setDifferent_nets(-1);
-					k.setId("CQBACK" + order.getOrder_no());
+					k.setId("CDBACK" + order.getOrder_no());
 					k.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.add(k);
 					log = new CoreordersTrackLog();
@@ -256,7 +256,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单不办理");
 					}
 					order.setPro_date(new Date());
-					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -277,7 +277,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转运营");
 					}
 					order.setPro_date(new Date());
-					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
 					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
@@ -292,7 +292,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 				if ("4".equals(proctype)) {
 					order.setTrack_status(KplanSeconDarytracStatusEnum.SECONDVISITSTATUS);
 					order.setPro_date(new Date());
-					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					if (StringUtils.trimToNull(order.getRemarks()) != null) {
 						order.setRemarks(order.getRemarks() + " " + managerInfo.getBasicUserInfo().getUserRealName()
 								+ " 订单转二次回访");
@@ -313,7 +313,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 				if ("5".equals(proctype)) {
 					order.setTrack_status(KplanSeconDarytracStatusEnum.CLOSESTATUS);
 					order.setPro_date(new Date());
-					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					if (StringUtils.trimToNull(order.getRemarks()) != null) {
 						order.setRemarks(
 								order.getRemarks() + " " + managerInfo.getBasicUserInfo().getUserRealName() + " 订单关闭");
@@ -335,7 +335,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 				if ("6".equals(proctype)) {
 					order.setPro_date(new Date());
 					order.setTrack_status(KplanSeconDarytracStatusEnum.THREEVISITSTATUS);
-					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					if (StringUtils.trimToNull(order.getRemarks()) != null) {
 						order.setRemarks(order.getRemarks() + " " + managerInfo.getBasicUserInfo().getUserRealName()
 								+ " 订单转三次联系");
