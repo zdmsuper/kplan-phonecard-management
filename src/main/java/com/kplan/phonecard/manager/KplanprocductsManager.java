@@ -16,7 +16,7 @@ public class KplanprocductsManager extends BaseManager{
 	KplanprocductService kplanprocductService;
 	
 	public Kplanprocducts qryProcduct(String procDuctName) {
-		String sql="from Kplanprocducts where procduct_name like '%"+procDuctName+"%'";
+		String sql="from Kplanprocducts where procduct_code like '%"+procDuctName+"%'";
 		List<Kplanprocducts> l=this.kplanprocductService.getResultList(sql);
 		if(l!=null&&l.size()>0) {
 			return l.get(0);
