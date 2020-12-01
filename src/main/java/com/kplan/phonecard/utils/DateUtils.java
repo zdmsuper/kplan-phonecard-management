@@ -61,6 +61,17 @@ public class DateUtils {
         String time = sdf.format(calendar.getTime());
        return sdf.parse(time);
 	}
+	
+	public static Date getDayNumT(Date Tdate,int num) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//时间格式化
+        Calendar calendar=Calendar.getInstance();
+        Date date=Tdate;
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY) - num);
+        String time = sdf.format(calendar.getTime());
+       return sdf.parse(time);
+	}
+	
 	public static Date getDayNum(int num) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//时间格式化
         Calendar calendar=Calendar.getInstance();
@@ -101,6 +112,16 @@ public class DateUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//时间格式化
         Calendar calendar=Calendar.getInstance();
         Date date=new Date();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY) - 24*dayNum);
+        String time = sdf.format(calendar.getTime());
+       return time;
+	}
+	
+	public static String getSevenDay(Date Tdate,int dayNum) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//时间格式化
+        Calendar calendar=Calendar.getInstance();
+        Date date=Tdate;
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY) - 24*dayNum);
         String time = sdf.format(calendar.getTime());

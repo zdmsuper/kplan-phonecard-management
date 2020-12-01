@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -71,6 +72,8 @@ public class CoreordersMarketkService {
 		}
 		return query.getResultList();
 	}
-	
+	public List<CoreOrdersMarketk> findAllList(Specification<CoreOrdersMarketk> spec) {
+		return Core_orders_market_kDao.findAll();
+	}
 
 }

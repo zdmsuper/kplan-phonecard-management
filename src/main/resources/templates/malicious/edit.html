@@ -82,7 +82,7 @@
 				<label class="form-label col-xs-1 col-sm-2"><span
 					class="c-red">*</span>产&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品：</label>
 					<div class="formControls col-xs-2 col-sm-3">
-					<select class="select select-box inline" lay-verify="required" style="width: 50" name="ordersource" id="ordersource">
+					<select class="select select-box inline" lay-verify="required" style="width: 50" name="procDuctName" id="ordersource">
 							<option th:each="product:${product}"
 								th:value="${product.procduct_code}"
 								th:text="${product.procduct_name}" 

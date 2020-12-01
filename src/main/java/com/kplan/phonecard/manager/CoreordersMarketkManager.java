@@ -645,7 +645,7 @@ public class CoreordersMarketkManager extends BaseManager {
 			String sql = "from CoreOrdersMarketk where ((" + 
 					"		malicious_tag LIKE'%公安证件号码与证件姓名不匹配%' " + 
 					"		OR malicious_tag LIKE'%zop接入本地库校验失败%' " + 
-					"		AND createtime > '"+DateUtils.getSevenDay(2)+"' " + 
+					"		AND createtime > '"+DateUtils.getSevenDay(query.getCreatedDateEnd(),2)+"' " + 
 					"	" + 
 					"	) " + 
 					"	OR (" + 
@@ -653,7 +653,7 @@ public class CoreordersMarketkManager extends BaseManager {
 					"		OR malicious_tag LIKE'%恶意地址%' " + 
 					"		OR malicious_tag LIKE'%配送地址冲突%' " + 
 					"		OR malicious_tag LIKE'%联系地址全是数字%' " + 
-					"		AND createtime> '"+DateUtils.getSevenDay(3)+"' " + 
+					"		AND createtime> '"+DateUtils.getSevenDay(query.getCreatedDateEnd(),3)+"' " + 
 					"	) )AND tracktime >= '"+starDate+"' " + 
 					"	AND tracktime <= '"+endDate+"' " + 
 					"	and order_source!='标记订单'";
@@ -663,5 +663,42 @@ public class CoreordersMarketkManager extends BaseManager {
 			return this.coreOrderSerbice.getResultList(sql);
 		}
 
+	}
+	
+	
+	
+	
+	
+	public List<CoreOrdersMarketk> qryExorDers(@NotNull CoreOrdersMarketkQuery query) {
+		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
+			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<>();
+				try {
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000), DateUtils.getDayNumT(query.getCreatedDateEnd(), 48)));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				list.add(cb.or(cb.like(r.get("malicious_tag"), "公安证件号码与证件姓名不匹配"),
+						cb.like(r.get("malicious_tag"), "zop接入本地库校验失败")));
+
+				Predicate pred = cb.and(list.toArray(new Predicate[0]));
+				list.clear();
+				try {
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000), DateUtils.getDayNumT(query.getCreatedDateEnd(),72)));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				list.add(cb.or(cb.like(r.get("malicious_tag"), "待确认地址"), cb.like(r.get("malicious_tag"), "恶意地址"),
+						cb.like(r.get("malicious_tag"), "配送地址冲突"), cb.like(r.get("malicious_tag"), "联系地址全是数字")));
+				try {
+					cb.between(r.get("createtime"), DateUtils.getDayNum(100000), DateUtils.getDayNum(48));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				Predicate pred2 = cb.and(list.toArray(new Predicate[0]));
+				return cb.or(pred, pred2);
+			}
+		};
+		return  this.coreOrderSerbice.findAllList(spec);
 	}
 }
