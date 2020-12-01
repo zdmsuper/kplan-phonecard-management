@@ -64,6 +64,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 
 	public String upLoadorDers(List<Object> data, kplanscordersQuery query, ManagerInfo info) {
 		msgRes msg = new msgRes();
+		String upLoadSqe=DateUtils.getTodayDate();
 		KplanSecondaryOrders o;
 		try {
 			if (data != null && data.size() > 0) {
@@ -75,7 +76,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					o.setPro_status(ProStatusEnum.CREADORDER);
 					o.setOrder_source(query.getKeyword());
 					if (info != null) {
-						o.setOperator(info.getBasicUserInfo().getUserRealName() + DateUtils.getTodayDate());
+						o.setOperator(info.getBasicUserInfo().getUserRealName() +upLoadSqe );
 					}
 					this.kplanSecondaryOrdersService.add(o);
 				}

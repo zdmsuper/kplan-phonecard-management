@@ -640,23 +640,22 @@ public class CoreordersMarketkManager extends BaseManager {
 	public List<CoreOrdersMarketk> qryExorDer(CoreOrdersMarketkQuery query) {
 		if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String starDate=sdf.format(query.getCreatedDateStart());
-			String endDate=sdf.format(query.getCreatedDateEnd());
-			String sql = "from CoreOrdersMarketk where ((" + 
-					"		malicious_tag LIKE'%公安证件号码与证件姓名不匹配%' " + 
-					"		OR malicious_tag LIKE'%zop接入本地库校验失败%' " + 
-					"		AND createtime < '"+DateUtils.getSevenDay(query.getCreatedDateEnd(),2)+"' " + 
-					"	" + 
-					"	) " + 
-					"	OR (" + 
-					"		malicious_tag LIKE'%待确认地址%' " + 
-					"		OR malicious_tag LIKE'%恶意地址%' " + 
-					"		OR malicious_tag LIKE'%配送地址冲突%' " + 
-					"		OR malicious_tag LIKE'%联系地址全是数字%' " + 
-					"		AND createtime< '"+DateUtils.getSevenDay(query.getCreatedDateEnd(),3)+"' " + 
-					"	) )AND tracktime >= '"+starDate+"' " + 
-					"	AND tracktime <= '"+endDate+"' " + 
-					"	and order_source!='标记订单'";
+			String starDate = sdf.format(query.getCreatedDateStart());
+			String endDate = sdf.format(query.getCreatedDateEnd());
+			String sql = "from CoreOrdersMarketk where "
+					+ "( ((malicious_tag LIKE'%公安证件号码与证件姓名不匹配%'  OR malicious_tag LIKE'%zop接入本地库校验失败%'   AND  "
+					+ "createtime< '"+DateUtils.getSevenDayT(query.getCreatedDateEnd(), 2)+"') AND tracktime >= '"+starDate+"'  "
+					+ "AND tracktime <= '"+endDate+"'  "
+					+ "AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime,  'YYYY-MM-DD')  )  "
+					+ "OR (( malicious_tag LIKE'%待确认地址%'  "
+					+ "OR malicious_tag LIKE'%恶意地址%'  "
+					+ "OR malicious_tag LIKE'%配送地址冲突%'  "
+					+ "OR malicious_tag LIKE'%联系地址全是数字%'   "
+					+ "AND createtime < '"+DateUtils.getSevenDayT(query.getCreatedDateEnd(), 3)+"' ) "
+					+ "AND tracktime >= '"+starDate+"'  "
+					+ "AND  tracktime <= '"+endDate+"'  "
+					+ "AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime, 'YYYY-MM-DD') )   )  "
+					+ "AND order_source <> '标记订单'";
 			logger.info(sql);
 			return this.coreOrderSerbice.getResultList(sql);
 		} else {
@@ -665,17 +664,14 @@ public class CoreordersMarketkManager extends BaseManager {
 		}
 
 	}
-	
-	
-	
-	
-	
+
 	public List<CoreOrdersMarketk> qryExorDers(@NotNull CoreOrdersMarketkQuery query) {
 		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
 			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<>();
 				try {
-					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000), DateUtils.getDayNumT(query.getCreatedDateEnd(), 48)));
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000),
+							DateUtils.getDayNumT(query.getCreatedDateEnd(), 48)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -685,7 +681,8 @@ public class CoreordersMarketkManager extends BaseManager {
 				Predicate pred = cb.and(list.toArray(new Predicate[0]));
 				list.clear();
 				try {
-					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000), DateUtils.getDayNumT(query.getCreatedDateEnd(),72)));
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000),
+							DateUtils.getDayNumT(query.getCreatedDateEnd(), 72)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -700,6 +697,6 @@ public class CoreordersMarketkManager extends BaseManager {
 				return cb.or(pred, pred2);
 			}
 		};
-		return  this.coreOrderSerbice.findAllList(spec);
+		return this.coreOrderSerbice.findAllList(spec);
 	}
 }

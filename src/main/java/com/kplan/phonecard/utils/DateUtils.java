@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +27,14 @@ public class DateUtils {
 	 * @return
 	 */
 	public static String getTodayDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");//时间格式化
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");//时间格式化
         Calendar calendar=Calendar.getInstance();
         Date date=new Date();
         calendar.setTime(date);
+        Random random=new Random();
 //        calendar.set(Calendar.HOUR_OF_DAY,calendar.get(Calendar.HOUR_OF_DAY) - 12);
         String time = sdf.format(calendar.getTime());
+        time=time+random.nextInt(3);
        return time;
 	}
 	
@@ -118,7 +121,7 @@ public class DateUtils {
        return time;
 	}
 	
-	public static String getSevenDay(Date Tdate,int dayNum) {
+	public static String getSevenDayT(Date Tdate,int dayNum) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//时间格式化
         Calendar calendar=Calendar.getInstance();
         Date date=Tdate;
