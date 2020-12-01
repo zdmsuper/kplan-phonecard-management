@@ -461,7 +461,6 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 				        		 e.setCityName(o.getCity_name());
 				        		 e.setDirName(o.getDistrict_name());
 				        		 e.setMobile(o.getReceiver_phone());
-				        		 e.setOperator(o.getOperator());
 				        		 e.setOrderNo(o.getOrder_no());
 				        		 e.setOrderSurce(o.getOrder_source());
 				        		 e.setPhone(o.getOrder_number());
@@ -470,13 +469,11 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 				        		 e.setProvicnName(o.getProvince_name());
 				        		 e.setUserId(o.getAccess_id_number());
 				        		 e.setUserName(o.getAccess_name());
-				        		 e.setOrderStatus(o.getOrder_status().getDesc());
 		        			}else {
 		        			 e.setAddress(k.getReceiver_address());
 			        		 e.setCityName(k.getCity_name());
 			        		 e.setDirName(k.getDistrict_name());
 			        		 e.setMobile(k.getReceiver_phone());
-			        		 e.setOperator(k.getOperator());
 			        		 e.setOrderNo(k.getOrder_no());
 			        		 e.setOrderSurce(k.getOrder_source());
 			        		 e.setPhone(k.getOrder_number());
@@ -485,7 +482,6 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 			        		 e.setProvicnName(k.getProvince_name());
 			        		 e.setUserId(k.getAccess_id_number());
 			        		 e.setUserName(k.getAccess_name());
-			        		 e.setOrderStatus(k.getOrder_status().getDesc());
 		        			}
 		        		 }
 		        		 if(9001!=k.getTrack_status()) {
@@ -502,7 +498,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 			        		 e.setProvicnName(k.getProvince_name());
 			        		 e.setUserId(k.getAccess_id_number());
 			        		 e.setUserName(k.getAccess_name());
-			        		 e.setOrderStatus(k.getOrder_status().getDesc());
+			        		
 		        		 }
 		        		 if(330==k.getTrack_status()) {
 		        		 e.setOperatorType("客服处理");
@@ -530,6 +526,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		        		 e.setRemarks(k.getRemarks());
 		        		 e.setRespon(k.getFail_reasons());
 		        		 e.setMaliciousTag(k.getMalicious_tag());
+		        		 e.setOperator(k.getOperator());
+		        		 e.setOrderStatus(k.getOrder_status().getDesc());
 		        		 ex.add(e);
 		        	}
 		        }
