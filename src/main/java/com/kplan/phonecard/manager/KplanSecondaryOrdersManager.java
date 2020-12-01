@@ -198,8 +198,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 				msg.setMsg("选择的订购号码已被使用，请重新选号");
 				return JSON.toJSON(msg);
 			}else {
-				String phonesql = "update kplan_phone_number set use_not=2 where phone_num='" + re_phone
-						+ "' and use_not=1";
+				String phonesql = "update kplan_phone_number set use_not=1 ,phone_num='"+re_phone+"' where phone='" + phone_Num
+						+ "' ";
 				this.coreOrderSerbice.exeNative(phonesql);
 			}
 		}

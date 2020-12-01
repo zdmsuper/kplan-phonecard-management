@@ -645,7 +645,7 @@ public class CoreordersMarketkManager extends BaseManager {
 			String sql = "from CoreOrdersMarketk where ((" + 
 					"		malicious_tag LIKE'%公安证件号码与证件姓名不匹配%' " + 
 					"		OR malicious_tag LIKE'%zop接入本地库校验失败%' " + 
-					"		AND createtime > '"+DateUtils.getSevenDay(query.getCreatedDateEnd(),2)+"' " + 
+					"		AND createtime < '"+DateUtils.getSevenDay(query.getCreatedDateEnd(),2)+"' " + 
 					"	" + 
 					"	) " + 
 					"	OR (" + 
@@ -653,10 +653,11 @@ public class CoreordersMarketkManager extends BaseManager {
 					"		OR malicious_tag LIKE'%恶意地址%' " + 
 					"		OR malicious_tag LIKE'%配送地址冲突%' " + 
 					"		OR malicious_tag LIKE'%联系地址全是数字%' " + 
-					"		AND createtime> '"+DateUtils.getSevenDay(query.getCreatedDateEnd(),3)+"' " + 
+					"		AND createtime< '"+DateUtils.getSevenDay(query.getCreatedDateEnd(),3)+"' " + 
 					"	) )AND tracktime >= '"+starDate+"' " + 
 					"	AND tracktime <= '"+endDate+"' " + 
 					"	and order_source!='标记订单'";
+			logger.info(sql);
 			return this.coreOrderSerbice.getResultList(sql);
 		} else {
 			String sql = "from CoreOrdersMarketk where  and malicious_tag is not null and ( track_status=9001 or track_status=9002 track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006)";
