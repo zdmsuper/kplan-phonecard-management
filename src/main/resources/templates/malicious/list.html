@@ -43,7 +43,13 @@
 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;"> 
 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
-					
+					<select name="keyword" id="keyword" class="select select-box inline">
+						<option value="">全部状态</option>
+						<option value="1" th:selected="${'1'==query.keyword}">恶意订单</option>
+						<option value="2" th:selected="${'2'==query.keyword}">二次回访</option>
+						<option value="3" th:selected="${'3'==query.keyword}">三次回访</option>
+<!-- 						<option value="4" th:selected="${'4'==query.keyword}">运营处理</option> -->
+						</select>
 					
 <!-- 					<select name="domain.pro_status" id="pro_status" class="select select-box inline"> -->
 <!-- 						<option value="">全部状态</option> -->
@@ -165,7 +171,7 @@
 							<td th:text="${item.operator}"></td>
 							<td class="td-manage" >
 							<a style="display:block;color:green;"
-								th:onclick="edit('编辑',[['qryMaliciOrder?domain.id='+${item.id}]],'4','','700')"  href="javascript:;"
+								th:onclick="edit('编辑',[['qryMaliciOrder?domain.id='+${item.id}]],'4','','720')"  href="javascript:;"
 								title="处理">处理
 							</a> 
 							</td>
@@ -229,6 +235,10 @@
 			formObj.attr( 'action' ,"/coreorder/exBackExcel");
 			formObj.submit();
 			formObj.attr( 'action' ,"/coreorder/secondarylist");
+		});
+		$('#keyword').change(function(){
+			var formObj = $(this).parents('form');
+			formObj.submit();
 		});
 
 		/*用户-添加*/

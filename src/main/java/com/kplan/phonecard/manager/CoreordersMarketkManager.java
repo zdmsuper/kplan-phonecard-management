@@ -1,6 +1,7 @@
 package com.kplan.phonecard.manager;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -433,10 +434,10 @@ public class CoreordersMarketkManager extends BaseManager {
 					order.setTrack_status(9001);
 					order.setTracktime(new Date());
 					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
-					order.setFail_reasons(order.getFail_reasons() + " "
+						order.setFail_reasons(order.getFail_reasons() + " "
 								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
 					} else {
-					order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
 					}
 					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
@@ -638,15 +639,27 @@ public class CoreordersMarketkManager extends BaseManager {
 	 */
 	public List<CoreOrdersMarketk> qryExorDer(CoreOrdersMarketkQuery query) {
 		if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
-			String sql = "from CoreOrdersMarketk where track_time>='" + query.getCreatedDateStart()
-					+ "' and track_time<='" + query.getCreatedDateEnd()
-					+ "' and malicious_tag is not null or ((track_status=330 or track_status=9001 or track_status=9002 or track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006) and (malicious_tag like '%公安证件号码与证件姓名不匹配%' or malicious_tag like '%zop接入本地库校验失败%')  and createtime>'"
-					+ DateUtils.getSevenDay(3)
-					+ "' )  or ((track_status=330 or  track_status=9001 or track_status=9002 or track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006 ) and (malicious_tag like '%待确认地址%' or malicious_tag like '%恶意地址%' or malicious_tag like '%配送地址冲突%' or malicious_tag like '%联系地址全是数字%')  and createtime>'"
-					+ DateUtils.getSevenDay(2) + "')";
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String starDate=sdf.format(query.getCreatedDateStart());
+			String endDate=sdf.format(query.getCreatedDateEnd());
+			String sql = "from CoreOrdersMarketk where ((" + 
+					"		malicious_tag LIKE'%公安证件号码与证件姓名不匹配%' " + 
+					"		OR malicious_tag LIKE'%zop接入本地库校验失败%' " + 
+					"		AND createtime > '"+DateUtils.getSevenDay(2)+"' " + 
+					"	" + 
+					"	) " + 
+					"	OR (" + 
+					"		malicious_tag LIKE'%待确认地址%' " + 
+					"		OR malicious_tag LIKE'%恶意地址%' " + 
+					"		OR malicious_tag LIKE'%配送地址冲突%' " + 
+					"		OR malicious_tag LIKE'%联系地址全是数字%' " + 
+					"		AND createtime> '"+DateUtils.getSevenDay(3)+"' " + 
+					"	) )AND tracktime >= '"+starDate+"' " + 
+					"	AND tracktime <= '"+endDate+"' " + 
+					"	and order_source!='标记订单'";
 			return this.coreOrderSerbice.getResultList(sql);
 		} else {
-			String sql = "from CoreOrdersMarketk where  and malicious_tag is not null and (track_status=330 or or track_status=9001 or track_status=9002 track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006)";
+			String sql = "from CoreOrdersMarketk where  and malicious_tag is not null and ( track_status=9001 or track_status=9002 track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006)";
 			return this.coreOrderSerbice.getResultList(sql);
 		}
 

@@ -45,33 +45,17 @@
 			autocomplete="off">
 			<!-- 			<input type="hidden" name="id" th:value="${item.id}"> -->
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
+				<label class="form-label col-xs-2 col-sm-3"><span
 					class="c-red">*</span>联系号码：</label>
-				<div class="formControls col-xs-8 col-sm-9">
+				<div class="formControls col-xs-2 col-sm-3">
 					<input type="text" class="input-text" name="re_phone" id="re_phone"
 						th:value="${order.phone_num}">
 				</div>
-<!-- 				<label class="form-label col-xs-4 col-sm-3"><span -->
-<!-- 					class="c-red">*</span>订单号：</label> -->
-<!-- 				<div class="formControls col-xs-8 col-sm-9"> -->
-<!-- 					<input type="text" class="input-text" -->
-<!-- 						th:value="${order.mall_order_no}" placeholder="" id="" -->
-<!-- 						readonly="readonly" name=""> -->
-<!-- 				</div> -->
-			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>恶意标签：</label>
-				<div class="formControls col-xs-8 col-sm-9">
-					<input type="text" class="input-text"
-						th:value="${order.malicious_order}" style="color: red;" placeholder="" id=""
-						readonly="readonly" name="">
-				</div>
-			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>用户姓名：</label>
-				<div class="formControls col-xs-8 col-sm-9">
+				<label class="form-label col-xs-1 col-sm-2">
+				<span
+					class="c-red">*</span>用户姓名：
+					</label>
+					<div class="formControls col-xs-2 col-sm-3">
 					<input type="hidden" th:value="${order.id}" id="orderNo" name="orderNo"> <input
 						type="text" class="input-text" th:value="${order.user_name}"
 						placeholder="" id="userName" name="userName">
@@ -79,35 +63,42 @@
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>恶意标签：</label>
+				<div class="formControls col-xs-4 col-sm-5">
+					<input type="text" class="input-text"
+						th:value="${order.malicious_order}" style="color: red;" placeholder="" id=""
+						readonly="readonly" name="">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-2 col-sm-3"><span
 					class="c-red">*</span>身份证号码：</label>
-				<div class="formControls col-xs-8 col-sm-9">
+				<div class="formControls col-xs-2 col-sm-3">
 					<input type="text" class="input-text"
 						th:value="${order.user_id}" placeholder="" id="userid"
 						name="userid">
 				</div>
+				
+				<label class="form-label col-xs-1 col-sm-2"><span
+					class="c-red">*</span>产&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品：</label>
+					<div class="formControls col-xs-2 col-sm-3">
+					<select class="select select-box inline" lay-verify="required" style="width: 50" name="ordersource" id="ordersource">
+							<option th:each="product:${product}"
+								th:value="${product.procduct_code}"
+								th:text="${product.procduct_name}" 
+								th:selected="${order.procduct_name==product.procduct_name}">&nbsp;</option>
+					</select>
+				
 			</div>
+
+			</div>
+
 
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>产品：</label>
-				<div class="formControls col-xs-8 col-sm-9">
-					<input type="text" class="input-text" name="procDuctName"
-						th:value="${order.procduct_name}" id="procductName" placeholder=""
-						readonly="readonly">
-				</div>
-			</div>
-
-
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>地区：</label>
+					class="c-red">*</span>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：</label>
 				<div id="province"
 					class="formControls col-xs-8 col-sm-9 skin-minimal">
-
-					<!-- 						<span th:text="${order.province_name}"></span> -->
-					<!-- 						<span th:text="${order.city_name}"></span> -->
-					<!-- 						<span th:text="${order.district_name}"></span> -->
-
 
 					<select style="width: 50" id="province_code"
 						class="select select-box inline" name="provinceCode">
@@ -144,25 +135,35 @@
 			<div></div>
 		<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>短信：</label>
+					class="c-red">*</span>短&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信：</label>
 				<div class="formControls col-xs-8 col-sm-9">
 					<input type="radio" class="radio-box" name="smsstatus"  value="1">发送
 					<input type="radio" class="radio-box" name="smsstatus" checked="checked" value="2">不发送
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>订单号：</label>
-				<div class="formControls col-xs-8 col-sm-9">
+				<label class="form-label col-xs-2 col-sm-3"><span
+					class="c-red">*</span>订&nbsp;&nbsp;单&nbsp;&nbsp;号：</label>
+				<div class="formControls col-xs-2 col-sm-3">
 					<input type="text" class="input-text"
 						th:value="${order.order_no}" placeholder="" id=""
 						readonly="readonly" name="">
 				</div>
+				
+				<label class="form-label col-xs-1 col-sm-2"><span
+					class="c-red">*</span>订购号码：</label>
+				<div class="formControls col-xs-2 col-sm-3">
+					<input type="text" class="input-text" 
+						name="phone_Num" id="phone_Num"
+						>
+				</div>
 			</div>
+			
+			
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
+				<label class="form-label col-xs-2 col-sm-3"><span
 					class="c-red">*</span>处理方式：</label>
-				<div class="formControls col-xs-8 col-sm-9">
+				<div class="formControls col-xs-2 col-sm-3">
 					<select class="select select-box inline" name="proctype"
 						id="proctype">
 						<option value="">请选择</option>
@@ -170,22 +171,72 @@
 						<option value="2">不办理</option>
 						<option value="4">二次回访</option>
 						<option value="6">三次回访</option>
-						<option value="3">转运营</option>
+<!-- 						<option value="3">转运营</option> -->
 					</select>
 				</div>
-			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3">备注：</label>
-				<div class="formControls col-xs-8 col-sm-9">
-					<textarea name="remarks" id="remark" cols="" rows="" 
-						class="textarea" placeholder="说点什么...最少输入10个字符"
-						onKeyUp="$.Huitextarealength(this,100)" th:text="${order.remarks}">
-						</textarea>
-					<p class="textarea-numberbar">
-						<em class="textarea-length">0</em>/100
-					</p>
+				
+				
+				<label class="form-label col-xs-1 col-sm-2"><span
+					class="c-red"></span>尾号搜索：</label>
+				<div class="formControls col-xs-2 col-sm-3">
+					<input type="text" style="width: 20;" class="input-text"  name="basicUserInfo.email" id="phoneNum" >
+					<input type="button" class="btn btn-primary radius" id="id-disable-check" value="搜索" /> 
 				</div>
 			</div>
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3">
+				<select style="width: 50"  class="select select-box inline" id="phoneRule" name="phoneRule" >
+							<option value="">请选择</option>
+							<option th:each="channel:${phoneRuleList}"
+								th:value="${channel.rule_name}"
+								th:text="${channel.rule_name}" >&nbsp;</option>
+						</select>
+				<input type="button" class="btn btn-primary radius" id="phonescheck" value="换一批">
+				</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<table
+					class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead style="text-align: center;">
+						<tr >
+							<th style="text-align: center;">
+<!-- 							<input type="radio" name="" value=""> -->
+							</th>
+							<th style="text-align: center;">靓号</th>
+							<th style="text-align: center;">规则</th>
+							<th style="text-align: center;">省份</th>
+							<th style="text-align: center;">城市</th>
+							<th style="text-align: center;">更新时间</th>
+						</tr>
+					</thead>
+					<tbody id='phones' th:each="phones:${phoneList}">
+						<tr class="text-c" >
+						<td><input type="radio" th:value="${phones.phone}" name="phonesNum"/></td>
+							<td  th:text="${phones.phone}">暂无靓号</td>
+							<td th:text="${phones.rule_name}">暂无靓号</td>
+							<td th:text="${phones.province_name}">暂无靓号</td>
+							<td th:text="${phones.city_name}">暂无靓号</td>
+							<td th:text="${phones.last_date}">暂无靓号</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+			</div>
+			
+			
+			
+<!-- 			<div class="row cl"> -->
+<!-- 				<label class="form-label col-xs-4 col-sm-3">备注：</label> -->
+<!-- 				<div class="formControls col-xs-8 col-sm-9"> -->
+<!-- 					<textarea name="remarks" id="remark" cols="" rows=""  -->
+<!-- 						class="textarea" placeholder="说点什么...最少输入10个字符" -->
+<!-- 						onKeyUp="$.Huitextarealength(this,100)" th:text="${order.remarks}"> -->
+<!-- 						</textarea> -->
+<!-- 					<p class="textarea-numberbar"> -->
+<!-- 						<em class="textarea-length">0</em>/100 -->
+<!-- 					</p> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 
 			<div class="row cl">
 				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">

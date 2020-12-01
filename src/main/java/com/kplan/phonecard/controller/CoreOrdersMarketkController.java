@@ -440,7 +440,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		    try {
 		        response.setCharacterEncoding("UTF-8");
 		        response.setContentType("application/vnd.ms-excel");
-		        fileName = new String(fileName.getBytes("UTF-8"), "UTF-8");
+//		        fileName = new String(fileName.getBytes("UTF-8"), "UTF-8");
 		        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
 		        List<CoreOrdersMarketk> l=this.coreOrdersManager.qryExorDer(query);
 		        List<excelOrder> ex = new ArrayList<excelOrder>();
@@ -504,7 +504,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 			        		 e.setUserName(k.getAccess_name());
 			        		 e.setOrderStatus(k.getOrder_status().getDesc());
 		        		 }
-        			if(330==k.getTrack_status()) {
+		        		 if(330==k.getTrack_status()) {
 		        		 e.setOperatorType("客服处理");
 		        		 	}
 		        		 if(9001==k.getTrack_status()) {

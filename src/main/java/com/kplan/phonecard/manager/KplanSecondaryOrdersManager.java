@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.CoreordersTrackLog;
+import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.ManagerInfo;
@@ -139,6 +140,16 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 //				if(query.getKeyword()!=null) {
 //					list.add(cb.equal(r.get("phone_num"), query.getKeyword()));
 //				}
+				if(query.getKeyword()!=null) {
+				if(query.getKeyword().equals("1")) {
+					list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
+				}
+				if(query.getKeyword().equals("2")) {
+					list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS));
+				}
+				if(query.getKeyword().equals("3")) {
+					list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS));
+				}}
 				list.add(cb.or(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS),
 						cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS),
 						cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
@@ -173,11 +184,26 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
 			String proctype, String province, String provinceCode, String city, String cityCode, String district,
-			String districtCode, ManagerInfo managerInfo, String pocDuctName) {
+			String districtCode, ManagerInfo managerInfo, String pocDuctName,String phone_Num) {
 		msgRes msg = new msgRes();
 		KplanSecondaryOrders order;
 		UnicomPostCityCode dir = null;
 		Kplanprocducts pocDuct = null;
+		if(StringUtils.trimToNull(phone_Num)!=null) {
+		KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById(phone_Num, KplanPhoneNumber.class);
+		if(phone!=null) {
+			if (phone.getUse_not() != 0) {
+				msg.setCode("202");
+				msg.setStatus("202");
+				msg.setMsg("选择的订购号码已被使用，请重新选号");
+				return JSON.toJSON(msg);
+			}else {
+				String phonesql = "update kplan_phone_number set use_not=2 where phone_num='" + re_phone
+						+ "' and use_not=1";
+				this.coreOrderSerbice.exeNative(phonesql);
+			}
+		}
+		}
 		try {
 			if (StringUtils.trimToNull(districtCode) != null) {
 				dir = this.unicomPostcityCodeManager.findById(districtCode);
@@ -213,6 +239,9 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					this.kplanSecondaryOrdersService.modify(order);
 					CoreOrdersMarketk k = new CoreOrdersMarketk();
+					if(phone_Num!=null) {
+						k.setOrder_number(phone_Num);
+					}
 					k.setReceiver_name(userName);
 					k.setAccess_name(userName);
 					k.setAccess_id_number(userid);
