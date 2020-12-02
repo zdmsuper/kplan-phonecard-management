@@ -13,6 +13,10 @@ public enum KplanSeconDarytracStatusEnum {
 	 * 初始状态
 	 */
 	INITSTATUS(0, "初始状态"),
+	/**待获取订单信息
+	 * 
+	 */
+	INISTATUS(-1,"待获取订单信息"),
 	/**
 	 * 等待处理
 	 */

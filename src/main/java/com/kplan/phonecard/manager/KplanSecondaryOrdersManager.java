@@ -75,6 +75,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					o.setOrder_no(list.get(0));
 					o.setPro_status(ProStatusEnum.CREADORDER);
 					o.setOrder_source(query.getKeyword());
+					o.setTrack_status(KplanSeconDarytracStatusEnum.INISTATUS);
 					if (info != null) {
 						o.setOperator(info.getBasicUserInfo().getUserRealName() +upLoadSqe );
 					}
