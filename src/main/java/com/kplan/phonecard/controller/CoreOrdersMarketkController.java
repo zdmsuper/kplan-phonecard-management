@@ -54,6 +54,7 @@ import com.kplan.phonecard.manager.CoreordersMarketkManager;
 import com.kplan.phonecard.manager.KplanChannelNumberDetailManager;
 import com.kplan.phonecard.manager.KplanPhonenumBerManager;
 import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
+import com.kplan.phonecard.manager.KplanprocductsManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.manager.kplanscordersManager;
 import com.kplan.phonecard.query.ManagerInfoQuery;
@@ -62,6 +63,7 @@ import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.KplanChannelNumberDetailQuery;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
+import com.kplan.phonecard.query.KplanprocductsQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.utils.DateUtils;
 import com.kplan.phonecard.utils.ExcelUtil;
@@ -85,6 +87,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	KplanSecondaryOrdersManager kplanSecondaryOrdersManager;
 	@Autowired
 	KplanChannelNumberDetailManager kplanChannelNumberDetailManager;
+	@Autowired
+	KplanprocductsManager kplanprocductsManager;
 	@Autowired
 	kplanscordersManager kplanscordersManager;
 
@@ -595,6 +599,26 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		    } catch (Exception e) {
 		        e.printStackTrace();
 		    }
+	}
+	@RequestMapping("/proDuctList")
+	public String proDuctList(Map<String, Object> map, KplanprocductsQuery query) {
+		Page<Kplanprocducts> page=this.kplanprocductsManager.qryProDuct(query, this.getPageRequest());
+		map.put("page", page);
+		return "product/list";
+	}
+	@RequestMapping("/proDuctEdit")
+	public String proDuctEdit(Map<String, Object> map, KplanprocductsQuery query) {
+		return "product/edit";
+	}
+	@RequestMapping(value = "/savaProDucts", method = RequestMethod.GET)
+	@ResponseBody
+	public Object savaProDucts(String procduct_code,String procduct_name) {
+		return this.kplanprocductsManager.savaProDucts(procduct_code, procduct_name);
+	}
+	@RequestMapping(value = "/proDuctDel", method = RequestMethod.GET)
+	@ResponseBody
+	public Object proDuctDel(Integer id) {
+		return this.kplanprocductsManager.proDuctDel(id);
 	}
 
 	private List<List<String>> createTestListStringHead() {
