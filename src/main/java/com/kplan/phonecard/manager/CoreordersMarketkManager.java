@@ -642,20 +642,22 @@ public class CoreordersMarketkManager extends BaseManager {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String starDate = sdf.format(query.getCreatedDateStart());
 			String endDate = sdf.format(query.getCreatedDateEnd());
-			String sql = "from CoreOrdersMarketk where "
-					+ "( ((malicious_tag LIKE'%公安证件号码与证件姓名不匹配%'  OR malicious_tag LIKE'%zop接入本地库校验失败%'   AND  "
-					+ "createtime< '"+DateUtils.getSevenDayT(query.getCreatedDateEnd(), 2)+"') AND tracktime >= '"+starDate+"'  "
-					+ "AND tracktime <= '"+endDate+"'  "
-					+ "AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime,  'YYYY-MM-DD')  )  "
-					+ "OR (( malicious_tag LIKE'%待确认地址%'  "
-					+ "OR malicious_tag LIKE'%恶意地址%'  "
-					+ "OR malicious_tag LIKE'%配送地址冲突%'  "
-					+ "OR malicious_tag LIKE'%联系地址全是数字%'   "
-					+ "AND createtime < '"+DateUtils.getSevenDayT(query.getCreatedDateEnd(), 3)+"' ) "
-					+ "AND tracktime >= '"+starDate+"'  "
-					+ "AND  tracktime <= '"+endDate+"'  "
-					+ "AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime, 'YYYY-MM-DD') )   )  "
-					+ "AND order_source <> '标记订单'";
+//			String sql = "from CoreOrdersMarketk where "
+//					+ "( ((malicious_tag LIKE'%公安证件号码与证件姓名不匹配%'  OR malicious_tag LIKE'%zop接入本地库校验失败%'   AND  "
+//					+ "createtime< '"+DateUtils.getSevenDayT(query.getCreatedDateEnd(), 2)+"') AND tracktime >= '"+starDate+"'  "
+//					+ "AND tracktime <= '"+endDate+"'  "
+//					+ "AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime,  'YYYY-MM-DD')  )  "
+//					+ "OR (( malicious_tag LIKE'%待确认地址%'  "
+//					+ "OR malicious_tag LIKE'%恶意地址%'  "
+//					+ "OR malicious_tag LIKE'%配送地址冲突%'  "
+//					+ "OR malicious_tag LIKE'%联系地址全是数字%'   "
+//					+ "AND createtime < '"+DateUtils.getSevenDayT(query.getCreatedDateEnd(), 3)+"' ) "
+//					+ "AND tracktime >= '"+starDate+"'  "
+//					+ "AND  tracktime <= '"+endDate+"'  "
+//					+ "AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime, 'YYYY-MM-DD') )   )  "
+//					+ "AND order_source <> '标记订单'";
+			String sql = "from CoreOrdersMarketk where  malicious_tag is not null and order_source <> '标记订单'    and track_status!=330 AND tracktime >= '"+starDate+"'  " + 
+					"AND  tracktime <= '"+endDate+"' AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime,  'YYYY-MM-DD')  ";
 			logger.info(sql);
 			return this.coreOrderSerbice.getResultList(sql);
 		} else {
