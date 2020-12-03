@@ -83,8 +83,8 @@
 							<th>渠道名称</th>
 							<th>送单量</th>
 							<th>已送单量</th>
-							<th>时间</th>
-						</tr>
+							<th>时间</th> 
+							</tr>
 					</thead>
 					<tbody>
 
@@ -147,8 +147,7 @@
 					.confirm(
 							'确认要停用吗？',
 							function(index) {
-								$
-										.ajax({
+								$.ajax({
 											type : 'POST',
 											url : '/managerInfo/editInfo',
 											dataType : 'json',
@@ -179,8 +178,7 @@
 
 		/*用户-启用*/
 		function member_start(obj, id) {
-			layer
-					.confirm(
+			layer.confirm(
 							'确认要启用吗？',
 							function(index) {
 								$
