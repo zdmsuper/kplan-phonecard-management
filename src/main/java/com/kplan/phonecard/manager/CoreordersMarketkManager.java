@@ -109,11 +109,12 @@ public class CoreordersMarketkManager extends BaseManager {
 				}
 				list.add(cb.or(cb.like(r.get("malicious_tag"), "公安证件号码与证件姓名不匹配"),
 						cb.like(r.get("malicious_tag"), "zop接入本地库校验失败")));
+				list.add(cb.notEqual(r.get("order_source"), "标记订单"));
 
 				Predicate pred = cb.and(list.toArray(new Predicate[0]));
 				list.clear();
 				try {
-					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000), DateUtils.getDayNumT(72)));
+					list.add(cb.between(r.get("createtime"), DateUtils.getDayNumT(100000), DateUtils.getDayNumT(48)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -146,10 +147,11 @@ public class CoreordersMarketkManager extends BaseManager {
 				list.add(cb.or(cb.like(r.get("malicious_tag"), "待确认地址"), cb.like(r.get("malicious_tag"), "恶意地址"),
 						cb.like(r.get("malicious_tag"), "配送地址冲突"), cb.like(r.get("malicious_tag"), "联系地址全是数字")));
 				try {
-					cb.between(r.get("createtime"), DateUtils.getDayNum(100000), DateUtils.getDayNum(48));
+					cb.between(r.get("createtime"), DateUtils.getDayNum(100000), DateUtils.getDayNum(72));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
+				list.add(cb.notEqual(r.get("order_source"), "标记订单"));
 				Predicate pred2 = cb.and(list.toArray(new Predicate[0]));
 				return cb.or(pred, pred2);
 			}
