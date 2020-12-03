@@ -45,19 +45,19 @@
 			autocomplete="off">
 			<!-- 			<input type="hidden" name="id" th:value="${item.id}"> -->
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
+				<label class="form-label col-xs-2 col-sm-3"><span
 					class="c-red">*</span>联系号码：</label>
-				<div class="formControls col-xs-8 col-sm-9">
+				<div class="formControls col-xs-2 col-sm-3">
 					<input type="text" class="input-text" name="re_phone" id="re_phone"
 						th:value="${order.receiver_phone}">
 				</div>
-<!-- 				<label class="form-label col-xs-4 col-sm-3"><span -->
-<!-- 					class="c-red">*</span>订单号：</label> -->
-<!-- 				<div class="formControls col-xs-8 col-sm-9"> -->
-<!-- 					<input type="text" class="input-text" -->
-<!-- 						th:value="${order.mall_order_no}" placeholder="" id="" -->
-<!-- 						readonly="readonly" name=""> -->
-<!-- 				</div> -->
+				<label class="form-label col-xs-2 col-sm-3"><span
+					class="c-red">*</span>用户姓名：</label>
+				<div class="formControls col-xs-2 col-sm-3">
+					<input type="hidden" th:value="${order.id}" id="orderNo" name="orderNo"> <input
+						type="text" class="input-text" th:value="${order.receiver_name}"
+						placeholder="" id="userName" name="userName">
+				</div>
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
@@ -68,34 +68,42 @@
 						readonly="readonly" name="">
 				</div>
 			</div>
+<!-- 			<div class="row cl"> -->
+<!-- 				<label class="form-label col-xs-4 col-sm-3"><span -->
+<!-- 					class="c-red">*</span>用户姓名：</label> -->
+<!-- 				<div class="formControls col-xs-8 col-sm-9"> -->
+<!-- 					<input type="hidden" th:value="${order.id}" id="orderNo" name="orderNo"> <input -->
+<!-- 						type="text" class="input-text" th:value="${order.receiver_name}" -->
+<!-- 						placeholder="" id="userName" name="userName"> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>用户姓名：</label>
-				<div class="formControls col-xs-8 col-sm-9">
-					<input type="hidden" th:value="${order.id}" id="orderNo" name="orderNo"> <input
-						type="text" class="input-text" th:value="${order.receiver_name}"
-						placeholder="" id="userName" name="userName">
-				</div>
-			</div>
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
+				<label class="form-label col-xs-2 col-sm-3"><span
 					class="c-red">*</span>身份证号码：</label>
-				<div class="formControls col-xs-8 col-sm-9">
+				<div class="formControls col-xs-2 col-sm-3">
 					<input type="text" class="input-text"
 						th:value="${order.access_id_number}" placeholder="" id="userid"
 						name="userid">
 				</div>
-			</div>
-
-			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>产品：</label>
-				<div class="formControls col-xs-8 col-sm-9">
+				
+				<label class="form-label col-xs-2 col-sm-3"><span
+					class="c-red">*</span>产&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品：</label>
+				<div class="formControls col-xs-2 col-sm-3">
 					<input type="text" class="input-text"
 						th:value="${order.product_name}" id="procductName" placeholder=""
 						readonly="readonly">
 				</div>
 			</div>
+
+<!-- 			<div class="row cl"> -->
+<!-- 				<label class="form-label col-xs-4 col-sm-3"><span -->
+<!-- 					class="c-red">*</span>产品：</label> -->
+<!-- 				<div class="formControls col-xs-8 col-sm-9"> -->
+<!-- 					<input type="text" class="input-text" -->
+<!-- 						th:value="${order.product_name}" id="procductName" placeholder="" -->
+<!-- 						readonly="readonly"> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 
 
 			<div class="row cl">
