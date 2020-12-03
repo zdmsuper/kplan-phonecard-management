@@ -16,6 +16,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/skin/default/skin.css}" href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/style.css}" href="ui/h-ui.admin/css/style.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/lib/layer/iconfont.css}" />
 <!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -107,12 +108,12 @@
 <!-- 						上传文件</a> -->
 <!-- 				</span> -->
 			</div>
-			<div class="mt-20 dataTables_wrapper">
+			<div class="mt-22 dataTables_wrapper">
 				<table
 					class="table table-border table-bordered table-hover table-bg table-sort">
 					<thead>
 						<tr class="text-c">
-							<th><input type="checkbox" name="" value=""></th>
+<!-- 							<th><input type="checkbox" name="" value=""></th> -->
 <!-- 							<th>订单号</th> -->
 							<th>姓名</th>
 							<th>联系电话</th>
@@ -126,15 +127,15 @@
 							<th>订单状态</th>
 							<th>导出状态</th>
 							<th>订单时间</th>
-							<th>备注</th>
+<!-- 							<th>备注</th> -->
 							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
 
 						<tr class="text-c" th:each="item:${page}">
-							<td><input type="checkbox" value="1" name=""
-								th:value="${item.id}"></td>
+<!-- 							<td><input type="checkbox" value="1" name="" -->
+<!-- 								th:value="${item.id}"></td> -->
 <!-- 							<td th:text="${item.id}">1</td> -->
 							<td th:text="${item.receiver_name}"></td>
 							<td th:text="${item.receiver_phone}"></td>
@@ -167,21 +168,21 @@
 							
 							<td th:text="${item.export_status.desc}"></td>
 							<td th:text="${#dates.format(item.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
-							<td th:text="${item.remarks}"></td>
+<!-- 							<td th:text="${item.remarks}"></td> -->
 							<td class="td-manage" th:if="${item.order_status.code} eq 21">
 							<a style="display:block"
 								th:onclick="resSet([[${item.id}]],[[${item.receiver_phone}]])"  href="javascript:;"
-								title="重置">重置
+								title="重置"><i class="iconfont">&#xe607;</i>
 							</a> 
 							<a style="display:block"
 								th:onclick="edit('编辑',   [['editorder?domain.id='+${item.id}]],'4','','850')"  href="javascript:;"
-								title="选号">选号
+								title="选号"><i class="iconfont icon-dianhua"></i>
 							</a> 
 							</td>
 							<td class="td-manage" th:if="${item.order_status.code} eq 4">
 							<a style="display:block"
 								th:onclick="edit('编辑',   [['editorder?domain.id='+${item.id}]],'4','','850')"  href="javascript:;"
-								title="选号">选号
+								title="选号"><i class="iconfont icon-dianhua"></i>
 							</a> 
 							</td>
 							<td class="td-manage" th:if="${item.order_status.code!=21 && item.order_status.code!=4}  " >

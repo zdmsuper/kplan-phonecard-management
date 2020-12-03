@@ -16,6 +16,10 @@
 <link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/skin/default/skin.css}" href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/style.css}" href="ui/h-ui.admin/css/style.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/lib/layer/2.4/skin/layer.css}" href="ui/h-ui/css/H-ui.min.css" />
+
+<link rel="stylesheet" type="text/css" th:href="@{/lib/laydate/theme/default/laydate.css}" href="ui/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/lib/layer/iconfont.css}" href="ui/h-ui/css/H-ui.min.css"/>
 <!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -148,19 +152,19 @@
 							<td class="td-manage" th:if="${item.track_status} eq 330">
 							<a style="display:block;color:green;"
 								th:onclick="edit('编辑',[['procedit?domain.id='+${item.id}]],'4','','600')"  href="javascript:;"
-								title="处理">处理
+								title="处理"><i class="iconfont">&#xe66e;</i>   
 							</a> 
 							</td>
 							<td class="td-manage" th:if="${item.track_status==9004 || item.track_status==9006}">
 							<a style="display:block;color:green;"
 								th:onclick="edit('编辑',[['procedit?domain.id='+${item.id}]],'4','','600')"  href="javascript:;"
-								title="处理">处理
+								title="处理"><i class="iconfont">&#xe66e;</i>   
 							</a> 
 							</td>
 							<td class="td-manage" th:if="${item.track_status} eq 9003">
 							<a style="display:block;color:red;"
 								th:onclick="edit('编辑',[['operate?domain.id='+${item.id}]],'4','','700')"  href="javascript:;"
-								title="关闭">关闭
+								title="关闭"><i class="iconfont">&#xe668;</i> 
 							</a> 
 							</td>
 						</tr>
