@@ -42,6 +42,7 @@ import com.kplan.phonecard.service.CoreordersTrackLogService;
 import com.kplan.phonecard.service.KplanSecondaryOrdersService;
 import com.kplan.phonecard.service.KplanprocductService;
 import com.kplan.phonecard.utils.DateUtils;
+import com.kplan.phonecard.utils.SendSmsUtils;
 
 import one.util.streamex.StreamEx;
 
@@ -186,7 +187,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
 			String proctype, String province, String provinceCode, String city, String cityCode, String district,
-			String districtCode, ManagerInfo managerInfo, String pocDuctName,String phone_Num) {
+			String districtCode, ManagerInfo managerInfo, String pocDuctName,String phone_Num,String smsstatus) {
 		msgRes msg = new msgRes();
 		KplanSecondaryOrders order;
 		UnicomPostCityCode dir = null;
@@ -378,6 +379,29 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
 					log.setLog_info("9006");
+					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					this.logService.add(log);
+					msg.setCode("200");
+					msg.setStatus("200");
+					msg.setMsg("订单处理成功");
+				}
+				
+				if ("7".equals(proctype)) {
+					order.setPro_date(new Date());
+					order.setTrack_status(KplanSeconDarytracStatusEnum.NOTPHONEEND);
+					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
+					if (StringUtils.trimToNull(order.getRemarks()) != null) {
+						order.setRemarks(order.getRemarks() + " " + managerInfo.getBasicUserInfo().getUserRealName()
+								+ " 订单多次联系不上");
+					} else {
+						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单多次联系不上");
+					}
+					this.coreOrderSerbice.modify(order);
+					SendSmsUtils.senMsg(re_phone, userid, userName);
+					log = new CoreordersTrackLog();
+					log.setDelivery_order_no(order.getOrder_no());
+					log.setCreate_time(new Date());
+					log.setLog_info("9007");//多次联系不上
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
 					msg.setCode("200");

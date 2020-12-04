@@ -85,8 +85,8 @@ public class MaliciousOrderController extends AbstractBaseController{
 	@RequestMapping(value = "/procOrder" , method = RequestMethod.POST)
 	@ResponseBody
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
-			String proctype,String province,String provinceCode,String city,String cityCode,String district,String districtCode,String remarks,String procDuctName,String phone_Num) {
+			String proctype,String province,String provinceCode,String city,String cityCode,String district,String districtCode,String remarks,String procDuctName,String phone_Num,String smsstatus) {
 		ManagerInfo managerInfo=super.getCurrentUserDetails().orElse(null);
-		return this.kplanSecondaryOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,province, provinceCode, city, cityCode, district, districtCode,managerInfo,procDuctName,phone_Num);
+		return this.kplanSecondaryOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,province, provinceCode, city, cityCode, district, districtCode,managerInfo,procDuctName,phone_Num,smsstatus);
 	}
 }

@@ -54,6 +54,10 @@ public enum KplanSeconDarytracStatusEnum {
 	 * 订单关闭
 	 */
 	CLOSESTATUS(15,"订单关闭"),
+	/**
+	 * 多次联系不上
+	 */
+	NOTPHONEEND(16,"多次联系不上"),
 	/** 未知
 	 */
 	UNKNOW(null,"未知")
