@@ -83,6 +83,7 @@
 					class="c-red">*</span>产&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品：</label>
 					<div class="formControls col-xs-2 col-sm-3">
 					<select class="select select-box inline" lay-verify="required" style="width: 50" name="procDuctName" id="ordersource">
+							<option value="">未匹配到产品</option>
 							<option th:each="product:${product}"
 								th:value="${product.procduct_code}"
 								th:text="${product.procduct_name}" 
