@@ -58,6 +58,10 @@ public enum KplanSeconDarytracStatusEnum {
 	 * 多次联系不上
 	 */
 	NOTPHONEEND(16,"多次联系不上"),
+	/**
+	 * 不符合回访
+	 */
+	NOREIVITI(17,"不符合回访"),
 	/** 未知
 	 */
 	UNKNOW(null,"未知")

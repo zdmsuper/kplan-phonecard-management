@@ -153,6 +153,9 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 				if(query.getKeyword().equals("3")) {
 					list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS));
 				}}
+				if(query.getDomain().getPhone_num()!=null) {
+					list.add(cb.or(cb.equal(r.get("phone_num"), query.getDomain().getPhone_num()),cb.equal(r.get("phone"), query.getDomain().getPhone_num())));
+				}
 				list.add(cb.or(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS),
 						cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS),
 						cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
@@ -402,6 +405,27 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
 					log.setLog_info("9007");//多次联系不上
+					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					this.logService.add(log);
+					msg.setCode("200");
+					msg.setStatus("200");
+					msg.setMsg("订单处理成功");
+				}
+				if ("8".equals(proctype)) {
+					order.setPro_date(new Date());
+					order.setTrack_status(KplanSeconDarytracStatusEnum.NOREIVITI);
+					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
+					if (StringUtils.trimToNull(order.getRemarks()) != null) {
+						order.setRemarks(order.getRemarks() + " " + managerInfo.getBasicUserInfo().getUserRealName()
+								+ " 订单不符合回访");
+					} else {
+						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单不符合回访");
+					}
+					this.coreOrderSerbice.modify(order);
+					log = new CoreordersTrackLog();
+					log.setDelivery_order_no(order.getOrder_no());
+					log.setCreate_time(new Date());
+					log.setLog_info("9008");//不符合回访
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
 					msg.setCode("200");

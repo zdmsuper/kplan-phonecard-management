@@ -81,8 +81,8 @@
 <!-- 						> -->
 <!-- 						</option> -->
 <!-- 					</select> -->
-<!-- 					<input type="text" class="input-text" style="width: 250px"  -->
-<!-- 					placeholder="输入用户名、电话、邮箱" id="" name="keyword" th:value="${query.keyword}"> -->
+					<input type="text" class="input-text" style="width: 250px" 
+					placeholder="联系电话、订购号码" id="" name="domain.phone_num" th:value="${query.domain.phone_num}">
 					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
 						<i class="Hui-iconfont">&#xe665;</i> 查询
 					</button>
@@ -127,12 +127,12 @@
 							<th>省份</th>
 							<th>地市</th>
 							<th>详细地址</th>
-							<th>处理状态</th>
 							<th>产品</th>
 							<th>订单来源</th>
 							<th>恶意标签</th>
 							<th>反诈标签</th>
 							<th>回访状态</th>
+							<th>处理时间</th>
 							<th>操作人</th>
 							<th>操作</th>
 						</tr>
@@ -149,9 +149,9 @@
 							<td th:text="${item.post_province}"></td>
 							<td th:text="${item.post_city}"></td>
 							<td th:text="${item.post_district}"></td>
-							<td th:if="${item.pro_status.code} eq 99" >
-							<span style="color: green;" th:text="${item.pro_status.desc}"></span>
-							</td>
+<!-- 							<td th:if="${item.pro_status.code} eq 99" > -->
+<!-- 							<span style="color: green;" th:text="${item.pro_status.desc}"></span> -->
+<!-- 							</td> -->
 							<td th:if="${item.pro_status.code} ne 99" th:id="s+${item.id}">
 							<a th:id="${item.id}" th:onmousemove="op([[${item.id}]],[[${item.pro_status.code}]])">
 							<span  style="color: red;" th:text="${item.pro_status.desc}" ></span>
@@ -169,6 +169,7 @@
 							<td >
 							<span style="color: red" th:text="${item.track_status.desc}"></span>
 							</td>
+							<td th:text="${#dates.format(item.pro_date,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.operator}"></td>
 							<td class="td-manage" >
 							<a style="display:block;color:green;"
