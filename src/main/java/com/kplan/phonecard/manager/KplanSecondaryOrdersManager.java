@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.CoreordersTrackLog;
+import com.kplan.phonecard.domain.CustomerServiceLog;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.Kplanprocducts;
@@ -39,6 +40,7 @@ import com.kplan.phonecard.query.ManagerInfoQuery;
 import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.service.CoreordersTrackLogService;
+import com.kplan.phonecard.service.CustomerServiceLogService;
 import com.kplan.phonecard.service.KplanSecondaryOrdersService;
 import com.kplan.phonecard.service.KplanprocductService;
 import com.kplan.phonecard.utils.DateUtils;
@@ -62,6 +64,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	KplanprocductService kplanprocductService;
 	@Autowired
 	CoreordersTrackLogService logService;
+	@Autowired
+	CustomerServiceLogService customerServiceLogService;
 
 	public String upLoadorDers(List<Object> data, kplanscordersQuery query, ManagerInfo info) {
 		msgRes msg = new msgRes();
@@ -192,6 +196,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 			String proctype, String province, String provinceCode, String city, String cityCode, String district,
 			String districtCode, ManagerInfo managerInfo, String pocDuctName,String phone_Num,String smsstatus) {
 		msgRes msg = new msgRes();
+		CustomerServiceLog serviceLog=new CustomerServiceLog();
 		KplanSecondaryOrders order;
 		UnicomPostCityCode dir = null;
 		Kplanprocducts pocDuct = null;
@@ -278,6 +283,21 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setLog_info("9001");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					
+					
+					//钉钉日志
+					serviceLog.setBusiness_type("交付订单");
+					serviceLog.setCity_name(order.getPost_city());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getPost_district());
+					serviceLog.setOperation_result("订单办理");
+					serviceLog.setOperation_type("回捞用户回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getPhone_num());
+					serviceLog.setProduct_name(order.getProcduct_name());
+					serviceLog.setProvince_name(order.getPost_province());
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -301,7 +321,23 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setLog_info("9002");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					
+					serviceLog.setBusiness_type("交付订单");
+					serviceLog.setCity_name(order.getPost_city());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getPost_district());
+					serviceLog.setOperation_result(KplanSeconDarytracStatusEnum.FAILEDSTATUS.getDesc());
+					serviceLog.setOperation_type("回捞用户回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getPhone_num());
+					serviceLog.setProduct_name(order.getProcduct_name());
+					serviceLog.setProvince_name(order.getPost_province());
+					this.customerServiceLogService.add(serviceLog);
+					
 					msg.setMsg("订单处理成功");
+					
+					
 				}
 				if ("3".equals(proctype)) {
 					order.setTrack_status(KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION);
@@ -320,6 +356,19 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setLog_info("9003");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					
+					serviceLog.setBusiness_type("交付订单");
+					serviceLog.setCity_name(order.getPost_city());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getPost_district());
+					serviceLog.setOperation_result(KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION.getDesc());
+					serviceLog.setOperation_type("回捞用户回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getPhone_num());
+					serviceLog.setProduct_name(order.getProcduct_name());
+					serviceLog.setProvince_name(order.getPost_province());
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -341,6 +390,20 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setLog_info("9004");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					
+					
+					serviceLog.setBusiness_type("交付订单");
+					serviceLog.setCity_name(order.getPost_city());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getPost_district());
+					serviceLog.setOperation_result(KplanSeconDarytracStatusEnum.SECONDVISITSTATUS.getDesc());
+					serviceLog.setOperation_type("回捞用户回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getPhone_num());
+					serviceLog.setProduct_name(order.getProcduct_name());
+					serviceLog.setProvince_name(order.getPost_province());
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -363,6 +426,19 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setLog_info("9005");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					
+					serviceLog.setBusiness_type("交付订单");
+					serviceLog.setCity_name(order.getPost_city());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getPost_district());
+					serviceLog.setOperation_result(KplanSeconDarytracStatusEnum.CLOSESTATUS.getDesc());
+					serviceLog.setOperation_type("回捞用户回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getPhone_num());
+					serviceLog.setProduct_name(order.getProcduct_name());
+					serviceLog.setProvince_name(order.getPost_province());
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -384,6 +460,19 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setLog_info("9006");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					
+					serviceLog.setBusiness_type("交付订单");
+					serviceLog.setCity_name(order.getPost_city());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getPost_district());
+					serviceLog.setOperation_result(KplanSeconDarytracStatusEnum.THREEVISITSTATUS.getDesc());
+					serviceLog.setOperation_type("回捞用户回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getPhone_num());
+					serviceLog.setProduct_name(order.getProcduct_name());
+					serviceLog.setProvince_name(order.getPost_province());
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -407,6 +496,19 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setLog_info("9007");//多次联系不上
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					
+					serviceLog.setBusiness_type("交付订单");
+					serviceLog.setCity_name(order.getPost_city());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getPost_district());
+					serviceLog.setOperation_result(KplanSeconDarytracStatusEnum.NOTPHONEEND.getDesc());
+					serviceLog.setOperation_type("回捞用户回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getPhone_num());
+					serviceLog.setProduct_name(order.getProcduct_name());
+					serviceLog.setProvince_name(order.getPost_province());
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -428,6 +530,19 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					log.setLog_info("9008");//不符合回访
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					
+					serviceLog.setBusiness_type("交付订单");
+					serviceLog.setCity_name(order.getPost_city());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getPost_district());
+					serviceLog.setOperation_result(KplanSeconDarytracStatusEnum.NOREIVITI.getDesc());
+					serviceLog.setOperation_type("回捞用户回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getPhone_num());
+					serviceLog.setProduct_name(order.getProcduct_name());
+					serviceLog.setProvince_name(order.getPost_province());
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
