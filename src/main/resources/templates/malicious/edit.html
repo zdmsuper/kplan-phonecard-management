@@ -337,6 +337,7 @@
 			$('#saveBtn')
 					.click(
 							function() {
+								$('#saveBtn').attr('disabled',true);
 								var formData = new FormData($('#form')[0]); 
 								var url = "/malicious/procOrder";
 								var orderNo = $('#orderNo').val();
