@@ -66,7 +66,6 @@ import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.query.KplanprocductsQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.utils.DateUtils;
-import com.kplan.phonecard.utils.ExcelUtil;
 import com.kplan.phonecard.utils.PhoneRuleUtils;
 
 @Controller
@@ -579,7 +578,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		        		 e.setPost_city(k.getPost_city());
 		        		 e.setPost_district(k.getPost_district());
 		        		 e.setPost_province(k.getPost_province());
-		        		 e.setPRO_DATE(k.getPro_date());
+		        		 e.setPRO_DATE(k.getProdate());
 		        		 e.setProcduct_name(k.getProcduct_name());
 		        		 e.setReject_info(k.getReject_info());
 		        		 e.setREMARKS(k.getRemarks());

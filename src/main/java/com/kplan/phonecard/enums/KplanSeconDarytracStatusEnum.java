@@ -45,7 +45,7 @@ public enum KplanSeconDarytracStatusEnum {
 	/**
 	 * 三次回访
 	 */
-	THREEVISITSTATUS(13,"三次回访"),
+	THREEVISITSTATUS(14,"三次回访"),
 	/**
 	 * 转运营
 	 */

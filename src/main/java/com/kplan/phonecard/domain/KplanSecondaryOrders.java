@@ -52,7 +52,7 @@ public class KplanSecondaryOrders extends BaseDomain{
 	private ProStatusEnum pro_status;//	int2	16	0	False		处理状态1已处理，2未处理
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "pro_date", length = 7)
-	private Date pro_date;//	timestamp	6	0	False		处理时间
+	private Date prodate;//	timestamp	6	0	False		处理时间
 	@Column(name = "order_source", unique = true, length = 64)
 	private String order_source;
 	@Column(name = "distribution_addres", unique = true, length = 64)
@@ -176,11 +176,12 @@ public class KplanSecondaryOrders extends BaseDomain{
 			public void setPro_status(ProStatusEnum pro_status) {
 				this.pro_status = pro_status;
 			}
-			public Date getPro_date() {
-				return pro_date;
+			
+			public Date getProdate() {
+				return prodate;
 			}
-			public void setPro_date(Date pro_date) {
-				this.pro_date = pro_date;
+			public void setProdate(Date prodate) {
+				this.prodate = prodate;
 			}
 			public String getOrder_source() {
 				return order_source;
@@ -309,7 +310,7 @@ public class KplanSecondaryOrders extends BaseDomain{
 						+ place_order_time + ", procduct_name=" + procduct_name + ", phone=" + phone + ", order_status="
 						+ order_status + ", malicious_order=" + malicious_order + ", failed_reason=" + failed_reason
 						+ ", distribution_type=" + distribution_type + ", user_name=" + user_name + ", phone_num="
-						+ phone_num + ", user_id=" + user_id + ", pro_status=" + pro_status + ", pro_date=" + pro_date
+						+ phone_num + ", user_id=" + user_id + ", pro_status=" + pro_status + ", pro_date=" + prodate
 						+ ", order_source=" + order_source + ", distribution_addres=" + distribution_addres
 						+ ", order_id=" + order_id + ", phone_province=" + phone_province + ", phone_city=" + phone_city
 						+ ", post_province=" + post_province + ", post_city=" + post_city + ", post_district="

@@ -37,8 +37,8 @@
 	<div class="page-container">
 		<form th:action="@{/malicious/list}" method="get" autocomplete="off">
 			<div class="text">
-<!-- 				<input type="hidden" name="sortName" value="createtime"/> -->
-<!-- 				<input type="hidden" name="sortOrder" value="desc"/> -->
+				<input type="hidden" name="sortName" value="prodate"/>
+				<input type="hidden" name="sortOrder" value="asc"/>
 				创建时间： <input type="text"
 					id="datemin" class="input-text date" name="createdDateStart"
 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;"> 
@@ -169,11 +169,11 @@
 							<td >
 							<span style="color: red" th:text="${item.track_status.desc}"></span>
 							</td>
-							<td th:text="${#dates.format(item.pro_date,'yyyy-MM-dd HH:mm:ss')}"></td>
+							<td th:text="${#dates.format(item.prodate,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.operator}"></td>
 							<td class="td-manage" >
 							<a style="display:block;color:green;"
-								th:onclick="edit('编辑',[['qryMaliciOrder?domain.id='+${item.id}]],'4','','720')"  href="javascript:;"
+								th:onclick="edit('编辑',[['qryMaliciOrder?domain.id='+${item.id}]],'4','','800')"  href="javascript:;"
 								title="处理"><i class="iconfont">&#xe66e;</i>   
 							</a> 
 							</td>
