@@ -342,7 +342,7 @@ public class CoreordersMarketkManager extends BaseManager {
 		return l;
 	}
 
-	public Object addOrders(List<OrderRowModel> l, String proTag) {
+	public Object addOrders(List<OrderRowModel> l, String proTag,String provicn) {
 		msgRes msg = new msgRes();
 		try {
 
@@ -355,7 +355,7 @@ public class CoreordersMarketkManager extends BaseManager {
 						k.setAccess_name(o.getUserName().trim());
 						k.setAccess_id_number(o.getUserId().trim());
 						k.setReceiver_address(o.getAddress().trim());
-						k.setOrder_source("线下上门渠道");
+						k.setOrder_source("线下上门渠道"+provicn);
 						k.setProvince_code(c.getProvince_code());
 						k.setProvince_name(c.getProvince_name());
 						k.setReceiver_phone(o.getPhone().trim());

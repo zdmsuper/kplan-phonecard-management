@@ -160,11 +160,11 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 
 	@RequestMapping(value = "/uploadOrderFile", method = RequestMethod.POST)
 	@ResponseBody
-	public Object uploadOrderFile(@RequestParam("file") MultipartFile file, String keyword) throws IOException {
+	public Object uploadOrderFile(@RequestParam("file") MultipartFile file, String keyword,String provicn) throws IOException {
 		InputStream inputStream = new BufferedInputStream(file.getInputStream());
 		List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 0));
 		List<OrderRowModel> l = PhoneRuleUtils.orderToList(data);
-		return this.coreOrdersManager.addOrders(l, keyword);
+		return this.coreOrdersManager.addOrders(l, keyword,provicn);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhones")
