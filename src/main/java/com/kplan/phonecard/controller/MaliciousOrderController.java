@@ -128,6 +128,7 @@ public class MaliciousOrderController extends AbstractBaseController{
 			        		e.setRemarks(d.getRemarks());
 			        		e.setUserId(d.getUser_id());
 			        		e.setUserName(d.getUser_name());
+			        		e.setOrderStatus(d.getTrack_status().getDesc());
 			        		ex.add(e);
 			        	}
 			        	OutputStream outputStream = response.getOutputStream();

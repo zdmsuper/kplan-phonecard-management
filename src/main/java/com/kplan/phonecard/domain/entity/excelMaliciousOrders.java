@@ -29,6 +29,8 @@ public class excelMaliciousOrders {
 	private Date creaDate;
 	@ExcelProperty(value="处理时间")
 	private Date proDate;
+	@ExcelProperty(value="订单状态")
+	private String orderStatus;
 	public String getUserName() {
 		return userName;
 	}
@@ -100,6 +102,12 @@ public class excelMaliciousOrders {
 	}
 	public void setProDate(Date proDate) {
 		this.proDate = proDate;
+	}
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 	
 }
