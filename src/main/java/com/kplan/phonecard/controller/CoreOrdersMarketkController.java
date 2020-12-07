@@ -439,11 +439,11 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	public void exExcel( String projectName,
             HttpServletResponse response,CoreOrdersMarketkQuery query) throws IOException {
 		 String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-		    String fileName = date + "，" + "数据报表";
+		    String fileName = date + "，" + "重庆恶意订单数据报表";
 		    try {
 		        response.setCharacterEncoding("UTF-8");
 		        response.setContentType("application/vnd.ms-excel");
-//		        fileName = new String(fileName.getBytes("UTF-8"), "UTF-8");
+		        fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
 		        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
 		        List<CoreOrdersMarketk> l=this.coreOrdersManager.qryExorDer(query);
 		        List<excelOrder> ex = new ArrayList<excelOrder>();
@@ -557,11 +557,11 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	public void exBackExcel( String projectName,
             HttpServletResponse response,CoreOrdersMarketkQuery query) throws IOException {
 		 String date = new SimpleDateFormat("yyyy-MM-dd HHmm").format(new Date());
-		    String fileName = date + "数据报表";
+		    String fileName = date + "回捞订单数据";
 		    try {
 		        response.setCharacterEncoding("UTF-8");
 		        response.setContentType("application/vnd.ms-excel");
-		        fileName = new String(fileName.getBytes("UTF-8"), "UTF-8");
+		        fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
 		        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
 		        List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersManager.exExcel(query.getDomain().getOperator());
 		        List<excelBackOrder> ex = new ArrayList<excelBackOrder>();

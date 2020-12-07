@@ -1,7 +1,13 @@
 package com.kplan.phonecard.controller;
 
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,15 +18,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.support.ExcelTypeEnum;
+import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
+import com.kplan.phonecard.domain.entity.excelMaliciousOrders;
+import com.kplan.phonecard.domain.entity.excelOrder;
 import com.kplan.phonecard.manager.CoreordersMarketkManager;
 import com.kplan.phonecard.manager.KplanPhonenumBerManager;
 import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
+import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 
 @Controller
@@ -88,5 +100,46 @@ public class MaliciousOrderController extends AbstractBaseController{
 			String proctype,String province,String provinceCode,String city,String cityCode,String district,String districtCode,String remarks,String procDuctName,String phone_Num,String smsstatus) {
 		ManagerInfo managerInfo=super.getCurrentUserDetails().orElse(null);
 		return this.kplanSecondaryOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,province, provinceCode, city, cityCode, district, districtCode,managerInfo,procDuctName,phone_Num,smsstatus);
+	}
+	@RequestMapping("/exMaliciOus")
+	public void  exMaliciOus(HttpServletResponse response,KplanSecondaryOrdersQuery query) {
+		List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersManager.exMaliciOus(query);
+		 String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		    String fileName = date +  "成都恶意订单数据报表";
+		    try {
+		    	   response.setCharacterEncoding("UTF-8");
+			        response.setContentType("application/vnd.ms-excel");
+			        fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+			        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+			        List<excelMaliciousOrders> ex = new ArrayList<excelMaliciousOrders>();
+			        if(l!=null&&l.size()>0) {
+			        	excelMaliciousOrders e;
+			        	for(KplanSecondaryOrders d:l) {
+			        		e=new excelMaliciousOrders();
+			        		e.setCity(d.getPost_city());
+			        		e.setCreaDate(d.getPlace_order_time());
+			        		e.setDir(d.getPost_district());
+			        		e.setMaLiciousTag(d.getMalicious_order());
+			        		e.setOperatorUser(d.getRemove_ident());
+			        		e.setPhone(d.getPhone_num());
+			        		e.setProDate(d.getProdate());
+			        		e.setProDuctName(d.getProcduct_name());
+			        		e.setProvince(d.getPost_province());
+			        		e.setRemarks(d.getRemarks());
+			        		e.setUserId(d.getUser_id());
+			        		e.setUserName(d.getUser_name());
+			        		ex.add(e);
+			        	}
+			        	OutputStream outputStream = response.getOutputStream();
+					        EasyExcel.write(outputStream, excelMaliciousOrders.class) 
+					                .excelType(ExcelTypeEnum.XLSX)
+					                .sheet("成都恶意订单")
+					                .doWrite(ex);
+					        outputStream.flush();
+					        outputStream.close();
+			        }
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 	}
 }
