@@ -1,5 +1,6 @@
 package com.kplan.phonecard.controller;
 
+import java.text.ParseException;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import com.kplan.phonecard.manager.KplanChannelNumberManager;
 import com.kplan.phonecard.query.CoreWopayChannelQuery;
 import com.kplan.phonecard.query.KplanChannelNumberDetailQuery;
 import com.kplan.phonecard.query.KplanChannelNumberQuery;
+import com.kplan.phonecard.utils.DateUtils;
 
 @Controller
 @RequestMapping("/channel")
@@ -37,9 +39,14 @@ public class ChannelManageController  extends AbstractBaseController{
 	 * @param map
 	 * @param query
 	 * @return
+	 * @throws ParseException 
 	 */
 	@RequestMapping("/list")
-	public String list(Map<String, Object> map, KplanChannelNumberDetailQuery query) {
+	public String list(Map<String, Object> map, KplanChannelNumberDetailQuery query) throws ParseException {
+		if(query.getCreatedDateStart()==null||query.getCreatedDateEnd()==null) {
+			query.setCreatedDateStart(DateUtils.getDayNum(1));
+			query.setCreatedDateEnd(DateUtils.getDayNum(1));
+		}
 		Page<KplanChannelNumberDetail> page = this.kplanChannelNumberDetailManager.findChannelInfos(query, this.getPageRequest());
 		map.put("query", query);
 		map.put("page", page);
