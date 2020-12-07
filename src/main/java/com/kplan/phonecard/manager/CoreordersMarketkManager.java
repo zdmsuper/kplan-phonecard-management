@@ -68,7 +68,11 @@ public class CoreordersMarketkManager extends BaseManager {
 					list.add(cb.equal(r.get("order_status"), query.getDomain().getOrder_status()));
 				}
 				if (query.getDomain().getOrder_source() != null) {
+					if("线下上门渠道".equals(query.getDomain().getOrder_source())) {
+						list.add(cb.like(r.get("order_source"), "%"+query.getDomain().getOrder_source()+"%"));
+					}else {
 					list.add(cb.equal(r.get("order_source"), query.getDomain().getOrder_source()));
+					}
 				}
 				return cb.and(list.toArray(new Predicate[0]));
 			}
