@@ -355,7 +355,7 @@ public class CoreordersMarketkManager extends BaseManager {
 						k.setAccess_name(o.getUserName().trim());
 						k.setAccess_id_number(o.getUserId().trim());
 						k.setReceiver_address(o.getAddress().trim());
-						k.setOrder_source("线下上门渠道"+provicn);
+						k.setOrder_source("线下上门渠道-"+provicn);
 						k.setProvince_code(c.getProvince_code());
 						k.setProvince_name(c.getProvince_name());
 						k.setReceiver_phone(o.getPhone().trim());
