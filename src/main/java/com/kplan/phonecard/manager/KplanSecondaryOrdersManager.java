@@ -144,26 +144,25 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					list.add(cb.between(r.get("place_order_time"), query.getCreatedDateStart(),
 							query.getCreatedDateEnd()));
 				}
-//				if(query.getKeyword()!=null) {
-//					list.add(cb.equal(r.get("phone_num"), query.getKeyword()));
-//				}
-				if(query.getKeyword()!=null) {
-				if(query.getKeyword().equals("1")) {
-					list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
-				}
-				if(query.getKeyword().equals("2")) {
-					list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS));
-				}
-				if(query.getKeyword().equals("3")) {
-					list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS));
-				}}
 				if(query.getDomain().getPhone_num()!=null) {
 					list.add(cb.or(cb.equal(r.get("phone_num"), query.getDomain().getPhone_num()),cb.equal(r.get("phone"), query.getDomain().getPhone_num())));
+				}else {
+					if(query.getKeyword()!=null) {
+						if(query.getKeyword().equals("1")) {
+							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
+						}
+						if(query.getKeyword().equals("2")) {
+							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS));
+						}
+						if(query.getKeyword().equals("3")) {
+							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS));
+						}}
+						
+						list.add(cb.or(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS),
+								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS),
+								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
+								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION)));
 				}
-				list.add(cb.or(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS),
-						cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS),
-						cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
-						cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION)));
 				return cb.and(list.toArray(new Predicate[0]));
 			}
 		};
