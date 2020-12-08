@@ -438,7 +438,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@RequestMapping("/exExcel")
 	public void exExcel( String projectName,
             HttpServletResponse response,CoreOrdersMarketkQuery query) throws IOException {
-		 String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		 String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		    String fileName = date + "，" + "重庆恶意订单数据报表";
 		    try {
 		        response.setCharacterEncoding("UTF-8");
@@ -556,7 +556,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@RequestMapping("/exBackExcel")
 	public void exBackExcel( String projectName,
             HttpServletResponse response,CoreOrdersMarketkQuery query) throws IOException {
-		 String date = new SimpleDateFormat("yyyy-MM-dd HHmm").format(new Date());
+		 String date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 		    String fileName = date + "回捞订单数据";
 		    try {
 		        response.setCharacterEncoding("UTF-8");
