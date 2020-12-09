@@ -528,6 +528,7 @@
 							var phones = $('#phones');
 							var phoneRule = $('#phoneRule').val();
 							var procductCode = $('#ordersource').val();
+							var province=$('#province_code').find("option:selected").val()
 							var url = "/coreorder/qryPhones"
 							//	 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
 							var phone = [];
@@ -535,7 +536,7 @@
 								type : 'get',
 								async : false,
 								url : url + "?phoneRule=" + phoneRule
-										+ "&procductCode=" + procductCode,
+										+ "&procductCode=" + procductCode+"&province="+province,
 								success : function(resp) {
 									phone = resp;
 								}
@@ -608,6 +609,7 @@
 							var phones = $('#phones');
 							var phoneRule = $('#phoneRule').val();
 							var procductCode = $('#ordersource').val();
+							var province=$('#province_code').find("option:selected").val()
 							var url = "/coreorder/qryPhones"
 							// 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
 							var phone = [];
@@ -615,7 +617,7 @@
 								type : 'get',
 								async : false,
 								url : url + "?phoneRule=" + phoneRule
-										+ "&procductCode=" + procductCode,
+										+ "&procductCode=" + procductCode+"&province="+province,
 								success : function(resp) {
 									phone = resp;
 								}

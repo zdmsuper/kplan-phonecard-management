@@ -108,7 +108,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	public String edit(Map<String, Object> map, ManagerInfoQuery query) {
 		List<UnicomPostCityCode> l = this.unicompostcityManager.findByPrivoin();
 		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
-		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", product.get(0).getProcduct_code());
+		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", product.get(0).getProcduct_code(),"81");
 		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(product.get(0).getProcduct_code());
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
@@ -123,7 +123,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		List<UnicomPostCityCode> l = this.unicompostcityManager.findByPrivoin();
 		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
 		CoreOrdersMarketk order = this.coreOrdersManager.findById(query.getDomain().getId());
-		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", order.getProduct_code());
+		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", order.getProduct_code(),order.getProvince_code());
 		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(order.getProduct_code());
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
@@ -169,8 +169,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhones")
 	@ResponseBody
-	public Object qryPhones(String phoneRule, String procductCode) {
-		Object phoneList = this.kplanPhoneManager.findPhoneList(phoneRule, procductCode);
+	public Object qryPhones(String phoneRule, String procductCode,String province) {
+		Object phoneList = this.kplanPhoneManager.findPhoneList(phoneRule, procductCode,province);
 		return phoneList;
 	}
 	@RequestMapping(method = RequestMethod.GET, value = "qryRuleList")

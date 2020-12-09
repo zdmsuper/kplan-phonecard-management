@@ -22,12 +22,28 @@ public class KplanPhonenumBerManager extends BaseManager{
 KplanPhoneNumberService kplanPhoneService;
 
 
-	public List<KplanPhoneNumber> findPhoneList(String phoneRule,String procductCode){
-		String sql;
+	public List<KplanPhoneNumber> findPhoneList(String phoneRule,String procductCode,String provicnCode){
+		String sql = null;
 		if(StringUtils.trimToNull(phoneRule)==null) {
-			sql = "select phone,province_name,city_name,rule_name,last_date from kplan_phone_number where province_code='81' and city_code='810' and use_not=0 and rule_name!='尾号匹配'  and product_code='"+procductCode+"' order by random(),last_date desc limit 2";
+			if("81".equals(provicnCode)) {
+				sql = "select phone,province_name,city_name,rule_name,last_date from kplan_phone_number where province_code='81' and city_code='810' and use_not=0 and rule_name!='尾号匹配'  and product_code='"+procductCode+"' order by random(),last_date desc limit 2";
+			}
+			if("85".equals(provicnCode)) {
+				sql = "select phone,province_name,city_name,rule_name,last_date from kplan_phone_number where province_code='85' and city_code='850' and use_not=0 and rule_name!='尾号匹配'  and product_code='"+procductCode+"' order by random(),last_date desc limit 2";
+			}
+			
 		}else {
-			sql = "select phone,province_name,city_name,rule_name,last_date from kplan_phone_number where province_code='81' and city_code='810' and use_not=0  and rule_name='"+phoneRule+"' and product_code='"+procductCode+"' order by random(),last_date desc limit 2";
+			if("81".equals(provicnCode)) {
+				sql = "select phone,province_name,city_name,rule_name,last_date from kplan_phone_number where province_code='81' and city_code='810' and use_not=0  and rule_name='"+phoneRule+"' and product_code='"+procductCode+"' order by random(),last_date desc limit 2";
+			}
+			if("85".equals(provicnCode)) {
+				sql = "select phone,province_name,city_name,rule_name,last_date from kplan_phone_number where province_code='85' and city_code='850' and use_not=0  and rule_name='"+phoneRule+"' and product_code='"+procductCode+"' order by random(),last_date desc limit 2";
+			}else {
+				sql = "select phone,province_name,city_name,rule_name,last_date from kplan_phone_number where province_code='81' and city_code='810' and use_not=0  and rule_name='"+phoneRule+"' and product_code='"+procductCode+"' order by random(),last_date desc limit 2";
+			}
+		}
+		if(StringUtils.trimToNull(sql)==null) {
+			sql = "select phone,province_name,city_name,rule_name,last_date from kplan_phone_number where province_code='81' and city_code='810' and use_not=0 and rule_name!='尾号匹配'  and product_code='"+procductCode+"' order by random(),last_date desc limit 2";
 		}
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	List<Object[]> result =this.kplanPhoneService.getNativeResultList(sql);
