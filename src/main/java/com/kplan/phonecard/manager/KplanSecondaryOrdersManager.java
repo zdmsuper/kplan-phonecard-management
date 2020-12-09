@@ -256,7 +256,12 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					k.setAccess_name(userName);
 					k.setAccess_id_number(userid);
 					k.setReceiver_address(address);
-					k.setOrder_source("线下上门渠道");
+					if("85".equals(provinceCode)) {
+						k.setOrder_source("线下上门渠道-贵州");
+					}else {
+						k.setOrder_source("线下上门渠道-四川");
+					}
+					
 					k.setProvince_code(dir.getProvince_code());
 					k.setProvince_name(dir.getProvince_name());
 					k.setReceiver_phone(re_phone);
