@@ -135,7 +135,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		return this.kplanSecondaryOrdersService.findAll(spec, pageable);
 	}
 
-	public Page<KplanSecondaryOrders> malicicousList(@NotNull KplanSecondaryOrdersQuery query, Pageable pageable) {
+	public Page<KplanSecondaryOrders> malicicousList(@NotNull KplanSecondaryOrdersQuery query, Pageable pageable,String orderSource) {
 		Specification<KplanSecondaryOrders> spec = new Specification<KplanSecondaryOrders>() {
 			@Override
 			public Predicate toPredicate(Root<KplanSecondaryOrders> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
@@ -163,6 +163,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION)));
 				}
+				list.add(cb.equal(r.get("order_source"), orderSource));
 				return cb.and(list.toArray(new Predicate[0]));
 			}
 		};
@@ -191,9 +192,29 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		return (KplanSecondaryOrders) this.kplanSecondaryOrdersService.getById(id, KplanSecondaryOrders.class);
 	}
 
+	/**
+	 * @param orderNo
+	 * @param userName
+	 * @param userid
+	 * @param address
+	 * @param re_phone
+	 * @param proctype
+	 * @param province
+	 * @param provinceCode
+	 * @param city
+	 * @param cityCode
+	 * @param district
+	 * @param districtCode
+	 * @param managerInfo
+	 * @param pocDuctName
+	 * @param phone_Num
+	 * @param smsstatus
+	 * @param ordersource
+	 * @return
+	 */
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
 			String proctype, String province, String provinceCode, String city, String cityCode, String district,
-			String districtCode, ManagerInfo managerInfo, String pocDuctName,String phone_Num,String smsstatus) {
+			String districtCode, ManagerInfo managerInfo, String pocDuctName,String phone_Num,String smsstatus,String ordersource) {
 		msgRes msg = new msgRes();
 		CustomerServiceLog serviceLog=new CustomerServiceLog();
 		KplanSecondaryOrders order;
@@ -256,12 +277,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					k.setAccess_name(userName);
 					k.setAccess_id_number(userid);
 					k.setReceiver_address(address);
-					if("85".equals(provinceCode)) {
+					if("GZ".equals(ordersource)) {
 						k.setOrder_source("线下上门渠道-贵州");
-					}else {
+					}if("CD".equals(ordersource)) {
 						k.setOrder_source("线下上门渠道-四川");
 					}
-					
 					k.setProvince_code(dir.getProvince_code());
 					k.setProvince_name(dir.getProvince_name());
 					k.setReceiver_phone(re_phone);
