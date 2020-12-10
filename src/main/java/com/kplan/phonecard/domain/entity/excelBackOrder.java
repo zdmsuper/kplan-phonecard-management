@@ -5,6 +5,12 @@ import java.util.Date;
 import com.alibaba.excel.annotation.ExcelProperty;
 
 public class excelBackOrder {
+	public String getChekStatus() {
+		return chekStatus;
+	}
+	public void setChekStatus(String chekStatus) {
+		this.chekStatus = chekStatus;
+	}
 	@ExcelProperty(value="订单号")
 	private String ORDER_NO;// AS 订单号,
 	@ExcelProperty(value="订单状态")
@@ -35,6 +41,8 @@ public class excelBackOrder {
 	private String back_info;// AS 反诈标签,
 	@ExcelProperty(value="操作记录")
 	private String reject_info;// AS 操作记录
+	@ExcelProperty(value="回捞标记")
+	private String chekStatus;
 	public String getORDER_NO() {
 		return ORDER_NO;
 	}

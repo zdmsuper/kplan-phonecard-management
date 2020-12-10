@@ -584,6 +584,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		        		 e.setREMARKS(k.getRemarks());
 		        		 e.setUSER_ID(k.getUser_id());
 		        		 e.setUSER_NAME(k.getUser_name());
+		        		 e.setChekStatus(k.getTrack_status().getDesc());
 		        		 ex.add(e);
 		        	}
 		        }

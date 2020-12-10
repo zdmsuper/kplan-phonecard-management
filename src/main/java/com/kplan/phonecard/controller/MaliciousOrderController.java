@@ -121,10 +121,13 @@ public class MaliciousOrderController extends AbstractBaseController {
 	}
 
 	@RequestMapping("/exMaliciOus")
-	public void exMaliciOus(HttpServletResponse response, KplanSecondaryOrdersQuery query) {
-		List<KplanSecondaryOrders> l = this.kplanSecondaryOrdersManager.exMaliciOus(query);
+	public void exMaliciOus(HttpServletResponse response, KplanSecondaryOrdersQuery query,String ordersource) {
+		List<KplanSecondaryOrders> l = this.kplanSecondaryOrdersManager.exMaliciOus(query,ordersource);
 		String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		String fileName = date + "成都恶意订单数据报表";
+		if("GZ".equals(ordersource)) {
+			fileName = date + "贵州恶意订单数据报表";
+		}
 		try {
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/vnd.ms-excel");

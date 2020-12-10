@@ -587,8 +587,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		return JSON.toJSON(msg);
 	}
 	
-	public List<KplanSecondaryOrders> exMaliciOus(KplanSecondaryOrdersQuery query){
-		String sql="from KplanSecondaryOrders where place_order_time>='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"' and track_status!=2  and order_source='CD'";
+	public List<KplanSecondaryOrders> exMaliciOus(KplanSecondaryOrdersQuery query,String ordersource){
+		String sql="from KplanSecondaryOrders where place_order_time>='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"' and track_status!=2  and order_source='"+ordersource+"'";
 		List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersService.getResultList(sql);
 		return l;
 	}
