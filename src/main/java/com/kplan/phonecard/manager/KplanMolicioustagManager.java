@@ -59,6 +59,7 @@ public class KplanMolicioustagManager extends BaseManager{
 		tag.setBusiness_code("KPLANBACK");
 		tag.setBusiness_type(businesstype);
 		tag.setMalicious_tag(maliciousTag);
+		tag.setMalicious_code(maliciousTagCode);
 		try {
 			this.kplanMolicioustagService.add(tag);
 			msg.setCode("200");
