@@ -213,47 +213,8 @@
 		
 		
 		
-		$('#province_code').change(function(){
-			var province=$(this).val();
-			var city=$('#city');
-			$('#city option[value!=""]').remove();
-			$('#district option[value!=""]').remove();
-			var url="/coreorder/qryCity";
-			$.ajax({
-				type:'get',
-				url:url+'?province_code='+province,
-				success:function(resp){
-					$.each(resp,function(){
-						city.append('<option  value='+this.city_code+'>'+this.city_name+'</option>');
-						
-					});
-					
-				}
-			});
-		});
 		
 		
-		$('#city').change(function(){
-			var city_code=$(this).val();
-			var city=$('#district');
-			$('#district option[value!=""]').remove();
-			var url="/coreorder/qryDistrict";
-				
-// 				/*[[@{/klanBiliBili/qryDistrict}]]*/'';
-			var cityList=[];
-			$.ajax({
-				type:'get',
-				async:false,
-				url:url+'?city_code='+city_code,
-				success:function(resp){
-					cityList=resp;
-				}
-			});
-			$.each(cityList,function(){
-				city.append('<option value='+this.district_code+'>'+this.district_name+'</option>');
-				
-			});
-		});
 		
 		
 		
@@ -280,77 +241,6 @@
 			        }
 			
 			
-			$('#phoneRule').change(function(){
-				var phones=$('#phones');
-				var phoneRule=$('#phoneRule').val();
-				var procductCode=$('#ordersource').val();
-				var url="/coreorder/qryPhones"
-//	 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
-				var phone=[];
-				$.ajax({
-					type:'get',
-					async:false,
-					url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode,
-					success:function(resp){
-						phone=resp;
-					}
-				});
-				$('.text-c').remove();
-				$.each(phone,function(){
-					var dateStr=formatTime(this.last_date)
-					phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
-					
-				});
-			});
-			
-			$('#ordersource').change(function(){
-				var phones=$('#phones');
-				var phoneRule=$('#phoneRule').val();
-				var procductCode=$('#ordersource').val();
-				var url="/coreorder/qryPhones"
-//	 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
-				var phone=[];
-				$.ajax({
-					type:'get',
-					async:false,
-					url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode,
-					success:function(resp){
-						phone=resp;
-					}
-				});
-				$('.text-c').remove();
-				$.each(phone,function(){
-					var dateStr=formatTime(this.last_date)
-					phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
-					
-				});
-			});
-			
-			
-		
-		$('#phonescheck').click(function(){
-			var phones=$('#phones');
-			var phoneRule=$('#phoneRule').val();
-			var procductCode=$('#ordersource').val();
-			var url="/coreorder/qryPhones"
-// 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
-			var phone=[];
-			$.ajax({
-				type:'get',
-				async:false,
-				url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode,
-				success:function(resp){
-					phone=resp;
-				}
-			});
-			$('.text-c').remove();
-			$.each(phone,function(){
-				var dateStr=formatTime(this.last_date)
-				phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
-				
-			});
-		});
-		
 		$('body').on("click", "input[name='phonesNum']",function(event) {
 			var smsstatus=$(this).val();
 			$("#phone_Num").val(smsstatus);
@@ -358,38 +248,7 @@
 		});
 		
 		
-		$('#id-disable-check').click(function(){
-			var phones=$('#phones');
-			var procductCode=$('#ordersource').val();
-			var procductName=$('#ordersource').find("option:selected").text();
-			var url="/coreorder/qryPhonesNum"
-// 			var url=/*[[@{/klanBiliBili/qryPhonesNum}]]*/'';
-			var phone=[];
-			var phoneNum=$('#phoneNum').val();
-			$.ajax({
-				type:'get',
-				async:false,
-				url:url+"?phoneNum="+phoneNum+"&procductCode="+procductCode+"&procductName="+procductName,
-				success:function(resp){
-					if(resp.status==201){
-						parent.layer.alert(resp.msg, '尾号匹配失败')
-						return;
-					}else{
-						phone=resp;
-						$('.text-c').remove();
-						$.each(phone,function(){
-							var dateStr=formatTime(this.last_date)
-							phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
-							
-						});
-					}
-					
-				}
-			});
-			
-		});
 		
 	</script>
-	<!--/请在上方写此页面业务相关的脚本-->
 </body>
 </html>
