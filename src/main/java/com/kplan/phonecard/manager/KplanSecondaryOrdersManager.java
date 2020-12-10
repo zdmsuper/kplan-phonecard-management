@@ -321,6 +321,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					serviceLog.setPhone(order.getPhone_num());
 					serviceLog.setProduct_name(order.getProcduct_name());
 					serviceLog.setProvince_name(order.getPost_province());
+					serviceLog.setRemarks(order.getOrder_source());
 					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -357,6 +358,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					serviceLog.setPhone(order.getPhone_num());
 					serviceLog.setProduct_name(order.getProcduct_name());
 					serviceLog.setProvince_name(order.getPost_province());
+					serviceLog.setRemarks(order.getOrder_source());
 					this.customerServiceLogService.add(serviceLog);
 					
 					msg.setMsg("订单处理成功");
@@ -392,6 +394,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					serviceLog.setPhone(order.getPhone_num());
 					serviceLog.setProduct_name(order.getProcduct_name());
 					serviceLog.setProvince_name(order.getPost_province());
+					serviceLog.setRemarks(order.getOrder_source());
 					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -427,6 +430,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					serviceLog.setPhone(order.getPhone_num());
 					serviceLog.setProduct_name(order.getProcduct_name());
 					serviceLog.setProvince_name(order.getPost_province());
+					serviceLog.setRemarks(order.getOrder_source());
 					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -462,6 +466,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					serviceLog.setPhone(order.getPhone_num());
 					serviceLog.setProduct_name(order.getProcduct_name());
 					serviceLog.setProvince_name(order.getPost_province());
+					serviceLog.setRemarks(order.getOrder_source());
 					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -496,6 +501,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					serviceLog.setPhone(order.getPhone_num());
 					serviceLog.setProduct_name(order.getProcduct_name());
 					serviceLog.setProvince_name(order.getPost_province());
+					serviceLog.setRemarks(order.getOrder_source());
 					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -532,6 +538,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					serviceLog.setPhone(order.getPhone_num());
 					serviceLog.setProduct_name(order.getProcduct_name());
 					serviceLog.setProvince_name(order.getPost_province());
+					serviceLog.setRemarks(order.getOrder_source());
 					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -566,6 +573,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					serviceLog.setPhone(order.getPhone_num());
 					serviceLog.setProduct_name(order.getProcduct_name());
 					serviceLog.setProvince_name(order.getPost_province());
+					serviceLog.setRemarks(order.getOrder_source());
 					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
