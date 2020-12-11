@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.CoreordersTrackLog;
+import com.kplan.phonecard.domain.CustomerServiceLog;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.ManagerInfo;
@@ -37,6 +38,7 @@ import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.service.CoreordersMarketkService;
 import com.kplan.phonecard.service.CoreordersTrackLogService;
+import com.kplan.phonecard.service.CustomerServiceLogService;
 import com.kplan.phonecard.utils.DateUtils;
 import com.kplan.phonecard.utils.SqeUtils;
 
@@ -50,6 +52,9 @@ public class CoreordersMarketkManager extends BaseManager {
 	UnicomPostcityCodeManager unicomPostcityCodeManager;
 	@Autowired
 	CoreordersTrackLogService logService;
+	@Autowired
+	CustomerServiceLogService customerServiceLogService;
+
 
 	public Page<CoreOrdersMarketk> findOrder(@NotNull CoreOrdersMarketkQuery query, Pageable pageable) {
 		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
@@ -419,6 +424,7 @@ public class CoreordersMarketkManager extends BaseManager {
 			String proctype, String province, String provinceCode, String city, String cityCode, String district,
 			String districtCode, ManagerInfo managerInfo) {
 		msgRes msg = new msgRes();
+		CustomerServiceLog serviceLog=new CustomerServiceLog();
 		CoreOrdersMarketk order;
 		UnicomPostCityCode dir = null;
 		try {
@@ -477,6 +483,22 @@ public class CoreordersMarketkManager extends BaseManager {
 					log.setCreate_time(new Date());
 					log.setLog_info("9001");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					
+					
+					serviceLog.setBusiness_type("K计划");
+					serviceLog.setCity_name(order.getCity_name());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getDistrict_name());
+					serviceLog.setOperation_result("订单办理");
+					serviceLog.setOperation_type("重庆恶意订单回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getReceiver_phone());
+					serviceLog.setProduct_name(order.getProduct_name());
+					serviceLog.setProvince_name(order.getProvince_name());
+					serviceLog.setRemarks("CQ");
+					this.customerServiceLogService.add(serviceLog);
+					
 					this.logService.add(log);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -501,6 +523,19 @@ public class CoreordersMarketkManager extends BaseManager {
 					log.setLog_info("9002");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					serviceLog.setBusiness_type("K计划");
+					serviceLog.setCity_name(order.getCity_name());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getDistrict_name());
+					serviceLog.setOperation_result("订单不办理");
+					serviceLog.setOperation_type("重庆恶意订单回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getReceiver_phone());
+					serviceLog.setProduct_name(order.getProduct_name());
+					serviceLog.setProvince_name(order.getProvince_name());
+					serviceLog.setRemarks("CQ");
+					this.customerServiceLogService.add(serviceLog);
 					msg.setMsg("订单处理成功");
 				}
 				if ("3".equals(proctype)) {
@@ -520,6 +555,19 @@ public class CoreordersMarketkManager extends BaseManager {
 					log.setLog_info("9003");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					serviceLog.setBusiness_type("K计划");
+					serviceLog.setCity_name(order.getCity_name());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getDistrict_name());
+					serviceLog.setOperation_result("订单转运营");
+					serviceLog.setOperation_type("重庆恶意订单回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getReceiver_phone());
+					serviceLog.setProduct_name(order.getProduct_name());
+					serviceLog.setProvince_name(order.getProvince_name());
+					serviceLog.setRemarks("CQ");
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -541,6 +589,19 @@ public class CoreordersMarketkManager extends BaseManager {
 					log.setLog_info("9004");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					serviceLog.setBusiness_type("K计划");
+					serviceLog.setCity_name(order.getCity_name());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getDistrict_name());
+					serviceLog.setOperation_result("订单转二次回访");
+					serviceLog.setOperation_type("重庆恶意订单回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getReceiver_phone());
+					serviceLog.setProduct_name(order.getProduct_name());
+					serviceLog.setProvince_name(order.getProvince_name());
+					serviceLog.setRemarks("CQ");
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -563,6 +624,19 @@ public class CoreordersMarketkManager extends BaseManager {
 					log.setLog_info("9005");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					serviceLog.setBusiness_type("K计划");
+					serviceLog.setCity_name(order.getCity_name());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getDistrict_name());
+					serviceLog.setOperation_result("订单关闭");
+					serviceLog.setOperation_type("重庆恶意订单回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getReceiver_phone());
+					serviceLog.setProduct_name(order.getProduct_name());
+					serviceLog.setProvince_name(order.getProvince_name());
+					serviceLog.setRemarks("CQ");
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
@@ -573,9 +647,9 @@ public class CoreordersMarketkManager extends BaseManager {
 					order.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					if (StringUtils.trimToNull(order.getFail_reasons()) != null) {
 						order.setFail_reasons(order.getFail_reasons() + " "
-								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单转三次联系");
+								+ managerInfo.getBasicUserInfo().getUserRealName() + " 订单转三次回访");
 					} else {
-						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转三次联系");
+						order.setFail_reasons(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转三次回访");
 					}
 					this.coreOrderSerbice.modify(order);
 					log = new CoreordersTrackLog();
@@ -584,6 +658,19 @@ public class CoreordersMarketkManager extends BaseManager {
 					log.setLog_info("9006");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.logService.add(log);
+					serviceLog.setBusiness_type("K计划");
+					serviceLog.setCity_name(order.getCity_name());
+					serviceLog.setCreate_time(new Date());
+					serviceLog.setDistrict_name(order.getDistrict_name());
+					serviceLog.setOperation_result("订单转三次回访");
+					serviceLog.setOperation_type("重庆恶意订单回访");
+					serviceLog.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
+					serviceLog.setOrder_no(order.getOrder_no());
+					serviceLog.setPhone(order.getReceiver_phone());
+					serviceLog.setProduct_name(order.getProduct_name());
+					serviceLog.setProvince_name(order.getProvince_name());
+					serviceLog.setRemarks("CQ");
+					this.customerServiceLogService.add(serviceLog);
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("订单处理成功");
