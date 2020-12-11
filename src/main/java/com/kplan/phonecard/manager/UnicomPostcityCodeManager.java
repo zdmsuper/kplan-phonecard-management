@@ -158,7 +158,9 @@ public class UnicomPostcityCodeManager extends BaseManager {
 							k.setProduct_code(procductCode);
 							k.setProduct_name(procductName);
 							k.setPriority_name(1);
+							if(l.size()<2) {
 							l.add(k);
+							}
 							this.unicomCityService.add(k);
 							;
 						} else {
@@ -179,7 +181,9 @@ public class UnicomPostcityCodeManager extends BaseManager {
 							k.setProduct_code(procductCode);
 							k.setProduct_name(procductName);
 							k.setPriority_name(1);
+							if(l.size()<2) {
 							l.add(k);
+							}
 						}
 					}
 					return l;
