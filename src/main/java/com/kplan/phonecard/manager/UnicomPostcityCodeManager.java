@@ -124,7 +124,7 @@ public class UnicomPostcityCodeManager extends BaseManager {
 	 */
 	public Object qryPhonesNum(String phoneNum, String procductCode, String procductName) {
 		String url = "http://59.110.18.76:8888/kplan/kcqapi/selectNumLastNUm?provinceCode=81&cityCode=810&searchCategory=3&goodsId="
-				+ procductCode + "&amounts=20&searchType=02&searchValue=" + phoneNum;
+				+ procductCode + "&amounts=2&searchType=02&searchValue=" + phoneNum;
 		String[] result = HttpUtils.doGet(url, 6000);
 		List<KplanPhoneNumber> l = new ArrayList<KplanPhoneNumber>();
 		if ("SUCCEESS".equals(result[0])) {
