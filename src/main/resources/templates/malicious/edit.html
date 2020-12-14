@@ -50,7 +50,7 @@
 				<div class="formControls col-xs-2 col-sm-3">
 					<input type="text" class="input-text" name="re_phone" id="re_phone"
 						th:value="${order.phone_num}">
-						<input type="hidden" name="ordersource" th:value="${order.order_source}">
+						<input type="hidden" id="ordersource_t" name="ordersource" th:value="${order.order_source}">
 				</div>
 				<label class="form-label col-xs-1 col-sm-2">
 				<span
@@ -657,6 +657,7 @@
 						function() {
 							var phones = $('#phones');
 							var procductCode = $('#ordersource').val();
+							var ordersource =$('#ordersource_t').val();
 							var procductName = $('#ordersource').find(
 									"option:selected").text();
 							var url = "/coreorder/qryPhonesNum"
@@ -671,7 +672,7 @@
 												+ "&procductCode="
 												+ procductCode
 												+ "&procductName="
-												+ procductName,
+												+ procductName+"&ordersource="+ordersource,
 										success : function(resp) {
 											if (resp.status == 201) {
 												parent.layer.alert(resp.msg,

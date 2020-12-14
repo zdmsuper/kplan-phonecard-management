@@ -122,8 +122,24 @@ public class UnicomPostcityCodeManager extends BaseManager {
 	 * @param phoneNum
 	 * @return
 	 */
-	public Object qryPhonesNum(String phoneNum, String procductCode, String procductName) {
-		String url = "http://59.110.18.76:8888/kplan/kcqapi/selectNumLastNUm?provinceCode=81&cityCode=810&searchCategory=3&goodsId="
+	public Object qryPhonesNum(String phoneNum, String procductCode, String procductName,String ordersource) {
+		String provinceName="四川";
+		String provinceCode="81";
+		String cityName="成都市";
+		String cityCode="810";
+		if("CD".equals(ordersource)) {
+			 provinceName="四川";
+			 provinceCode="81";
+			 cityName="成都市";
+			 cityCode="810";
+		}
+		if("GZ".equals(ordersource)) {
+			 provinceName="贵州";
+			 provinceCode="85";
+			 cityName="贵阳市";
+			 cityCode="850";
+		}
+		String url = "http://59.110.18.76:8888/kplan/kcqapi/selectNumLastNUm?provinceCode="+provinceCode+"&cityCode="+cityCode+"&searchCategory=3&goodsId="
 				+ procductCode + "&amounts=2&searchType=02&searchValue=" + phoneNum;
 		String[] result = HttpUtils.doGet(url, 6000);
 		List<KplanPhoneNumber> l = new ArrayList<KplanPhoneNumber>();
@@ -142,11 +158,11 @@ public class UnicomPostcityCodeManager extends BaseManager {
 								KplanPhoneNumber.class);
 						if (ph == null) {
 							KplanPhoneNumber k = new KplanPhoneNumber();
-							k.setCity_code("810");
-							k.setCity_name("成都市");
+							k.setCity_code(cityCode);
+							k.setCity_name(cityName);
 							k.setId(p.getPhone());
-							k.setProvince_code("81");
-							k.setProvince_name("四川");
+							k.setProvince_code(provinceCode);
+							k.setProvince_name(provinceName);
 							k.setUse_not(0);
 							k.setIs_effective(0);
 							k.setRule_name("尾号匹配");
@@ -165,11 +181,11 @@ public class UnicomPostcityCodeManager extends BaseManager {
 							;
 						} else {
 							KplanPhoneNumber k = new KplanPhoneNumber();
-							k.setCity_code("810");
-							k.setCity_name("成都市");
+							k.setCity_code(cityCode);
+							k.setCity_name(cityName);
 							k.setId(p.getPhone());
-							k.setProvince_code("81");
-							k.setProvince_name("四川");
+							k.setProvince_code(provinceCode);
+							k.setProvince_name(provinceName);
 							k.setUse_not(0);
 							k.setIs_effective(0);
 							k.setRule_name("尾号匹配");

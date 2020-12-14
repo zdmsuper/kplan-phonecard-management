@@ -75,5 +75,19 @@ public class CoreordersMarketkService {
 	public List<CoreOrdersMarketk> findAllList(Specification<CoreOrdersMarketk> spec) {
 		return Core_orders_market_kDao.findAll();
 	}
+	
+	public boolean chekOrder(String phone) {
+		String sql="from CoreOrdersMarketk where receiver_phone=?1";
+		boolean chekRes=false;
+		List<CoreOrdersMarketk> l=getResultList(sql, phone);
+		if(l!=null&&l.size()>0) {
+			for(CoreOrdersMarketk k:l) {
+				if(k.getOrder_no().contains("BACK")) {
+					chekRes=true;
+				}
+			}
+		}
+		return chekRes;
+	}
 
 }

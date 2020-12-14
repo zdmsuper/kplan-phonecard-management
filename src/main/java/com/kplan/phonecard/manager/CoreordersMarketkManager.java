@@ -171,11 +171,20 @@ public class CoreordersMarketkManager extends BaseManager {
 	public Object savaOrders(String userName, String userid, String address, String ordersource, String province_code,
 			String province_name, String re_phone, String city, String cityName, String district, String districtName,
 			String phone_Num, String smsstatus, String Productcode, String Productname) {
+			msgRes msg = new msgRes();
 		try {
+			if(coreOrderSerbice.chekOrder(re_phone)) {
+				msg.setCode("203");
+				msg.setStatus("203");
+				msg.setMsg("该订单已办理，请勿重复办理");
+				return JSON.toJSON(msg);
+			}
+			
 			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById(phone_Num, KplanPhoneNumber.class);
+			
+			
 			if (phone != null) {
 				if (phone.getUse_not() != 0) {
-					msgRes msg = new msgRes();
 					msg.setCode("202");
 					msg.setStatus("202");
 					msg.setMsg("选择的订购号码已被使用，请重新选号");
@@ -214,7 +223,6 @@ public class CoreordersMarketkManager extends BaseManager {
 					k.setDifferent_nets(-1);
 					k.setId(SqeUtils.getBILIBILISqeNo());
 					this.coreOrderSerbice.add(k);
-					msgRes msg = new msgRes();
 					msg.setCode("200");
 					msg.setStatus("200");
 					msg.setMsg("操作成功");
@@ -232,7 +240,6 @@ public class CoreordersMarketkManager extends BaseManager {
 					return JSON.toJSON(msg);
 				}
 			} else {
-				msgRes msg = new msgRes();
 				msg.setCode("201");
 				msg.setStatus("201");
 				msg.setMsg("选择的订购号码不存在");
@@ -240,7 +247,6 @@ public class CoreordersMarketkManager extends BaseManager {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			msgRes msg = new msgRes();
 			msg.setCode("222");
 			msg.setStatus("222");
 			msg.setMsg("系统异常请联系管理员");
@@ -483,7 +489,6 @@ public class CoreordersMarketkManager extends BaseManager {
 					log.setCreate_time(new Date());
 					log.setLog_info("9001");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
-					
 					
 					serviceLog.setBusiness_type("K计划");
 					serviceLog.setCity_name(order.getCity_name());

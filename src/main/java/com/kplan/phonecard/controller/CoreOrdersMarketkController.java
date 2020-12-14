@@ -196,8 +196,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhonesNum")
 	@ResponseBody
-	public Object qryPhonesNum(String phoneNum, String procductCode, String procductName) {
-		return this.unicompostcityManager.qryPhonesNum(phoneNum, procductCode, procductName);
+	public Object qryPhonesNum(String phoneNum, String procductCode, String procductName,String ordersource) {
+		return this.unicompostcityManager.qryPhonesNum(phoneNum, procductCode, procductName,ordersource);
 	}
 
 	/**

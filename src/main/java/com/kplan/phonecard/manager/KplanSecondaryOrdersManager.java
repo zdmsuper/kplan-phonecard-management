@@ -220,6 +220,13 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		KplanSecondaryOrders order;
 		UnicomPostCityCode dir = null;
 		Kplanprocducts pocDuct = null;
+		if(coreOrderSerbice.chekOrder(re_phone)) {
+			msg.setCode("203");
+			msg.setStatus("203");
+			msg.setMsg("该订单已办理，请勿重复办理");
+			return JSON.toJSON(msg);
+		}
+		
 		if(StringUtils.trimToNull(phone_Num)!=null) {
 		KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById(phone_Num, KplanPhoneNumber.class);
 		if(phone!=null) {
