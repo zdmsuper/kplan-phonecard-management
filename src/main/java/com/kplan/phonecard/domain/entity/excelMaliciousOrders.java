@@ -31,8 +31,16 @@ public class excelMaliciousOrders {
 	private Date proDate;
 	@ExcelProperty(value="订单状态")
 	private String orderStatus;
+	@ExcelProperty(value="操作备注")
+	private String operatorRemarks;
 	public String getUserName() {
 		return userName;
+	}
+	public String getOperatorRemarks() {
+		return operatorRemarks;
+	}
+	public void setOperatorRemarks(String operatorRemarks) {
+		this.operatorRemarks = operatorRemarks;
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
