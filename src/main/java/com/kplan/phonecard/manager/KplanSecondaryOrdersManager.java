@@ -214,7 +214,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	 */
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
 			String proctype, String province, String provinceCode, String city, String cityCode, String district,
-			String districtCode, ManagerInfo managerInfo, String pocDuctName,String phone_Num,String smsstatus,String ordersource) {
+			String districtCode, ManagerInfo managerInfo, String pocDuctName,String phone_Num,String smsstatus,
+			String ordersource,String remarks) {
 		msgRes msg = new msgRes();
 		CustomerServiceLog serviceLog=new CustomerServiceLog();
 		KplanSecondaryOrders order;
@@ -273,6 +274,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 								order.getRemarks() + " " + managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
 					} else {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单办理");
+					}
+					if(StringUtils.trimToNull(order.getMalicious_info())!=null) {
+						order.setMalicious_info(order.getMalicious_info()+","+remarks);
+					}else {
+						order.setMalicious_info(remarks);
 					}
 					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					this.kplanSecondaryOrdersService.modify(order);
@@ -342,6 +348,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					} else {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单不办理");
 					}
+					if(StringUtils.trimToNull(order.getMalicious_info())!=null) {
+						order.setMalicious_info(order.getMalicious_info()+","+remarks);
+					}else {
+						order.setMalicious_info(remarks);
+					}
 					order.setProdate(new Date());
 					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
@@ -380,6 +391,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					} else {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转运营");
 					}
+					if(StringUtils.trimToNull(order.getMalicious_info())!=null) {
+						order.setMalicious_info(order.getMalicious_info()+","+remarks);
+					}else {
+						order.setMalicious_info(remarks);
+					}
 					order.setProdate(new Date());
 					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.modify(order);
@@ -417,6 +433,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					} else {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转二次回访");
 					}
+					if(StringUtils.trimToNull(order.getMalicious_info())!=null) {
+						order.setMalicious_info(order.getMalicious_info()+","+remarks);
+					}else {
+						order.setMalicious_info(remarks);
+					}
 					this.coreOrderSerbice.modify(order);
 					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
@@ -452,6 +473,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 								order.getRemarks() + " " + managerInfo.getBasicUserInfo().getUserRealName() + " 订单关闭");
 					} else {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单关闭");
+					}
+					if(StringUtils.trimToNull(order.getMalicious_info())!=null) {
+						order.setMalicious_info(order.getMalicious_info()+","+remarks);
+					}else {
+						order.setMalicious_info(remarks);
 					}
 					this.coreOrderSerbice.modify(order);
 
@@ -489,6 +515,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					} else {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单转三次联系");
 					}
+					if(StringUtils.trimToNull(order.getMalicious_info())!=null) {
+						order.setMalicious_info(order.getMalicious_info()+","+remarks);
+					}else {
+						order.setMalicious_info(remarks);
+					}
 					this.coreOrderSerbice.modify(order);
 					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
@@ -525,6 +556,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					} else {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单多次联系不上");
 					}
+					if(StringUtils.trimToNull(order.getMalicious_info())!=null) {
+						order.setMalicious_info(order.getMalicious_info()+","+remarks);
+					}else {
+						order.setMalicious_info(remarks);
+					}
 					this.coreOrderSerbice.modify(order);
 					SendSmsUtils.senMsg(re_phone, userid, userName);
 					log = new CoreordersTrackLog();
@@ -560,6 +596,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 								+ " 订单不符合回访");
 					} else {
 						order.setRemarks(managerInfo.getBasicUserInfo().getUserRealName() + " 订单不符合回访");
+					}
+					if(StringUtils.trimToNull(order.getMalicious_info())!=null) {
+						order.setMalicious_info(order.getMalicious_info()+","+remarks);
+					}else {
+						order.setMalicious_info(remarks);
 					}
 					this.coreOrderSerbice.modify(order);
 					log = new CoreordersTrackLog();

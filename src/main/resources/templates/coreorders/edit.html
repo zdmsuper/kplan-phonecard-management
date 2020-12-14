@@ -306,7 +306,7 @@
 // 				if (!validateForm()) {
 // 					return false;
 // 				}
-				
+				$('#saveBtn').attr('disabled',true);
 				var smsstatus=$("input[name='smsstatus']:checked").val();
 				var url="/coreorder/savaOrders";
 				var userName=$('#userName').val()

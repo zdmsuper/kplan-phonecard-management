@@ -122,7 +122,7 @@ public class MaliciousOrderController extends AbstractBaseController {
 				,districtCode,remarks,procDuctName,phone_Num,smsstatus,ordersource);
 		return this.kplanSecondaryOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,
 				province, provinceCode, city, cityCode, district, districtCode, managerInfo, procDuctName, phone_Num,
-				smsstatus, ordersource);
+				smsstatus, ordersource,remarks);
 	}
 
 	@RequestMapping("/exMaliciOus")
