@@ -158,7 +158,13 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						if(query.getKeyword().equals("3")) {
 							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS));
 						}
-						if(query.getKeyword().equals("4")) {
+					}
+					if(query.getDomain().getLogistics_info()!=null) {
+						if(query.getDomain().getLogistics_info().equals("1")) {
+//							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
+							list.add(cb.or(cb.isNull(r.get("logistics_info")),cb.notEqual(r.get("logistics_info"), "物流订单")));
+						}
+						if(query.getDomain().getLogistics_info().equals("4")) {
 							list.add(cb.equal(r.get("logistics_info"), "物流订单"));
 						}
 					}
