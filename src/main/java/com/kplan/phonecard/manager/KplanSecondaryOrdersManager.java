@@ -67,7 +67,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	@Autowired
 	CustomerServiceLogService customerServiceLogService;
 
-	public String upLoadorDers(List<Object> data, kplanscordersQuery query, ManagerInfo info) {
+	public String upLoadorDers(List<Object> data, kplanscordersQuery query, ManagerInfo info,String logisticsinfo) {
 		msgRes msg = new msgRes();
 		String upLoadSqe=DateUtils.getTodayDate();
 		KplanSecondaryOrders o;
@@ -81,6 +81,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					o.setPro_status(ProStatusEnum.CREADORDER);
 					o.setOrder_source(query.getKeyword());
 					o.setTrack_status(KplanSeconDarytracStatusEnum.INISTATUS);
+					o.setLogistics_info(logisticsinfo);
 					if (info != null) {
 						o.setOperator(info.getBasicUserInfo().getUserRealName() +upLoadSqe );
 					}
@@ -156,7 +157,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						}
 						if(query.getKeyword().equals("3")) {
 							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS));
-						}}
+						}
+						if(query.getKeyword().equals("4")) {
+							list.add(cb.equal(r.get("logistics_info"), "物流订单"));
+						}
+					}
 						
 						list.add(cb.or(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS),
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS),

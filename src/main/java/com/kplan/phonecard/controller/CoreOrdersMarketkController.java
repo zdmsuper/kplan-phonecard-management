@@ -147,10 +147,10 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	@ResponseBody
-	public String uploadFile(@RequestParam("file") MultipartFile file, kplanscordersQuery query) throws IOException {
+	public String uploadFile(@RequestParam("file") MultipartFile file, kplanscordersQuery query,String logisticsinfo) throws IOException {
 		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 0));
 		ManagerInfo info = super.getCurrentUserDetails().orElse(null);
-		return kplanSecondaryOrdersManager.upLoadorDers(data, query, info);
+		return kplanSecondaryOrdersManager.upLoadorDers(data, query, info,logisticsinfo);
 	}
 
 	@RequestMapping("/uporderedit")
