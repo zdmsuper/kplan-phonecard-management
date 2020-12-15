@@ -52,11 +52,11 @@ public class KplanMolicioustagManager extends BaseManager{
 		return JSON.toJSON(msg);
 	}
 	
-	public Object savaMalicious(String maliciousTag,String maliciousTagCode,String businesstype) {
+	public Object savaMalicious(String maliciousTag,String maliciousTagCode,String businesstype,String businesscode) {
 		KplanMolicioustag tag=new KplanMolicioustag();
 		msgRes msg=new msgRes();
 		tag.setAddgroup("回捞业务");
-		tag.setBusiness_code("KPLANBACK");
+		tag.setBusiness_code(businesscode);
 		tag.setBusiness_type(businesstype);
 		tag.setMalicious_tag(maliciousTag);
 		tag.setMalicious_code(maliciousTagCode);

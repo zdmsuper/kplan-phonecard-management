@@ -56,7 +56,7 @@ public class SystemController extends AbstractBaseController{
 		 */
 		@RequestMapping("/savaMalicious")
 		@ResponseBody
-		public Object savaMalicious(String maliciousTag,String maliciousTagCode,String businesstype) {
-			return this.kplanMolicioustagManager.savaMalicious(maliciousTag, maliciousTagCode, businesstype);
+		public Object savaMalicious(String maliciousTag,String maliciousTagCode,String businesstype,String businesscode) {
+			return this.kplanMolicioustagManager.savaMalicious(maliciousTag, maliciousTagCode, businesstype,businesscode);
 		}
 }

@@ -54,6 +54,17 @@
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>标签类型：</label>
+				<div class="formControls col-xs-7 col-sm-8">
+						<select name="businesscode" id="businesscode" class="select select-box inline">
+						<option value="">标签类型</option>
+						<option value="KPLANBACK" >恶意标签</option>
+						<option value="KPLANLOGISTICS" >物流标签</option>
+						</select>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
 					class="c-red">*</span>恶意标签代码：</label>
 				<div class="formControls col-xs-7 col-sm-8">
 						<input type="text" class="input-text" value="" placeholder=""
@@ -173,9 +184,10 @@
 				var maliciousTag=$('#maliciousTag').val();
 				var maliciousTagCode=$('#maliciousTagCode').val();
 				var businesstype=$('#businesstype').val();
-				var pramStr="maliciousTag="+maliciousTag+"&maliciousTagCode="+maliciousTagCode+"&businesstype="+businesstype;
-				var submitMsg="恶意标签："+maliciousTag+"<br/> 标签编码:"+maliciousTagCode+"</br> 业务类型："+businesstype;
-				if(maliciousTag==''||maliciousTagCode==''||businesstype==''){
+				var businesscode=$('#businesscode').val();
+				var pramStr="maliciousTag="+maliciousTag+"&maliciousTagCode="+maliciousTagCode+"&businesstype="+businesstype+"&businesscode="+businesscode;
+				var submitMsg="恶意标签："+maliciousTag+"<br/> 标签编码:"+maliciousTagCode+"</br> 业务类型："+businesstype+"</br> 标签类型："+businesscode;
+				if(maliciousTag==''||maliciousTagCode==''||businesstype==''||businesscode==''){
 					layer.msg('请将标签信息填写完整', {
 						    time: 5000, //20s后自动关闭
  						    btn: ['确定', '取消']
