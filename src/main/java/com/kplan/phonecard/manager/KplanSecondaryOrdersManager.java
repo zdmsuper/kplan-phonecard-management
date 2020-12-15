@@ -655,7 +655,17 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	}
 	
 	public List<KplanSecondaryOrders> exMaliciOus(KplanSecondaryOrdersQuery query,String ordersource){
-		String sql="from KplanSecondaryOrders where place_order_time>='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"' and track_status!=2  and order_source='"+ordersource+"'";
+		String sql = null;
+		if(query.getDomain().getLogistics_info()!=null) {
+			if("1".equals(query.getDomain().getLogistics_info())) {
+				sql="from KplanSecondaryOrders where place_order_time>='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"' and track_status!=2 and track_status!=-1 and track_status!=5 and logistics_info='恶意订单'  and order_source='"+ordersource+"'";
+			}
+			if("4".equals(query.getDomain().getLogistics_info())) {
+				sql="from KplanSecondaryOrders where place_order_time>='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"' and track_status!=2 and track_status!=-1 and track_status!=5 and logistics_info='物流订单'  and order_source='"+ordersource+"'";
+			}
+		}else {
+		 sql="from KplanSecondaryOrders where place_order_time>='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"' and track_status!=2 and track_status!=-1 and track_status!=5 and order_source='"+ordersource+"'";
+		}
 		List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersService.getResultList(sql);
 		return l;
 	}

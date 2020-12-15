@@ -125,6 +125,11 @@ public class MaliciousOrderController extends AbstractBaseController {
 				smsstatus, ordersource,remarks);
 	}
 
+	/**成都贵州恶意订单、物流订单导出
+	 * @param response
+	 * @param query
+	 * @param ordersource
+	 */
 	@RequestMapping("/exMaliciOus")
 	public void exMaliciOus(HttpServletResponse response, KplanSecondaryOrdersQuery query, String ordersource) {
 		List<KplanSecondaryOrders> l = this.kplanSecondaryOrdersManager.exMaliciOus(query, ordersource);
@@ -157,6 +162,7 @@ public class MaliciousOrderController extends AbstractBaseController {
 					e.setUserName(d.getUser_name());
 					e.setOrderStatus(d.getTrack_status().getDesc());
 					e.setOperatorRemarks(d.getMalicious_info());
+					e.setOrderType(d.getLogistics_info());
 					ex.add(e);
 				}
 				OutputStream outputStream = response.getOutputStream();

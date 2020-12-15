@@ -19,6 +19,8 @@ public class excelMaliciousOrders {
 	private String dir;
 	@ExcelProperty(value="产品名称")
 	private String proDuctName;
+	@ExcelProperty(value="订单类型")
+	private String orderType;
 	@ExcelProperty(value="恶意标签")
 	private String maLiciousTag;
 	@ExcelProperty(value="最后操作人")
@@ -53,6 +55,12 @@ public class excelMaliciousOrders {
 	}
 	public String getUserId() {
 		return userId;
+	}
+	public String getOrderType() {
+		return orderType;
+	}
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
