@@ -139,7 +139,7 @@ public class UnicomPostcityCodeManager extends BaseManager {
 			 cityName="贵阳市";
 			 cityCode="850";
 		}
-		String url = "http://59.110.18.76:8888/kplan/kcqapi/selectNumLastNUm?provinceCode="+provinceCode+"&cityCode="+cityCode+"&searchCategory=3&goodsId="
+		String url = "http://59.110.18.76:8888/kplan/kcqapi/selectNumt?provinceCode="+provinceCode+"&cityCode="+cityCode+"&searchCategory=3&goodsId="
 				+ procductCode + "&amounts=2&searchType=02&searchValue=" + phoneNum;
 		String[] result = HttpUtils.doGet(url, 6000);
 		List<KplanPhoneNumber> l = new ArrayList<KplanPhoneNumber>();
