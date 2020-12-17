@@ -252,6 +252,35 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						+ "' ";
 				this.coreOrderSerbice.exeNative(phonesql);
 			}
+		}else {
+			KplanPhoneNumber p =new KplanPhoneNumber();
+			p.setId(phone_Num);
+			p.setCread_date(new Date());
+			p.setLast_date(new Date());
+			if("GZ".equals(ordersource)) {
+				p.setProvince_code("85");
+				p.setProvince_name("贵州");
+				p.setCity_code("850");
+				p.setCity_name("贵阳市");
+			}else {
+				p.setProvince_code("81");
+				p.setProvince_name("四川");
+				p.setCity_code("810");
+				p.setCity_name("成都市");
+			}
+			p.setRule_name("官方靓号");
+			p.setUse_not(1);
+			p.setPhone_num(re_phone);
+			try {
+				this.coreOrderSerbice.add(p);
+			} catch (Exception e) {
+			logger.error("添加官方靓号失败：{}",e.getMessage());;
+			msg.setCode("202");
+			msg.setStatus("202");
+			msg.setMsg("添加官方靓号失败，请联系管理员");
+			return JSON.toJSON(msg);
+			}
+			
 		}
 		}
 		try {
