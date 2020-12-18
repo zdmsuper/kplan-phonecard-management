@@ -135,6 +135,7 @@
 							<th>省份</th>
 							<th>地市</th>
 							<th>详细地址</th>
+							<th>订单状态</th>
 							<th>产品</th>
 							<th>恶意标签</th>
 							<th>反诈标签</th>
@@ -157,6 +158,7 @@
 							<td th:text="${item.post_province}"></td>
 							<td th:text="${item.post_city}"></td>
 							<td th:text="${item.post_district}"></td>
+							<td th:text="${item.order_status}"></td>
 <!-- 							<td th:if="${item.pro_status.code} eq 99" > -->
 <!-- 							<span style="color: green;" th:text="${item.pro_status.desc}"></span> -->
 <!-- 							</td> -->
