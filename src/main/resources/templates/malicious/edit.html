@@ -102,26 +102,29 @@
 				<div id="province"
 					class="formControls col-xs-8 col-sm-9 skin-minimal">
 
-					<select style="width: 50" id="province_code"
+					<select style="width: 50" id="province_code" 
 						class="select select-box inline" name="provinceCode">
 						<option value="">请选择</option>
 						<option th:each="channel:${province}"
 							th:value="${channel.province_code}"
 							th:text="${channel.province_name}"
 							th:selected="${order.post_province==channel.province_name}">&nbsp;</option>
-					</select> <select class="select select-box inline" style="width: 50"
+					</select> <select class="select select-box inline"   style="width: 50" 
 						id="city" name="cityCode">
 						<option value="">请选择</option>
 						<option th:each="channel:${city}" th:value="${channel.city_code}"
 							th:text="${channel.city_name}"
 							th:selected="${order.post_city==channel.city_name}"></option>
-					</select> <select style="width: 50" class="select select-box inline"
+					</select> <select style="width: 50" class="select select-box inline" 
 						id="district" name="districtCode">
 						<option value="">请选择</option>
 						<option th:each="channel:${disr}" th:value="${channel.id}"
 							th:text="${channel.district_name}"
 							th:selected="${order.post_district==channel.district_name}"></option>
 					</select>
+					<div class="formControls col-xs-1 col-sm-2">
+					<input placeholder="点击复制" th:onclick="copyContent(this);" type="text" class="input-text" id="copy_content">
+					</div>
 				</div>
 			</div>
 			<div class="row cl">
@@ -243,6 +246,7 @@
 			</div>
 
 			<div class="row cl">
+			
 				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
 					<input class="btn btn-primary radius" type="button" id="saveBtn"
 						value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
@@ -267,6 +271,9 @@
 	<!--请在下方写此页面业务相关的脚本-->
 	<script type="text/javascript"
 		th:src="@{/lib/jquery.validation/1.14.0/jquery.validate.js}"
+		src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+			<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/clipboard.min.js}"
 		src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 	<script type="text/javascript"
 		th:src="@{/lib/jquery.validation/1.14.0/validate-methods.js}"
@@ -525,6 +532,26 @@
 			}
 		}
 
+		 function copyContent(ElementObj){
+	         //获取点击的值
+	         var clickContent = $('#city').find("option:selected")
+				.text();
+	         clickContent=clickContent+"  "+ $('#district').find(
+				"option:selected").text();
+	        	 //ElementObj.innerText;    
+	         //获取要赋值的input的元素
+	         var inputElement =  document.getElementById("copy_content");
+	         //给input框赋值
+	         inputElement.value = clickContent;
+	         //选中input框的内容
+	         inputElement.select();
+	          // 执行浏览器复制命令
+	          document.execCommand("Copy"); 
+	         //提示已复制
+// 	         alert('已复制');
+	          
+	     }
+		
 		$('#phoneRule')
 				.change(
 						function() {
