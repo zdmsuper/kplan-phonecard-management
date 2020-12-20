@@ -232,7 +232,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		KplanSecondaryOrders order;
 		UnicomPostCityCode dir = null;
 		Kplanprocducts pocDuct = null;
-		if(coreOrderSerbice.chekOrder(re_phone)) {
+		if(coreOrderSerbice.chekOrder(re_phone)&&"1".equals(proctype)) {
 			msg.setCode("203");
 			msg.setStatus("203");
 			msg.setMsg("该订单已办理，请勿重复办理");
