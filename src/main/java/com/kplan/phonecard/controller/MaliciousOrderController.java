@@ -165,6 +165,15 @@ public class MaliciousOrderController extends AbstractBaseController {
 					e.setOrderType(d.getLogistics_info());
 					ex.add(e);
 				}
+				if(ex.size()==0) {
+					ex.add(new  excelMaliciousOrders());
+				}
+				OutputStream outputStream = response.getOutputStream();
+				EasyExcel.write(outputStream, excelMaliciousOrders.class).excelType(ExcelTypeEnum.XLSX).sheet("成都恶意订单")
+						.doWrite(ex);
+				outputStream.flush();
+				outputStream.close();
+			}else {
 				OutputStream outputStream = response.getOutputStream();
 				EasyExcel.write(outputStream, excelMaliciousOrders.class).excelType(ExcelTypeEnum.XLSX).sheet("成都恶意订单")
 						.doWrite(ex);
