@@ -170,7 +170,7 @@ public class CoreordersMarketkManager extends BaseManager {
 
 	public Object savaOrders(String userName, String userid, String address, String ordersource, String province_code,
 			String province_name, String re_phone, String city, String cityName, String district, String districtName,
-			String phone_Num, String smsstatus, String Productcode, String Productname) {
+			String phone_Num, String smsstatus, String Productcode, String Productname,String user) {
 			msgRes msg = new msgRes();
 		try {
 			if(coreOrderSerbice.chekOrder(re_phone)) {
@@ -206,6 +206,10 @@ public class CoreordersMarketkManager extends BaseManager {
 					}
 					if("成都".equals(ordersource)) {
 						k.setOrder_source("线下上门渠道-四川");
+					}
+					if(StringUtils.trimToNull(user)!=null) {
+						k.setOrder_source("交付上门渠道");
+						k.setRecommend_name(user);
 					}
 				
 					k.setProvince_code(province_code);

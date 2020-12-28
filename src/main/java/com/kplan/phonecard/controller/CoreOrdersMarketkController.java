@@ -39,6 +39,7 @@ import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.BasicUserInfo;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.KplanChannelNumberDetail;
+import com.kplan.phonecard.domain.KplanDoorPersonnel;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.Kplanprocducts;
@@ -52,6 +53,7 @@ import com.kplan.phonecard.domain.entity.excelOrder;
 import com.kplan.phonecard.manager.ManagerInfoManager;
 import com.kplan.phonecard.manager.CoreordersMarketkManager;
 import com.kplan.phonecard.manager.KplanChannelNumberDetailManager;
+import com.kplan.phonecard.manager.KplanDoorPersonnelManager;
 import com.kplan.phonecard.manager.KplanPhonenumBerManager;
 import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.manager.KplanprocductsManager;
@@ -90,6 +92,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	KplanprocductsManager kplanprocductsManager;
 	@Autowired
 	kplanscordersManager kplanscordersManager;
+	@Autowired
+	KplanDoorPersonnelManager kplanDoorPersonnelManager;
 
 	@RequestMapping("/list")
 	public String findOrders(Map<String, Object> map, CoreOrdersMarketkQuery query) throws ParseException {
@@ -110,10 +114,12 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
 		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", product.get(0).getProcduct_code(),"81");
 		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(product.get(0).getProcduct_code(),"成都");
+		List<KplanDoorPersonnel> personnel=this.kplanDoorPersonnelManager.qrycompary();
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
 		map.put("product", product);
+		map.put("personnel", personnel);
 		map.put("managerinfo", super.getCurrentUserDetails().orElse(null));
 		return "coreorders/edit";
 	}
@@ -227,7 +233,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@ResponseBody
 	public Object savaOrders(String userName, String userid, String address, String ordersource, String province_code,
 			String province_name, String re_phone, String city, String cityName, String district, String districtName,
-			String phone_Num, String smsstatus, String Productcode, String Productname) {
+			String phone_Num, String smsstatus, String Productcode, String Productname,String user) {
 
 		logger.info("userName:" + userName + " userid:" + userid + " address:" + address + " ordersource:" + ordersource
 				+ " province_code:" + province_code + " province_name:" + province_name + " re_phone：" + re_phone
@@ -236,7 +242,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 				+ "Productname:" + Productname + " UserName:"
 				+ super.getCurrentUserDetails().orElse(null).getBasicUserInfo().getUserRealName());
 		return this.coreOrdersManager.savaOrders(userName, userid, address, ordersource, province_code, province_name,
-				re_phone, city, cityName, district, districtName, phone_Num, smsstatus, Productcode, Productname);
+				re_phone, city, cityName, district, districtName, phone_Num, smsstatus, Productcode, Productname,user);
 	}
 
 	/**
@@ -630,5 +636,10 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	private List<List<String>> createTestListStringHead() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@RequestMapping(value = "/qryPersonnel", method = RequestMethod.GET)
+	@ResponseBody
+	public Object qryPersonnel(String personnel) {
+		return this.kplanDoorPersonnelManager.qryPersonnel(personnel);
 	}
 }

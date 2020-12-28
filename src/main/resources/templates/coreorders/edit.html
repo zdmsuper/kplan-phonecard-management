@@ -110,16 +110,33 @@
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
+				<label class="form-label col-xs-2 col-sm-3"><span
 					class="c-red">*</span>订单来源：</label>
-				<div class="formControls col-xs-8 col-sm-9">
+				<div class="formControls col-xs-1 col-sm-2">
 				<select style="width: 50" id="ordersource" class="select select-box inline" name="ordersource" >
 				<option value="成都">成都</option>
 				<option value="贵州">贵州</option>
 				</select>
-<!-- 					<input type="radio" class="radio-box" name="smsstatus"  value="1">发送 -->
-<!-- 					<input type="radio" class="radio-box" name="smsstatus" checked="checked" value="2">不发送 -->
 				</div>
+				<label class="form-label col-xs-1 col-sm-2"><span
+					class="c-red">*</span>交互人员：</label>
+					<div class="formControls col-xs-4 col-sm-5">
+					<select class="select select-box inline" lay-verify="required" style="width: 50" name="personnel" id="personnel">
+							<option value="">请选择分公司</option>
+							<option th:each="personnel:${personnel}"
+								th:value="${personnel.company}"
+								th:text="${personnel.company}" 
+							>&nbsp;</option>
+					</select>
+					<select class="select select-box inline" lay-verify="required" style="width: 50" name="user" id="user">
+							<option value="">请选择交互人员</option>
+<!-- 							<option th:each="product:${product}" -->
+<!-- 								th:value="${product.procduct_code}" -->
+<!-- 								th:text="${product.procduct_name}"  -->
+<!-- 								th:selected="${order.procduct_name==product.procduct_name}">&nbsp;</option> -->
+					</select>
+				
+			</div>
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
@@ -289,6 +306,7 @@
 				var smsstatus=$("input[name='smsstatus']:checked").val();
 				var url="/coreorder/savaOrders";
 				var userName=$('#userName').val()
+				var user=$('#user').val();
 				var userid=$('#userid').val()
 				var address=$('#address').val()
 				var ordersource=$('#ordersource').val()
@@ -304,7 +322,7 @@
 				var Productname=$('#procDuct').find("option:selected").text()
 				var pramStr="userName="+userName+"&userid="+userid+"&address="+address+"&ordersource="+ordersource+
 				"&province_code="+province_code+"&province_name="+province_name+"&re_phone="+re_phone+"&city="+city+"&cityName="+cityName+
-				"&district="+district+"&districtName="+districtName+"&phone_Num="+phone_Num+"&smsstatus="+smsstatus+"&Productcode="+Productcode+"&Productname="+Productname;
+				"&district="+district+"&districtName="+districtName+"&phone_Num="+phone_Num+"&smsstatus="+smsstatus+"&Productcode="+Productcode+"&Productname="+Productname+"&user="+user;
 				var submitMsg="用户名："+userName+"<br/> 身份证:"+userid+"<br/> 省份："+province_name+"<br/>地市:"+cityName+"<br/>区县:"+districtName+"<br/> 详细地址："+address+"<br/>订购号码："+phone_Num+"<br/>联系电话："+re_phone+"<br/>产品名称："+Productname;
 				if(userName==''||userid==''||address==''||ordersource=='' ||province_code==''||re_phone==''||city==''||district==''||phone_Num==''){
 					layer.msg('请将订单信息填写完整', {
@@ -351,8 +369,26 @@
 
 		});
 		
-		
-		
+				$('#personnel').change(function(){
+					var personnel=$(this).val();
+					var user=$('#user');
+					$('#user option[value!=""]').remove();
+					var url="/coreorder/qryPersonnel";
+					$.ajax({
+						type:'get',
+						url:url+'?personnel='+personnel,
+						success:function(resp){
+							$.each(resp,function(){
+								user.append('<option  value='+this.username+'>'+this.username+'</option>');
+								
+							});
+							
+						}
+					});
+				});
+				
+				
+				
 		$('#province_code').change(function(){
 			var province=$(this).val();
 			var city=$('#city');
