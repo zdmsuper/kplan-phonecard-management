@@ -201,7 +201,13 @@ public class CoreordersMarketkManager extends BaseManager {
 					k.setAccess_name(userName);
 					k.setAccess_id_number(userid);
 					k.setReceiver_address(address);
-					k.setOrder_source("线下上门渠道");
+					if("贵州".equals(ordersource)) {
+						k.setOrder_source("线下上门渠道-贵州");
+					}
+					if("成都".equals(ordersource)) {
+						k.setOrder_source("线下上门渠道-四川");
+					}
+				
 					k.setProvince_code(province_code);
 					k.setProvince_name(province_name);
 					k.setReceiver_phone(re_phone);

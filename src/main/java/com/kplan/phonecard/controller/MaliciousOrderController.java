@@ -88,7 +88,7 @@ public class MaliciousOrderController extends AbstractBaseController {
 				}
 			}
 		}
-		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(procDuctCode);
+		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(procDuctCode,"成都");
 		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", procDuctCode,
 				address.getProvince_code());
 		List<UnicomPostCityCode> city = null;

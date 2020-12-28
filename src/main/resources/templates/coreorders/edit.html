@@ -82,7 +82,7 @@
 				<label class="form-label col-xs-4 col-sm-3"><span
 					class="c-red">*</span>产品：</label>
 				<div class="formControls col-xs-8 col-sm-9" >
-					<select class="select select-box inline" lay-verify="required" style="width: 50" name="ordersource" id="ordersource">
+					<select class="select select-box inline" lay-verify="required" style="width: 50" name="procDuct" id="procDuct">
 							<option th:each="product:${product}"
 								th:value="${product.procduct_code}"
 								th:text="${product.procduct_name}" >&nbsp;</option>
@@ -107,21 +107,18 @@
 						<select style="width: 50" class="select select-box inline" id="district" name="district">
 							<option value="">请选择</option>
 						</select>
-<!-- 					<div class="radio-box" -->
-<!-- 						th:each="gender:${T(com.kplan.phonecard.enums.GenderEnum).values()}"> -->
-<!-- 						<input name="basicUserInfo.gender" type="radio" id="sex-1" -->
-<!-- 							value="MALE" th:value="${gender}" -->
-<!-- 							th:checked="${item.basicUserInfo.gender==gender}"> <label -->
-<!-- 							for="sex-1" th:text="${gender.desc}">男</label> -->
-<!-- 					</div> -->
 				</div>
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>短信：</label>
+					class="c-red">*</span>订单来源：</label>
 				<div class="formControls col-xs-8 col-sm-9">
-					<input type="radio" class="radio-box" name="smsstatus"  value="1">发送
-					<input type="radio" class="radio-box" name="smsstatus" checked="checked" value="2">不发送
+				<select style="width: 50" id="ordersource" class="select select-box inline" name="ordersource" >
+				<option value="成都">成都</option>
+				<option value="贵州">贵州</option>
+				</select>
+<!-- 					<input type="radio" class="radio-box" name="smsstatus"  value="1">发送 -->
+<!-- 					<input type="radio" class="radio-box" name="smsstatus" checked="checked" value="2">不发送 -->
 				</div>
 			</div>
 			<div class="row cl">
@@ -152,24 +149,6 @@
 				</div>
 			</div>
 			
-<!-- 			<div class="row cl"> -->
-<!-- 				<label class="form-label col-xs-4 col-sm-3">头像：</label> -->
-<!-- 				<div class="formControls col-xs-6 col-sm-6"> -->
-<!-- 					<span class="btn-upload form-group"> <input -->
-<!-- 						class="input-text upload-url" type="text" -->
-<!-- 						name="basicUserInfo.headImg" id="basicUserInfo.headImg" readonly -->
-<!-- 						nullmsg="请添加附件！" style="width: 100px"> <a -->
-<!-- 						href="javascript:void();" -->
-<!-- 						class="btn btn-primary radius upload-btn"><i -->
-<!-- 							class="Hui-iconfont">&#xe642;</i> 浏览文件</a> <input type="file" -->
-<!-- 						multiple name="headImg" class="input-file"> -->
-<!-- 					</span> -->
-<!-- 				</div> -->
-<!-- <!-- 				<div class="formControls col-xs-2 col-sm-2"> --> 
-<!-- <!-- 					<img alt="" id="img" src="" width="40" height="40" -->
-<!-- <!-- 						th:src="'data:image/jpeg;base64,'+${item.basicUserInfo.headImg}" /> --> 
-<!-- <!-- 				</div> --> 
-<!-- 			</div> -->
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3">
 				<select style="width: 30"  class="select select-box inline" id="phoneRule" name="phoneRule" >
@@ -321,8 +300,8 @@
 				var district=$('#district').val()
 				var districtName=$('#district').find("option:selected").text()
 				var phone_Num=$('#phone_Num').val()
-				var Productcode=$('#ordersource').val()
-				var Productname=$('#ordersource').find("option:selected").text()
+				var Productcode=$('#procDuct').val()
+				var Productname=$('#procDuct').find("option:selected").text()
 				var pramStr="userName="+userName+"&userid="+userid+"&address="+address+"&ordersource="+ordersource+
 				"&province_code="+province_code+"&province_name="+province_name+"&re_phone="+re_phone+"&city="+city+"&cityName="+cityName+
 				"&district="+district+"&districtName="+districtName+"&phone_Num="+phone_Num+"&smsstatus="+smsstatus+"&Productcode="+Productcode+"&Productname="+Productname;
@@ -444,14 +423,19 @@
 			$('#phoneRule').change(function(){
 				var phones=$('#phones');
 				var phoneRule=$('#phoneRule').val();
-				var procductCode=$('#ordersource').val();
+				var procductCode=$('#procDuct').val();
+				var ordersource=$('#ordersource').val();
 				var url="/coreorder/qryPhones"
 //	 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
+				var province="81";
+				if("贵州"==ordersource){
+					province="85";
+				}
 				var phone=[];
 				$.ajax({
 					type:'get',
 					async:false,
-					url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode,
+					url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode+"&province="+province,
 					success:function(resp){
 						phone=resp;
 					}
@@ -464,15 +448,19 @@
 				});
 			});
 			
+			
+			
+			
 			$('#ordersource').change(function(){
 				var phoneRules=$('#phoneRule');
+				var ordersource=$('#ordersource').val();
 				var ruleUrl="/coreorder/qryRuleList"
-				var procductCode=$('#ordersource').val();
+				var procductCode=$('#procDuct').val();
 				var rule=[];
 				$.ajax({
 					type:'get',
 					async:false,
-					url:ruleUrl+"?procDuctCode="+procductCode,
+					url:ruleUrl+"?procDuctCode="+procductCode+"&ordersource="+ordersource,
 					success:function(resp){
 						rule=resp;
 					}
@@ -490,11 +478,63 @@
 				var phoneRule=$('#phoneRule').val();
 				var url="/coreorder/qryPhones"
 //	 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
+				var province="81"
+				if("贵州"==ordersource){
+					province="85"
+				}
 				var phone=[];
 				$.ajax({
 					type:'get',
 					async:false,
-					url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode,
+					url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode+"&province="+province,
+					success:function(resp){
+						phone=resp;
+					}
+				});
+				$('.text-c').remove();
+				$.each(phone,function(){
+					var dateStr=formatTime(this.last_date)
+					phones.append('<tr class="text-c"><td><input type="radio" value="'+this.phone+'"  name="phonesNum"/></td><td>'+this.phone+'</td><td>'+this.rule_name+'</td><td>'+this.province_name+'</td><td>'+this.city_name+'</td><td>'+dateStr+'</td></tr>');
+					
+				});
+			});
+			
+			$('#procDuct').change(function(){
+				var phoneRules=$('#phoneRule');
+				var ordersource=$('#ordersource').val();
+				var ruleUrl="/coreorder/qryRuleList"
+				var procductCode=$('#procDuct').val();
+				var rule=[];
+				$.ajax({
+					type:'get',
+					async:false,
+					url:ruleUrl+"?procDuctCode="+procductCode+"&ordersource="+ordersource,
+					success:function(resp){
+						rule=resp;
+					}
+				});
+				phoneRules.empty();
+				phoneRules.append("<option value=''>请选择</option>");
+				
+				$.each(rule,function(){
+					phoneRules.append('<option  value='+this.rule_name+'  >'+this.rule_name+'</option>');
+					
+				});
+				
+				
+				var phones=$('#phones');
+				var phoneRule=$('#phoneRule').val();
+				var url="/coreorder/qryPhones"
+//	 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
+				var province="81"
+				if("贵州"==ordersource){
+					province="85"
+				}
+				var phone=[];
+				$.ajax({
+					type:'get',
+					async:false,
+					url:url+"?phoneRule="+phoneRule+"&procductCode="+procductCode+"&province="+province,
 					success:function(resp){
 						phone=resp;
 					}
@@ -512,7 +552,7 @@
 		$('#phonescheck').click(function(){
 			var phones=$('#phones');
 			var phoneRule=$('#phoneRule').val();
-			var procductCode=$('#ordersource').val();
+			var procductCode=$('#procDuct').val();
 			var province=$('#province_code').find("option:selected").val()
 			var url="/coreorder/qryPhones"
 // 			/*[[@{/klanBiliBili/qryPhones}]]*/'';
@@ -542,16 +582,18 @@
 		
 		$('#id-disable-check').click(function(){
 			var phones=$('#phones');
-			var procductCode=$('#ordersource').val();
-			var procductName=$('#ordersource').find("option:selected").text();
+			var procductCode=$('#procDuct').val();
+			var ordersource=$('#ordersource').val();
+			var procductName=$('#procDuct').find("option:selected").text();
 			var url="/coreorder/qryPhonesNum"
 // 			var url=/*[[@{/klanBiliBili/qryPhonesNum}]]*/'';
+			
 			var phone=[];
 			var phoneNum=$('#phoneNum').val();
 			$.ajax({
 				type:'get',
 				async:false,
-				url:url+"?phoneNum="+phoneNum+"&procductCode="+procductCode+"&procductName="+procductName,
+				url:url+"?phoneNum="+phoneNum+"&procductCode="+procductCode+"&procductName="+procductName+"&ordersource="+ordersource,
 				success:function(resp){
 					if(resp.status==201){
 						parent.layer.alert(resp.msg, '尾号匹配失败')

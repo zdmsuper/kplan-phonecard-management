@@ -109,7 +109,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		List<UnicomPostCityCode> l = this.unicompostcityManager.findByPrivoin();
 		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
 		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", product.get(0).getProcduct_code(),"81");
-		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(product.get(0).getProcduct_code());
+		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(product.get(0).getProcduct_code(),"成都");
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
@@ -123,8 +123,14 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		List<UnicomPostCityCode> l = this.unicompostcityManager.findByPrivoin();
 		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
 		CoreOrdersMarketk order = this.coreOrdersManager.findById(query.getDomain().getId());
-		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", order.getProduct_code(),order.getProvince_code());
-		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(order.getProduct_code());
+		String province="81";
+		String provinceName="成都";
+		if("线下上门渠道-贵州".equals(order.getOrder_source())) {
+			province="85";
+			provinceName="贵州";
+		}
+		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", order.getProduct_code(),province);
+		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(order.getProduct_code(),provinceName);
 		map.put("privoin", l);
 		map.put("phoneList", phoneList);
 		map.put("phoneRuleList", phoneRuleList);
@@ -175,8 +181,8 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	}
 	@RequestMapping(method = RequestMethod.GET, value = "qryRuleList")
 	@ResponseBody
-	public Object qryRuleList(String procDuctCode) {
-		Object ruleList=this.kplanPhoneManager.findPhoneRuleList(procDuctCode);
+	public Object qryRuleList(String procDuctCode,String ordersource) {
+		Object ruleList=this.kplanPhoneManager.findPhoneRuleList(procDuctCode,ordersource);
 		return ruleList;
 	}
 

@@ -139,6 +139,18 @@ public class UnicomPostcityCodeManager extends BaseManager {
 			 cityName="贵阳市";
 			 cityCode="850";
 		}
+		if("成都".equals(ordersource)) {
+			 provinceName="四川";
+			 provinceCode="81";
+			 cityName="成都市";
+			 cityCode="810";
+		}
+		if("贵州".equals(ordersource)) {
+			 provinceName="贵州";
+			 provinceCode="85";
+			 cityName="贵阳市";
+			 cityCode="850";
+		}
 		String url = "http://59.110.18.76:8888/kplan/kcqapi/selectNumt?provinceCode="+provinceCode+"&cityCode="+cityCode+"&searchCategory=3&goodsId="
 				+ procductCode + "&amounts=2&searchType=02&searchValue=" + phoneNum;
 		String[] result = HttpUtils.doGet(url, 6000);
