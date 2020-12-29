@@ -1,5 +1,6 @@
 package com.kplan.phonecard.manager;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,7 @@ import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.domain.entity.BackTitle;
+import com.kplan.phonecard.domain.entity.OrderStatistics;
 import com.kplan.phonecard.enums.ExportStatusEnum;
 import com.kplan.phonecard.enums.KplanSeconDarytracStatusEnum;
 import com.kplan.phonecard.enums.OrderStatusEnum;
@@ -697,6 +699,42 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		}
 		List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersService.getResultList(sql);
 		return l;
+	}
+	
+	public List<OrderStatistics> KplanSecondaryStatustics(KplanSecondaryOrdersQuery query){
+		String sql = null;
+		String whereStr="";
+		if(query.getCreatedDateStart()!=null&&query.getCreatedDateEnd()!=null) {
+			if(query.getDomain().getOrder_source()!=null) {
+				if(StringUtils.trimToNull(whereStr)==null) {
+					whereStr="order_source='"+query.getDomain().getOrder_source()+"'";
+				}else {
+					whereStr=whereStr+"and order_source='"+query.getDomain().getOrder_source()+"'";
+				}
+			}
+			if(query.getDomain().getLogistics_info()!=null) {
+				if(StringUtils.trimToNull(whereStr)==null) {
+					whereStr="logistics_info='"+query.getDomain().getLogistics_info()+"'";
+				}else {
+					whereStr=whereStr+"and logistics_info='"+query.getDomain().getLogistics_info()+"'";
+				}
+			}
+			
+			if(StringUtils.trimToNull(whereStr)==null) {
+				whereStr="place_order_time>='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"'";
+			}else {
+				whereStr=whereStr+"and place_order_time>='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"'";
+			}
+				sql="select count(1),track_status from kplan_secondary_orders where "+whereStr+" and order_source!='CQ' and track_status  is not null group by track_status";
+		}
+		List<Object[]> list=this.kplanSecondaryOrdersService.getNativeResultList(sql);
+		List<OrderStatistics> resultList = StreamEx.of(list).map(r -> {
+			OrderStatistics b = new OrderStatistics();
+			b.setOrderNum(String.valueOf(((BigInteger) r[0]).intValue()));
+			b.setOrderName(KplanSeconDarytracStatusEnum.fromValueDesc((Integer) r[1]));
+			return b;
+		}).toList();
+		return resultList;
 	}
 
 }

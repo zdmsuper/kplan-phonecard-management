@@ -87,6 +87,15 @@ public enum KplanSeconDarytracStatusEnum {
 		}
 		return KplanSeconDarytracStatusEnum.UNKNOW;
 	}
+	
+	public static String fromValueDesc(Integer value) {
+		for (KplanSeconDarytracStatusEnum statusEnum : KplanSeconDarytracStatusEnum.values()) {
+			if (Objects.equals(value, statusEnum.getCode())) {
+				return statusEnum.getDesc();
+			}
+		}
+		return KplanSeconDarytracStatusEnum.UNKNOW.desc;
+	}
 
 //	@Converter
 	public static class EnumConvert implements AttributeConverter<KplanSeconDarytracStatusEnum, Integer> {
