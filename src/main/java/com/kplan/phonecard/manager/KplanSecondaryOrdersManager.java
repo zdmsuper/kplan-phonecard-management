@@ -196,8 +196,24 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 
 	}
 
-	public List<KplanSecondaryOrders> exExcel(String operator) {
-		String sql = "from KplanSecondaryOrders where operator='" + operator + "'";
+	public List<KplanSecondaryOrders> exExcel(KplanSecondaryOrdersQuery query) {
+		String whereStr="";
+		if(query.getCreatedDateStart()!=null&&query.getCreatedDateEnd()!=null) {
+			if(StringUtils.trimToNull(whereStr)==null) {
+				whereStr="place_order_time >='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"'";
+			}else {
+				whereStr=whereStr+"and place_order_time >='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"'";
+			}
+		}
+		if(query.getDomain().getOperator()!=null) {
+			if(StringUtils.trimToNull(whereStr)==null) {
+				whereStr="operator ='"+query.getDomain().getOperator()+"'";
+			}else {
+				whereStr=whereStr+" and operator ='"+query.getDomain().getOperator()+"'";
+			}
+		}
+		
+		String sql = "from KplanSecondaryOrders where "+whereStr;
 		return this.kplanSecondaryOrdersService.getResultList(sql);
 	}
 

@@ -567,7 +567,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	 */
 	@RequestMapping("/exBackExcel")
 	public void exBackExcel( String projectName,
-            HttpServletResponse response,CoreOrdersMarketkQuery query) throws IOException {
+            HttpServletResponse response,KplanSecondaryOrdersQuery query) throws IOException {
 		 String date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 		    String fileName = date + "回捞订单数据";
 		    try {
@@ -575,7 +575,7 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		        response.setContentType("application/vnd.ms-excel");
 		        fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
 		        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
-		        List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersManager.exExcel(query.getDomain().getOperator());
+		        List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersManager.exExcel(query);
 		        List<excelBackOrder> ex = new ArrayList<excelBackOrder>();
 		        if(l!=null) {
 		        	excelBackOrder e;
