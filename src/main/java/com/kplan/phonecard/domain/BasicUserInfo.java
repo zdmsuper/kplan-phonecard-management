@@ -83,6 +83,8 @@ public class BasicUserInfo extends BaseDomain {
 	 * 身份证
 	 */
 	private String cardId;
+	
+	private Integer jurisdiction;
 
 
 	@Lob
@@ -179,4 +181,12 @@ public class BasicUserInfo extends BaseDomain {
 		this.cardId = cardId;
 	}
 
+	public Integer getJurisdiction() {
+		return jurisdiction;
+	}
+
+	public void setJurisdiction(Integer jurisdiction) {
+		this.jurisdiction = jurisdiction;
+	}
+	
 }

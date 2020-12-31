@@ -182,6 +182,58 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		};
 		return this.kplanSecondaryOrdersService.findAll(spec, pageable);
 	}
+	
+	
+	/**外围人员回访订单查询列表
+	 * @param query
+	 * @param pageable
+	 * @param orderSource
+	 * @return
+	 */
+	public Page<KplanSecondaryOrders> cdmalicicousList(@NotNull KplanSecondaryOrdersQuery query, Pageable pageable,String orderSource) {
+		Specification<KplanSecondaryOrders> spec = new Specification<KplanSecondaryOrders>() {
+			@Override
+			public Predicate toPredicate(Root<KplanSecondaryOrders> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<>();
+				if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
+					list.add(cb.between(r.get("place_order_time"), query.getCreatedDateStart(),
+							query.getCreatedDateEnd()));
+				}
+				if(query.getDomain().getPhone_num()!=null) {
+					list.add(cb.or(cb.equal(r.get("phone_num"), query.getDomain().getPhone_num()),cb.equal(r.get("phone"), query.getDomain().getPhone_num())));
+				}else {
+					if(query.getKeyword()!=null) {
+						if(query.getKeyword().equals("1")) {
+							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
+						}
+						if(query.getKeyword().equals("2")) {
+							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS));
+						}
+						if(query.getKeyword().equals("3")) {
+							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS));
+						}
+					}
+					if(query.getDomain().getLogistics_info()!=null) {
+						if(query.getDomain().getLogistics_info().equals("1")) {
+//							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
+							list.add(cb.or(cb.isNull(r.get("logistics_info")),cb.notEqual(r.get("logistics_info"), "物流订单")));
+						}
+						if(query.getDomain().getLogistics_info().equals("4")) {
+							list.add(cb.equal(r.get("logistics_info"), "物流订单"));
+						}
+					}
+						list.add(cb.or(cb.notLike(r.get("procduct_name"), "%首月%"),cb.notLike(r.get("procduct_name"), "%免费%"),cb.notLike(r.get("procduct_name"), "%体验%")));
+						list.add(cb.or(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS),
+								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS),
+								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
+								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION)));
+				}
+				list.add(cb.equal(r.get("order_source"), orderSource));
+				return cb.and(list.toArray(new Predicate[0]));
+			}
+		};
+		return this.kplanSecondaryOrdersService.findAll(spec, pageable);
+	}
 
 	public List<BackTitle> qryTitle(Date date, Date date2) {
 		String sql = "select operator from kplan_secondary_orders where pro_date>='" + date + "' and  pro_date<='"

@@ -55,6 +55,46 @@ public class MaliciousOrderController extends AbstractBaseController {
 	 * @param query
 	 * @return
 	 */
+	/**
+	 * @param orderNo
+	 * @param userName
+	 * @param userid
+	 * @param address
+	 * @param re_phone
+	 * @param proctype
+	 * @param province
+	 * @param provinceCode
+	 * @param city
+	 * @param cityCode
+	 * @param district
+	 * @param districtCode
+	 * @param remarks
+	 * @param procDuctName
+	 * @param phone_Num
+	 * @param smsstatus
+	 * @param ordersource
+	 * @return
+	 */
+	/**
+	 * @param orderNo
+	 * @param userName
+	 * @param userid
+	 * @param address
+	 * @param re_phone
+	 * @param proctype
+	 * @param province
+	 * @param provinceCode
+	 * @param city
+	 * @param cityCode
+	 * @param district
+	 * @param districtCode
+	 * @param remarks
+	 * @param procDuctName
+	 * @param phone_Num
+	 * @param smsstatus
+	 * @param ordersource
+	 * @return
+	 */
 	@RequestMapping("/list")
 	public String list(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
 		Page<KplanSecondaryOrders> page = this.kplanSecondaryOrdersManager.malicicousList(query, this.getPageRequest(),
@@ -63,6 +103,20 @@ public class MaliciousOrderController extends AbstractBaseController {
 		map.put("query", query);
 		return "malicious/list";
 	}
+	/**外围人员订单回访
+	 * @param map
+	 * @param query
+	 * @return
+	 */
+	@RequestMapping("/cdList")
+	public String cdList(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		Page<KplanSecondaryOrders> page = this.kplanSecondaryOrdersManager.cdmalicicousList(query, this.getPageRequest(),
+				"CD");
+		map.put("page", page);
+		map.put("query", query);
+		return "malicious/cdlist";
+	}
+	
 
 	@RequestMapping("/gzlist")
 	public String gzlist(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
@@ -108,6 +162,49 @@ public class MaliciousOrderController extends AbstractBaseController {
 		return "malicious/edit";
 
 	}
+	
+	
+	/**外围人员处理订单跳转
+	 * @param map
+	 * @param query
+	 * @return
+	 */
+	@RequestMapping("/qrycdMaliciOrder")
+	public String qrycdMaliciOrder(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		String procDuctCode = null;
+		KplanSecondaryOrders order = this.kplanSecondaryOrdersManager.findById(query.getDomain().getId());
+		UnicomPostCityCode address = this.unicompostcityManager.findByPrivoin(order.getPost_city(),
+				order.getPost_district());
+		List<UnicomPostCityCode> province = this.unicompostcityManager.findByPrivoin();
+		List<Kplanprocducts> product = this.coreOrdersManager.qryProcDucts();
+		if (product != null) {
+			for (Kplanprocducts d : product) {
+				if (d.getProcduct_name().equals(order.getProcduct_name())) {
+					procDuctCode = d.getProcduct_code();
+				}
+			}
+		}
+		List<KplanPhoneNumber> phoneRuleList = this.kplanPhoneManager.findPhoneRuleList(procDuctCode,"成都");
+		List<KplanPhoneNumber> phoneList = this.kplanPhoneManager.findPhoneList("", procDuctCode,
+				address.getProvince_code());
+		List<UnicomPostCityCode> city = null;
+		List<UnicomPostCityCode> disr = null;
+		if (address != null) {
+			city = this.unicompostcityManager.findBycity(address.getProvince_code());
+			disr = this.unicompostcityManager.qryDistrict(address.getCity_code());
+		}
+		map.put("product", product);
+		map.put("phoneRuleList", phoneRuleList);
+		map.put("phoneList", phoneList);
+		map.put("order", order);
+		map.put("query", query);
+		map.put("province", province);
+		map.put("city", city);
+		map.put("disr", disr);
+		return "malicious/cdedit";
+
+	}
+	
 
 	@RequestMapping(value = "/procOrder", method = RequestMethod.POST)
 	@ResponseBody

@@ -122,7 +122,7 @@
 		</dd>
 	</dl-->
 	
-			<dl id="menu-member">
+			<dl id="menu-member" th:if="${basicUserInfo?.jurisdiction==1}">
 			<dt><i class="Hui-iconfont">&#xe60d;</i> 四川移网业务<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
@@ -133,8 +133,8 @@
 					<li><a data-href="coreorder/city" data-title="区县编码查询" href="javascript:;">区县编码查询</a></li>
 			</ul>
 		</dd>
-	</dl>
-	<dl id="menu-admin">
+		</dl>
+	<dl id="menu-admin" th:if="${basicUserInfo?.jurisdiction==1}">
 			<dt><i class="Hui-iconfont">&#xe62d;</i>恶意订单<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
@@ -144,7 +144,15 @@
 			</ul>
 		</dd>
 	</dl >
-		<dl id="menu-admin">
+	<dl id="menu-admin" th:if="${basicUserInfo?.jurisdiction==2}">
+			<dt><i class="Hui-iconfont">&#xe62d;</i>回访订单<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+				<li><a data-href="malicious/cdList?sortName=prodate&sortOrder=desc" data-title="成都回访" href="javascript:;">成都回访订单</a></li>
+				</ul>
+		</dd>
+	</dl >
+		<dl id="menu-admin"  th:if="${basicUserInfo?.jurisdiction==1}">
 			<dt><i class="Hui-iconfont">&#xe62d;</i> 统计管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
@@ -156,7 +164,7 @@
 		</dd>
 	</dl >
 	
-		<dl id="menu-tongji">
+		<dl id="menu-tongji"  th:if="${basicUserInfo?.jurisdiction==1}">
 			<dt><i class="Hui-iconfont">&#xe61a;</i> 系统参数设置<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
