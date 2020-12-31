@@ -122,9 +122,9 @@
 							th:text="${channel.district_name}"
 							th:selected="${order.post_district==channel.district_name}"></option>
 					</select>
-					<div class="formControls col-xs-1 col-sm-2">
-					<input placeholder="点击复制" th:onclick="copyContent(this);" type="text" class="input-text" id="copy_content">
-					</div>
+<!-- 					<div class="formControls col-xs-1 col-sm-2"> -->
+<!-- 					<input placeholder="点击复制" th:onclick="copyContent(this);" type="text" class="input-text" id="copy_content"> -->
+<!-- 					</div> -->
 				</div>
 			</div>
 			<div class="row cl">
@@ -213,7 +213,7 @@
 							<th style="text-align: center;">规则</th>
 							<th style="text-align: center;">省份</th>
 							<th style="text-align: center;">城市</th>
-							<th style="text-align: center;">更新时间</th>
+<!-- 							<th style="text-align: center;">更新时间</th> -->
 						</tr>
 					</thead>
 					<tbody id='phones' th:each="phones:${phoneList}">
@@ -223,7 +223,7 @@
 							<td th:text="${phones.rule_name}">暂无靓号</td>
 							<td th:text="${phones.province_name}">暂无靓号</td>
 							<td th:text="${phones.city_name}">暂无靓号</td>
-							<td th:text="${phones.last_date}">暂无靓号</td>
+<!-- 							<td th:text="${phones.last_date}">暂无靓号</td> -->
 						</tr>
 					</tbody>
 				</table>
@@ -586,8 +586,6 @@
 																+ this.province_name
 																+ '</td><td>'
 																+ this.city_name
-																+ '</td><td>'
-																+ dateStr
 																+ '</td></tr>');
 
 											});
@@ -668,8 +666,6 @@
 																+ this.province_name
 																+ '</td><td>'
 																+ this.city_name
-																+ '</td><td>'
-																+ dateStr
 																+ '</td></tr>');
 
 											});
@@ -724,8 +720,6 @@
 																					+ this.province_name
 																					+ '</td><td>'
 																					+ this.city_name
-																					+ '</td><td>'
-																					+ dateStr
 																					+ '</td></tr>');
 
 																});
