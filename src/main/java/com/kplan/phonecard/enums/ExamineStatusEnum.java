@@ -16,9 +16,13 @@ public enum ExamineStatusEnum {
 	 */
 	SUCCESS(1,"审核成功"),
 	/**
+	 * 订单已转
+	 */
+	FAILED(2,"订单已转"),
+	/**
 	 * 审核失败
 	 */
-	FAILED(2,"审核失败"),
+	OTHERFAILED(3,"已被三方转走"),
 	/**
 	 * 未知
 	 */

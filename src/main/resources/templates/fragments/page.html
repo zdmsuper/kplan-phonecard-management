@@ -21,7 +21,9 @@
 				第[[${page.number*page.size+1}]]到第[[${page.number*page.size+page.numberOfElements}]]条,一共[[${page.totalElements}]]条</div>
 			<div class="dataTables_paginate paging_simple_numbers"
 				style="float: right;">
-
+					<a class="paginate_button previous disabled"
+					th:onclick="changePage([[${page.first}]])"
+					th:remove="${page.first}?'all':'none'">首页</a>
 				<a class="paginate_button previous disabled"
 					th:onclick="changePage([[${page.number-1}]])"
 					th:remove="${page.first}?'all':'none'">上一页</a> <span> <a
@@ -31,6 +33,9 @@
 				</span> <a class="paginate_button next disabled" href="javascript:void(0);"
 					th:onclick="changePage([[${page.number+1}]])" tabindex="0"
 					th:remove="${page.last}?'all':'none'">下一页</a>
+					<a class="paginate_button previous disabled"
+					th:onclick="changePage([[${page.totalElements/page.size}]])"
+					th:remove="${page.last}?'all':'none'">尾页</a>
 			</div>
 
 		</div>
