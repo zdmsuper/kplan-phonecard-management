@@ -272,6 +272,16 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	public KplanSecondaryOrders findById(Integer id) {
 		return (KplanSecondaryOrders) this.kplanSecondaryOrdersService.getById(id, KplanSecondaryOrders.class);
 	}
+	
+	/**锁定订单
+	 * @param id
+	 * @param lockStatus
+	 * @param lockUser
+	 */
+	public void lockOrders(Integer id,String lockUser) {
+		String sql="update kplan_secondary_orders set lock_status=1,lock_user='"+lockUser+"' where id="+id+"";
+		this.kplanSecondaryOrdersService.exeNative(sql);
+	}
 
 	/**
 	 * @param orderNo
@@ -378,6 +388,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 				order = l.get(0);
 				if ("1".equals(proctype)) {
 					order.setTrack_status(KplanSeconDarytracStatusEnum.HANDLESTATUS);
+					order.setLock_status(2);
+					order.setLock_user("");
 					order.setProdate(new Date());
 					if (StringUtils.trimToNull(order.getRemarks()) != null) {
 						order.setRemarks(
@@ -451,6 +463,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					msg.setMsg("订单处理成功");
 				}
 				if ("2".equals(proctype)) {
+					order.setLock_status(2);
+					order.setLock_user("");
 					order.setTrack_status(KplanSeconDarytracStatusEnum.FAILEDSTATUS);
 					if (StringUtils.trimToNull(order.getRemarks()) != null) {
 						order.setRemarks(
@@ -494,6 +508,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					
 				}
 				if ("3".equals(proctype)) {
+					order.setLock_status(2);
+					order.setLock_user("");
 					order.setTrack_status(KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION);
 					if (StringUtils.trimToNull(order.getRemarks()) != null) {
 						order.setRemarks(
@@ -534,6 +550,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					msg.setMsg("订单处理成功");
 				}
 				if ("4".equals(proctype)) {
+					order.setLock_status(2);
+					order.setLock_user("");
 					order.setTrack_status(KplanSeconDarytracStatusEnum.SECONDVISITSTATUS);
 					order.setProdate(new Date());
 					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
@@ -575,6 +593,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					msg.setMsg("订单处理成功");
 				}
 				if ("5".equals(proctype)) {
+					order.setLock_status(2);
+					order.setLock_user("");
 					order.setTrack_status(KplanSeconDarytracStatusEnum.CLOSESTATUS);
 					order.setProdate(new Date());
 					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
@@ -616,6 +636,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					msg.setMsg("订单处理成功");
 				}
 				if ("6".equals(proctype)) {
+					order.setLock_status(2);
+					order.setLock_user("");
 					order.setProdate(new Date());
 					order.setTrack_status(KplanSeconDarytracStatusEnum.THREEVISITSTATUS);
 					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
@@ -657,6 +679,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 				}
 				
 				if ("7".equals(proctype)) {
+					order.setLock_status(2);
+					order.setLock_user("");
 					order.setProdate(new Date());
 					order.setTrack_status(KplanSeconDarytracStatusEnum.NOTPHONEEND);
 					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());
@@ -698,6 +722,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					msg.setMsg("订单处理成功");
 				}
 				if ("8".equals(proctype)) {
+					order.setLock_status(2);
+					order.setLock_user("");
 					order.setProdate(new Date());
 					order.setTrack_status(KplanSeconDarytracStatusEnum.NOREIVITI);
 					order.setRemove_ident(managerInfo.getBasicUserInfo().getUserRealName());

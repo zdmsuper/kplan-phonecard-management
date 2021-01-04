@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,6 +152,19 @@ public class MaliciousOrderController extends AbstractBaseController {
 			city = this.unicompostcityManager.findBycity(address.getProvince_code());
 			disr = this.unicompostcityManager.qryDistrict(address.getCity_code());
 		}
+		if(order.getLock_status()==null||order.getLock_status()!=1) {
+			map.put("proStatus", 2);
+			this.kplanSecondaryOrdersManager.lockOrders(order.getId(), super.getCurrentUserDetails().orElse(null).getBasicUserInfo().getUserRealName());
+			
+		}else {
+			if(StringUtils.trimToNull(order.getLock_user())!=null&&order.getLock_user().equals(super.getCurrentUserDetails().orElse(null).getBasicUserInfo().getUserRealName())) {
+				map.put("proStatus", 2);
+			}else {
+			map.put("proStatus", 1);
+			map.put("proMsg", "该订单已被:"+order.getLock_user()+" 锁定 不可处理");
+			}
+			
+		}
 		map.put("product", product);
 		map.put("phoneRuleList", phoneRuleList);
 		map.put("phoneList", phoneList);
@@ -192,6 +206,19 @@ public class MaliciousOrderController extends AbstractBaseController {
 		if (address != null) {
 			city = this.unicompostcityManager.findBycity(address.getProvince_code());
 			disr = this.unicompostcityManager.qryDistrict(address.getCity_code());
+		}
+		if(order.getLock_status()==null||order.getLock_status()!=1) {
+			map.put("proStatus", 2);
+			this.kplanSecondaryOrdersManager.lockOrders(order.getId(), super.getCurrentUserDetails().orElse(null).getBasicUserInfo().getUserRealName());
+			
+		}else {
+			if(StringUtils.trimToNull(order.getLock_user())!=null&&order.getLock_user().equals(super.getCurrentUserDetails().orElse(null).getBasicUserInfo().getUserRealName())) {
+				map.put("proStatus", 2);
+			}else {
+			map.put("proStatus", 1);
+			map.put("proMsg", "该订单已被:"+order.getLock_user()+" 锁定  不可处理");
+			}
+			
 		}
 		map.put("product", product);
 		map.put("phoneRuleList", phoneRuleList);

@@ -96,6 +96,11 @@ public class KplanSecondaryOrders extends BaseDomain{
 	private KplanSeconDarytracStatusEnum track_status;//	int4	32	0	False		跟单状态
 	@Column(name = "operator", unique = true, length = 16)
 	private String operator;//	varchar	16	0	False		操作人
+	@Column(name = "lock_status", precision = 22, scale = 0)
+	private Integer lock_status;
+	@Column(name = "lock_user", unique = true, length = 32)
+	private String lock_user;
+
 
 			public Integer getId() {
 				return id;
@@ -303,6 +308,18 @@ public class KplanSecondaryOrders extends BaseDomain{
 			}
 			public void setOperator(String operator) {
 				this.operator = operator;
+			}
+			public Integer getLock_status() {
+				return lock_status;
+			}
+			public void setLock_status(Integer lock_status) {
+				this.lock_status = lock_status;
+			}
+			public String getLock_user() {
+				return lock_user;
+			}
+			public void setLock_user(String lock_user) {
+				this.lock_user = lock_user;
 			}
 			@Override
 			public String toString() {
