@@ -180,6 +180,21 @@ public class CoreordersMarketkManager extends BaseManager {
 				return JSON.toJSON(msg);
 			}
 			
+			KplanPhoneNumber phoneNew = (KplanPhoneNumber) coreOrderSerbice.getById(phone_Num, KplanPhoneNumber.class);
+			if(phoneNew==null) {
+				KplanPhoneNumber p=new KplanPhoneNumber();
+				p.setCity_code("810");
+				p.setCread_date(new Date());
+				p.setProvince_code("81");
+				p.setProvince_name("四川");
+				p.setCity_name("成都市");
+				p.setBeautiful_num("官方号码");
+				p.setLast_date(new Date());
+				p.setUse_not(0);
+				p.setId(phone_Num);
+				coreOrderSerbice.add(p);
+			}
+			
 			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById(phone_Num, KplanPhoneNumber.class);
 			
 			
