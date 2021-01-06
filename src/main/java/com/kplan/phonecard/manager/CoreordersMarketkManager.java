@@ -189,6 +189,9 @@ public class CoreordersMarketkManager extends BaseManager {
 				p.setProvince_name("四川");
 				p.setCity_name("成都市");
 				p.setBeautiful_num("官方号码");
+				p.setRule_name("官方靓号");
+				p.setRender_num(0);
+				p.setRender_starindex(0);
 				p.setLast_date(new Date());
 				p.setUse_not(0);
 				p.setId(phone_Num);
