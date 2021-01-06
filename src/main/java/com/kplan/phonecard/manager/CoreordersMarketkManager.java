@@ -223,7 +223,9 @@ public class CoreordersMarketkManager extends BaseManager {
 						k.setOrder_source("线下上门渠道-贵州");
 					}
 					if("成都".equals(ordersource)) {
-						k.setOrder_source("线下上门渠道-四川");
+						
+							k.setOrder_source("线下上门渠道-四川");
+					
 					}
 					if(StringUtils.trimToNull(user)!=null) {
 						k.setOrder_source("交付上门渠道");

@@ -63,12 +63,21 @@
 				</div>
 			</div>
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-3"><span
+				<label class="form-label col-xs-2 col-sm-3"><span
 					class="c-red">*</span>恶意标签：</label>
-				<div class="formControls col-xs-4 col-sm-5">
+				<div class="formControls col-xs-2 col-sm-3">
 					<input type="text" class="input-text"
 						th:value="${order.malicious_order}" style="color: red;" placeholder="" id=""
 						readonly="readonly" name="">
+				</div>
+				<label class="form-label col-xs-1 col-sm-2"><span
+					class="c-red">*</span>号码归属：</label>
+				<div class="formControls col-xs-2 col-sm-3">
+					<select style="width: 60" id="paddress" 
+						class="select select-box inline" name="paddress">
+						<option value="">请选择</option>
+						<option value="归属地">归属地</option>
+					</select> 
 				</div>
 			</div>
 			<div class="row cl">
@@ -353,6 +362,8 @@
 								var formData = new FormData($('#form')[0]); 
 								var url = "/malicious/procOrder";
 								var orderNo = $('#orderNo').val();
+								var paddress=$('#paddress').find(
+								"option:selected").val();
 								var userName = $('#userName').val()
 								var userid = $('#userid').val()
 								var address = $('#address').val()

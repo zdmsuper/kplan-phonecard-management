@@ -307,7 +307,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
 			String proctype, String province, String provinceCode, String city, String cityCode, String district,
 			String districtCode, ManagerInfo managerInfo, String pocDuctName,String phone_Num,String smsstatus,
-			String ordersource,String remarks) {
+			String ordersource,String remarks,String paddress) {
 		msgRes msg = new msgRes();
 		CustomerServiceLog serviceLog=new CustomerServiceLog();
 		KplanSecondaryOrders order;
@@ -416,7 +416,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					if("GZ".equals(ordersource)) {
 						k.setOrder_source("线下上门渠道-贵州");
 					}if("CD".equals(ordersource)) {
+						if(StringUtils.trimToNull(paddress)!=null) {
+							k.setOrder_source("线下上门渠道-四川-归属地");
+						}else {
 						k.setOrder_source("线下上门渠道-四川");
+						}
 					}
 					k.setProvince_code(dir.getProvince_code());
 					k.setProvince_name(dir.getProvince_name());

@@ -238,7 +238,7 @@ public class MaliciousOrderController extends AbstractBaseController {
 	public Object procOrder(String orderNo, String userName, String userid, String address, String re_phone,
 			String proctype, String province, String provinceCode, String city, String cityCode, String district,
 			String districtCode, String remarks, String procDuctName, String phone_Num, String smsstatus,
-			String ordersource) {
+			String ordersource,String paddress) {
 		ManagerInfo managerInfo = super.getCurrentUserDetails().orElse(null);
 		logger.info(
 				"orderNo:{},userName:{},userId:{},address:{},re_phone:{},proctype:{},province:{},provinceCode:{},city:{},cityCode:{},district:{},districtCode:{},remarks:{},procDuctName:{},phone_Num:{},smsstatus:{},ordersource:{}",
@@ -246,7 +246,7 @@ public class MaliciousOrderController extends AbstractBaseController {
 				,districtCode,remarks,procDuctName,phone_Num,smsstatus,ordersource);
 		return this.kplanSecondaryOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,
 				province, provinceCode, city, cityCode, district, districtCode, managerInfo, procDuctName, phone_Num,
-				smsstatus, ordersource,remarks);
+				smsstatus, ordersource,remarks,paddress);
 	}
 
 	/**成都贵州恶意订单、物流订单导出
