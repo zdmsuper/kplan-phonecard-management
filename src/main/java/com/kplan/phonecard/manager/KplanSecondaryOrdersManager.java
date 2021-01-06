@@ -223,6 +223,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						}
 					}
 						list.add(cb.or(cb.notLike(r.get("procduct_name"), "%首月%"),cb.notLike(r.get("procduct_name"), "%免费%"),cb.notLike(r.get("procduct_name"), "%体验%")));
+						list.add(cb.like(r.get("post_city"), "%成都%"));
 						list.add(cb.or(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS),
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.SECONDVISITSTATUS),
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
