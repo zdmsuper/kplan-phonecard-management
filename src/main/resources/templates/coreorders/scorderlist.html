@@ -44,7 +44,7 @@
 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
 					
-					<select name="domain.examineStatus" class="select select-box inline">
+					<select name="domain.examineStatus"  id ="examineStatus" class="select select-box inline">
 						<option value="">全部状态</option>
 						<option th:each="examineStatus:${T(com.kplan.phonecard.enums.ExamineStatusEnum).values()}" 
 						th:value="${examineStatus}" th:text="${examineStatus.desc}"
@@ -52,7 +52,7 @@
 						>
 						</option>
 					</select>
-					<select name="domain.orderstatus" class="select select-box inline">
+					<select name="domain.orderstatus"  id="orderstatus" class="select select-box inline">
 						<option value="">全部状态</option>
 						<option th:each="orderstatus:${T(com.kplan.phonecard.enums.ScorDerStatusEnum).values()}" 
 						th:value="${orderstatus}" th:text="${orderstatus.desc}"
@@ -161,11 +161,23 @@
 			  });
 			});
 	});
+	
+	$('#examineStatus').change(function(){
+		var formObj = $(this).parents('form');
+		formObj.submit();
+	});
+	$('#orderstatus').change(function(){
+		var formObj = $(this).parents('form');
+		formObj.submit();
+	});
+	
+	
 		$('#searchBtn').click(function() {
 			var formObj = $(this).parents('form');
 			formObj.submit();
 			//var formData = new FormData(formObj[0]);
 		});
+		
 
 		/*用户-添加*/
 		function add(title, url, w, h) {
