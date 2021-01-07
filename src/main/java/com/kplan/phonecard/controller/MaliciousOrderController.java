@@ -241,9 +241,9 @@ public class MaliciousOrderController extends AbstractBaseController {
 			String ordersource,String paddress) {
 		ManagerInfo managerInfo = super.getCurrentUserDetails().orElse(null);
 		logger.info(
-				"orderNo:{},userName:{},userId:{},address:{},re_phone:{},proctype:{},province:{},provinceCode:{},city:{},cityCode:{},district:{},districtCode:{},remarks:{},procDuctName:{},phone_Num:{},smsstatus:{},ordersource:{}",
+				"orderNo:{},userName:{},userId:{},address:{},re_phone:{},proctype:{},province:{},provinceCode:{},city:{},cityCode:{},district:{},districtCode:{},remarks:{},procDuctName:{},phone_Num:{},smsstatus:{},ordersource:{},paddress{}",
 				orderNo, userName,userid,address, re_phone,proctype,province,provinceCode,city,cityCode,district
-				,districtCode,remarks,procDuctName,phone_Num,smsstatus,ordersource);
+				,districtCode,remarks,procDuctName,phone_Num,smsstatus,ordersource,paddress);
 		return this.kplanSecondaryOrdersManager.procOrder(orderNo, userName, userid, address, re_phone, proctype,
 				province, provinceCode, city, cityCode, district, districtCode, managerInfo, procDuctName, phone_Num,
 				smsstatus, ordersource,remarks,paddress);
