@@ -1,6 +1,7 @@
 package com.kplan.phonecard.controller;
 
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +37,7 @@ import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
+import com.kplan.phonecard.utils.DateUtils;
 
 @Controller
 @RequestMapping("/malicious")
@@ -307,5 +310,14 @@ public class MaliciousOrderController extends AbstractBaseController {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	/**
+	 * 解锁订单 1分钟执行一次，解锁锁定超过5分钟的订单
+	 * @throws ParseException 
+	 */
+	@Scheduled(cron = "0 0/1 * * * ? ")
+	public void unLockOrder() throws ParseException {
+		this.kplanSecondaryOrdersManager.unLockOrder();
 	}
 }

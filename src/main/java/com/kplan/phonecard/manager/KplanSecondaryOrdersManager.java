@@ -1,6 +1,7 @@
 package com.kplan.phonecard.manager;
 
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -280,8 +281,13 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	 * @param lockUser
 	 */
 	public void lockOrders(Integer id,String lockUser) {
-		String sql="update kplan_secondary_orders set lock_status=1,lock_user='"+lockUser+"' where id="+id+"";
+		String sql="update kplan_secondary_orders set lock_status=1,lock_user='"+lockUser+"',pro_date=now() where id="+id+"";
 		this.kplanSecondaryOrdersService.exeNative(sql);
+	}
+	public void unLockOrder() throws ParseException {
+		String sql="update kplan_secondary_orders set lock_status=2,lock_user='' where lock_status=1 and pro_date<='"+DateUtils.getBeforeDayNumMint(5)+"'";
+		Integer unLockNum=this.kplanSecondaryOrdersService.exeNative(sql);
+		logger.info("解锁订单{}笔",unLockNum);
 	}
 
 	/**

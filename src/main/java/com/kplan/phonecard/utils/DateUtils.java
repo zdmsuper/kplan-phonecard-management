@@ -65,6 +65,19 @@ public class DateUtils {
        return sdf.parse(time);
 	}
 	
+	/**获取前几分钟
+	 * @param num
+	 * @return
+	 * @throws ParseException
+	 */
+	public static String getBeforeDayNumMint(int num) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//时间格式化
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, - num);
+        String time = sdf.format(calendar.getTime());
+       return time;
+	}
+	
 	public static Date getDayNumT(Date Tdate,int num) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//时间格式化
         Calendar calendar=Calendar.getInstance();
@@ -153,4 +166,6 @@ public class DateUtils {
         String time = sdf.format(calendar.getTime());
        return time;
 	}
+	
+	
 }
