@@ -227,6 +227,10 @@ public class CoreordersMarketkManager extends BaseManager {
 							k.setOrder_source("线下上门渠道-四川");
 					
 					}
+					if("成都官方号码".equals(ordersource)) {
+						k.setOrder_source("线下上门渠道-官方号码");
+					}
+					
 					if(StringUtils.trimToNull(user)!=null) {
 						k.setOrder_source("交付上门渠道");
 						k.setRecommend_name(user);
