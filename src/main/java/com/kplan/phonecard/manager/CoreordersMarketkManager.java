@@ -84,6 +84,37 @@ public class CoreordersMarketkManager extends BaseManager {
 		};
 		return this.coreOrderSerbice.findAll(spec, pageable);
 	}
+	
+	/**查询恶意标签订单
+	 * @param query
+	 * @param pageable
+	 * @return
+	 */
+	public Page<CoreOrdersMarketk> qryMaliciTag(@NotNull CoreOrdersMarketkQuery query, Pageable pageable){
+		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
+		@Override
+		public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
+			List<Predicate> list = new ArrayList<>();
+			if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
+				list.add(cb.between(r.get("createtime"), query.getCreatedDateStart(), query.getCreatedDateEnd()));
+			}
+			if (query.getDomain().getOrder_source() != null) {
+				if("CD".equals(query.getDomain().getOrder_source())) {
+					list.add(cb.or(cb.equal(r.get("order_source"), "线下上门渠道"),cb.equal(r.get("order_source"), "线下上门渠道-四川")));
+				}
+				if("GZ".equals(query.getDomain().getOrder_source())) {
+					list.add(cb.equal(r.get("order_source"), "线下上门渠道-贵州"));
+				}
+			}else {
+				list.add(cb.like(r.get("order_source"), "%线下上门渠道%"));
+			}
+			list.add(cb.isNotNull(r.get("malicious_tag")));
+			list.add(cb.notEqual(r.get("malicious_tag"), "未打标"));
+			return cb.and(list.toArray(new Predicate[0]));
+		}
+		};
+	return this.coreOrderSerbice.findAll(spec, pageable);
+	}
 
 	public Page<CoreOrdersMarketk> maliciousList(@NotNull CoreOrdersMarketkQuery query, Pageable pageable) {
 		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
@@ -833,4 +864,6 @@ public class CoreordersMarketkManager extends BaseManager {
 		};
 		return this.coreOrderSerbice.findAllList(spec);
 	}
+	
+	
 }

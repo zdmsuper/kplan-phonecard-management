@@ -30,6 +30,10 @@ public enum ExportStatusEnum {
 	 * ZOP平台下单处理中
 	 */
 	EXPORTSTATUS10(10,"ZOP平台下单处理中"),
+	/**
+	 * 驳回单已导出
+	 */
+	EXPORTSTATUS15(15,"驳回单已导出"),
 	
 	/**
 	 * 已导出订单

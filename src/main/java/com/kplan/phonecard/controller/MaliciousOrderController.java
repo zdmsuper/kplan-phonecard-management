@@ -312,6 +312,16 @@ public class MaliciousOrderController extends AbstractBaseController {
 		}
 	}
 	
+	/**成都贵州查询被打标的回捞订单查询
+	 * @return
+	 */
+	@RequestMapping("/qryMaliciTag")
+	public String qryMaliciTag(Map<String, Object> map, CoreOrdersMarketkQuery query) {
+		Page<CoreOrdersMarketk> page =this.coreOrdersManager.qryMaliciTag(query, this.getPageRequest());
+		map.put("page", page);
+		map.put("query", query);
+		return "malicious/maliciTagList";
+	}
 	/**
 	 * 解锁订单 1分钟执行一次，解锁锁定超过5分钟的订单
 	 * @throws ParseException 
