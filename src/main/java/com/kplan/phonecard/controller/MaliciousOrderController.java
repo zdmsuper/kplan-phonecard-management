@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
+import com.kplan.phonecard.domain.CoreordersTrackLog;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
+import com.kplan.phonecard.domain.entity.excelMaliciTag;
 import com.kplan.phonecard.domain.entity.excelMaliciousOrders;
 import com.kplan.phonecard.domain.entity.excelOrder;
 import com.kplan.phonecard.manager.CoreordersMarketkManager;
@@ -37,6 +39,7 @@ import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
+import com.kplan.phonecard.service.CoreordersTrackLogService;
 import com.kplan.phonecard.utils.DateUtils;
 
 @Controller
@@ -51,6 +54,8 @@ public class MaliciousOrderController extends AbstractBaseController {
 	CoreordersMarketkManager coreOrdersManager;
 	@Autowired
 	KplanPhonenumBerManager kplanPhoneManager;
+	@Autowired
+	CoreordersTrackLogService logService;
 
 	/**
 	 * 成都恶意订单
@@ -321,6 +326,66 @@ public class MaliciousOrderController extends AbstractBaseController {
 		map.put("page", page);
 		map.put("query", query);
 		return "malicious/maliciTagList";
+	}
+	
+	
+	/**恶意标签订单导出
+	 * @param map
+	 * @param query
+	 */
+	@RequestMapping("/exceMaliciTag")
+	public void exceMaliciTag(HttpServletResponse response, Map<String, Object> map, CoreOrdersMarketkQuery query) {
+		List<CoreOrdersMarketk> l=this.coreOrdersManager.exceMaliciTag(query);
+		String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		String fileName = date + "恶意标签订单数据报表";
+		try {
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/vnd.ms-excel");
+			fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+			response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+			List<excelMaliciTag> ex = new ArrayList<excelMaliciTag>();
+			CoreordersTrackLog log;
+			excelMaliciTag e;
+			if (l != null && l.size() > 0) {
+				for (CoreOrdersMarketk d : l) {
+					e = new excelMaliciTag();
+					e.setMaliciTag(d.getMalicious_tag());
+					e.setUnicomNo(d.getMall_order_no());
+					if(d.getOrder_source().equals("线下上门渠道-四川") || d.getOrder_source().equals("线下上门渠道")) {
+						e.setPrivicn("成都");
+					}
+					if(d.getOrder_source().equals("线下上门渠道-贵州") ) {
+						e.setPrivicn("贵州");
+					}
+					ex.add(e);
+					this.coreOrdersManager.updateExportStatus(d.getId());
+					log=new CoreordersTrackLog();
+					log.setDelivery_order_no(d.getId());
+					log.setOperator(super.getCurrentUserDetails().orElse(null).getBasicUserInfo().getUserRealName());
+					log.setLog_info("338");
+					log.setCreate_time(new Date());
+					this.logService.insert(log);
+					
+				}
+				if(ex.size()==0) {
+					ex.add(new  excelMaliciTag());
+				}
+				OutputStream outputStream = response.getOutputStream();
+				EasyExcel.write(outputStream, excelMaliciTag.class).excelType(ExcelTypeEnum.XLSX).sheet("恶意标签订单数据")
+						.doWrite(ex);
+				outputStream.flush();
+				outputStream.close();
+			}else {
+				OutputStream outputStream = response.getOutputStream();
+				EasyExcel.write(outputStream, excelMaliciTag.class).excelType(ExcelTypeEnum.XLSX).sheet("恶意标签订单数据")
+						.doWrite(ex);
+				outputStream.flush();
+				outputStream.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
 	}
 	/**
 	 * 解锁订单 1分钟执行一次，解锁锁定超过5分钟的订单

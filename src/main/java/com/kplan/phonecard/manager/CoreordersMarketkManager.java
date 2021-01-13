@@ -110,10 +110,55 @@ public class CoreordersMarketkManager extends BaseManager {
 			}
 			list.add(cb.isNotNull(r.get("malicious_tag")));
 			list.add(cb.notEqual(r.get("malicious_tag"), "未打标"));
+			list.add(cb.notEqual(r.get("export_status"), ExportStatusEnum.EXPORTSTATUS15.getCode()));
 			return cb.and(list.toArray(new Predicate[0]));
 		}
 		};
 	return this.coreOrderSerbice.findAll(spec, pageable);
+	}
+	
+	/**恶意标签订单导出
+	 * @param query
+	 * @return
+	 */
+	public List<CoreOrdersMarketk> exceMaliciTag(@NotNull CoreOrdersMarketkQuery query){
+		String whereStr="";
+		if(query.getCreatedDateStart()!=null&&query.getCreatedDateEnd()!=null) {
+			whereStr="createtime >='"+query.getCreatedDateStart()+"' and createtime<='"+ query.getCreatedDateEnd()+"'";
+		}
+		if(query.getDomain().getOrder_source()!=null) {
+			
+			if("CD".equals(query.getDomain().getOrder_source())) {
+				if(StringUtils.trimToNull(whereStr)==null) {
+					whereStr= "order_source='线下上门渠道-四川' or order_source='线下上门渠道'";
+				}else {
+					whereStr=whereStr+ " and order_source='线下上门渠道-四川' or order_source='线下上门渠道'";;
+				}
+			}
+			
+			if("GZ".equals(query.getDomain().getOrder_source())) {
+				if(StringUtils.trimToNull(whereStr)==null) {
+					whereStr= "order_source='线下上门渠道-贵州' ";
+				}else {
+					whereStr=whereStr+ "  and order_source='线下上门渠道-贵州' ";;
+				}
+			}
+			
+			if(StringUtils.trimToNull(whereStr)==null) {
+				whereStr= " malicious_tag  is  not null";
+			}else {
+				whereStr=whereStr+ "  and malicious_tag  is not null ";;
+			}
+			
+		}
+		String sql="";
+		if(StringUtils.trimToNull(whereStr)==null) {
+			sql="from  CoreOrdersMarketk";
+		}else {
+			sql="from  CoreOrdersMarketk where "+whereStr;
+		}
+		List<CoreOrdersMarketk> l=this.coreOrderSerbice.getResultList(sql);
+		return l;
 	}
 
 	public Page<CoreOrdersMarketk> maliciousList(@NotNull CoreOrdersMarketkQuery query, Pageable pageable) {
@@ -805,20 +850,6 @@ public class CoreordersMarketkManager extends BaseManager {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String starDate = sdf.format(query.getCreatedDateStart());
 			String endDate = sdf.format(query.getCreatedDateEnd());
-//			String sql = "from CoreOrdersMarketk where "
-//					+ "( ((malicious_tag LIKE'%公安证件号码与证件姓名不匹配%'  OR malicious_tag LIKE'%zop接入本地库校验失败%'   AND  "
-//					+ "createtime< '"+DateUtils.getSevenDayT(query.getCreatedDateEnd(), 2)+"') AND tracktime >= '"+starDate+"'  "
-//					+ "AND tracktime <= '"+endDate+"'  "
-//					+ "AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime,  'YYYY-MM-DD')  )  "
-//					+ "OR (( malicious_tag LIKE'%待确认地址%'  "
-//					+ "OR malicious_tag LIKE'%恶意地址%'  "
-//					+ "OR malicious_tag LIKE'%配送地址冲突%'  "
-//					+ "OR malicious_tag LIKE'%联系地址全是数字%'   "
-//					+ "AND createtime < '"+DateUtils.getSevenDayT(query.getCreatedDateEnd(), 3)+"' ) "
-//					+ "AND tracktime >= '"+starDate+"'  "
-//					+ "AND  tracktime <= '"+endDate+"'  "
-//					+ "AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime, 'YYYY-MM-DD') )   )  "
-//					+ "AND order_source <> '标记订单'";
 			String sql = "from CoreOrdersMarketk where  malicious_tag is not null and order_source <> '标记订单'    and track_status!=330 AND tracktime >= '"+starDate+"'  " + 
 					"AND  tracktime <= '"+endDate+"' AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime,  'YYYY-MM-DD')  ";
 			logger.info(sql);
@@ -865,5 +896,12 @@ public class CoreordersMarketkManager extends BaseManager {
 		return this.coreOrderSerbice.findAllList(spec);
 	}
 	
-	
+	/**
+	 * 更新恶意标签导出状态
+	 * 
+	 */
+	public void updateExportStatus(String orderNo) {
+		String sql="update core_orders_market_k set export_status="+ExportStatusEnum.EXPORTSTATUS15.getCode()+" where order_no='"+orderNo+"'";
+		this.coreOrderSerbice.exeNative(sql);
+	}
 }
