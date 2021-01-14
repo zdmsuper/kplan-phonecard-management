@@ -75,8 +75,16 @@ public class CoreordersMarketkManager extends BaseManager {
 				if (query.getDomain().getOrder_source() != null) {
 					if("线下上门渠道".equals(query.getDomain().getOrder_source())) {
 						list.add(cb.like(r.get("order_source"), "%"+query.getDomain().getOrder_source()+"%"));
-					}else {
-					list.add(cb.equal(r.get("order_source"), query.getDomain().getOrder_source()));
+					}
+					if("K计划".equals(query.getDomain().getOrder_source())) {
+						list.add(cb.notLike(r.get("order_source"), "%上门%"));
+						list.add(cb.notEqual(r.get("order_source"), "标记订单"));
+					}
+					if("交付上门渠道".equals(query.getDomain().getOrder_source())) {
+						list.add(cb.equal(r.get("order_source"), "交付上门渠道"));
+					}
+					if("标记订单".equals(query.getDomain().getOrder_source())) {
+					list.add(cb.equal(r.get("order_source"), "标记订单"));
 					}
 				}
 				return cb.and(list.toArray(new Predicate[0]));
@@ -100,13 +108,13 @@ public class CoreordersMarketkManager extends BaseManager {
 			}
 			if (query.getDomain().getOrder_source() != null) {
 				if("CD".equals(query.getDomain().getOrder_source())) {
-					list.add(cb.or(cb.equal(r.get("order_source"), "线下上门渠道"),cb.equal(r.get("order_source"), "线下上门渠道-四川")));
+					list.add(cb.or(cb.equal(r.get("order_source"), "线下上门渠道"),cb.equal(r.get("order_source"), "线下上门渠道-四川"),cb.like(r.get("external_company"), "%武侯%")));
 				}
 				if("GZ".equals(query.getDomain().getOrder_source())) {
 					list.add(cb.equal(r.get("order_source"), "线下上门渠道-贵州"));
 				}
 			}else {
-				list.add(cb.like(r.get("order_source"), "%线下上门渠道%"));
+				list.add(cb.or(cb.like(r.get("order_source"), "%线下上门渠道%"),cb.like(r.get("order_source"), "%武侯%")));
 			}
 			list.add(cb.isNotNull(r.get("malicious_tag")));
 			list.add(cb.notEqual(r.get("malicious_tag"), "未打标"));
