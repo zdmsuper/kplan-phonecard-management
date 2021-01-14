@@ -357,7 +357,7 @@ public class MaliciousOrderController extends AbstractBaseController {
 					if(d.getOrder_source().equals("线下上门渠道-贵州") ) {
 						e.setPrivicn("贵州");
 					}
-					if(!d.getOrder_source().contains("线下上门渠道")) {
+					if(!d.getOrder_source().contains("线下上门渠道")&&!d.getOrder_source().contains("交付上门")) {
 						e.setPrivicn("成都K计划");
 					}
 					ex.add(e);
