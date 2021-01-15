@@ -137,9 +137,9 @@ public class CoreordersMarketkManager extends BaseManager {
 		if(query.getDomain().getOrder_source()!=null) {
 			if("CD".equals(query.getDomain().getOrder_source())) {
 				if(StringUtils.trimToNull(whereStr)==null) {
-					whereStr= "order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%'";
+					whereStr= "(order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%')";
 				}else {
-					whereStr=whereStr+ " and order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%'";;
+					whereStr=whereStr+ " and (order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%')";;
 				}
 			}
 			
@@ -159,9 +159,9 @@ public class CoreordersMarketkManager extends BaseManager {
 			
 		}else {
 			if(StringUtils.trimToNull(whereStr)==null) {
-				whereStr= "order_source like '%线下上门渠道%'  or external_company like '%武侯%'";
+				whereStr= "(order_source like '%线下上门渠道%'  or external_company like '%武侯%')";
 			}else {
-				whereStr=whereStr+ "order_source like '%线下上门渠道%'  or external_company like '%武侯%'";
+				whereStr=whereStr+ " and (order_source like '%线下上门渠道%'  or external_company like '%武侯%')";
 			}
 		}
 		String sql="";
