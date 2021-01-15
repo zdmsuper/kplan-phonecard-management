@@ -208,7 +208,7 @@ public class CoreordersMarketkManager extends BaseManager {
 				list.add(cb.or(cb.like(r.get("malicious_tag"), "公安证件号码与证件姓名不匹配"),
 						cb.like(r.get("malicious_tag"), "zop接入本地库校验失败")));
 				list.add(cb.notEqual(r.get("order_source"), "标记订单"));
-
+				list.add(cb.notLike(r.get("order_source"), "%线下上门%"));
 				Predicate pred = cb.and(list.toArray(new Predicate[0]));
 				list.clear();
 				try {
@@ -250,6 +250,7 @@ public class CoreordersMarketkManager extends BaseManager {
 					e.printStackTrace();
 				}
 				list.add(cb.notEqual(r.get("order_source"), "标记订单"));
+				list.add(cb.notLike(r.get("order_source"), "%线下上门%"));
 				Predicate pred2 = cb.and(list.toArray(new Predicate[0]));
 				return cb.or(pred, pred2);
 			}
@@ -863,12 +864,12 @@ public class CoreordersMarketkManager extends BaseManager {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String starDate = sdf.format(query.getCreatedDateStart());
 			String endDate = sdf.format(query.getCreatedDateEnd());
-			String sql = "from CoreOrdersMarketk where  malicious_tag is not null and order_source <> '标记订单'    and track_status!=330 AND tracktime >= '"+starDate+"'  " + 
+			String sql = "from CoreOrdersMarketk where  malicious_tag is not null and order_source <> '标记订单'  and order_source not like'%线下上门%'    and track_status!=330 AND tracktime >= '"+starDate+"'  " + 
 					"AND  tracktime <= '"+endDate+"' AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime,  'YYYY-MM-DD')  ";
 			logger.info(sql);
 			return this.coreOrderSerbice.getResultList(sql);
 		} else {
-			String sql = "from CoreOrdersMarketk where  and malicious_tag is not null and ( track_status=9001 or track_status=9002 track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006)";
+			String sql = "from CoreOrdersMarketk where  and malicious_tag is not null and order_source not like'%线下上门%'  and ( track_status=9001 or track_status=9002 track_status=9003 or track_status=9004 or track_status=9005 or track_status=9006)";
 			return this.coreOrderSerbice.getResultList(sql);
 		}
 
