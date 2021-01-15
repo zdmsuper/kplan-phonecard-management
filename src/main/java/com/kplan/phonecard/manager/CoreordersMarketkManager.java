@@ -135,12 +135,11 @@ public class CoreordersMarketkManager extends BaseManager {
 			whereStr="createtime >='"+query.getCreatedDateStart()+"' and createtime<='"+ query.getCreatedDateEnd()+"'";
 		}
 		if(query.getDomain().getOrder_source()!=null) {
-			
 			if("CD".equals(query.getDomain().getOrder_source())) {
 				if(StringUtils.trimToNull(whereStr)==null) {
-					whereStr= "order_source='线下上门渠道-四川' or order_source='线下上门渠道'";
+					whereStr= "order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%'";
 				}else {
-					whereStr=whereStr+ " and order_source='线下上门渠道-四川' or order_source='线下上门渠道'";;
+					whereStr=whereStr+ " and order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%'";;
 				}
 			}
 			
@@ -158,6 +157,12 @@ public class CoreordersMarketkManager extends BaseManager {
 				whereStr=whereStr+ "  and malicious_tag  is not null ";;
 			}
 			
+		}else {
+			if(StringUtils.trimToNull(whereStr)==null) {
+				whereStr= "order_source like '%线下上门渠道%'  or external_company like '%武侯%'";
+			}else {
+				whereStr=whereStr+ "order_source like '%线下上门渠道%'  or external_company like '%武侯%'";
+			}
 		}
 		String sql="";
 		if(StringUtils.trimToNull(whereStr)==null) {
