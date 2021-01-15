@@ -152,9 +152,9 @@ public class CoreordersMarketkManager extends BaseManager {
 			}
 			
 			if(StringUtils.trimToNull(whereStr)==null) {
-				whereStr= " malicious_tag  is  not null";
+				whereStr= " malicious_tag  is  not null and malicious_tag !='未打标'";
 			}else {
-				whereStr=whereStr+ "  and malicious_tag  is not null ";;
+				whereStr=whereStr+ "  and malicious_tag  is not null and malicious_tag !='未打标'";;
 			}
 			
 		}else {
