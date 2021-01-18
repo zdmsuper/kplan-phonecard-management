@@ -44,6 +44,9 @@ public class kplanscordersManager extends BaseManager{
 				if(query.getDomain().getOrderstatus()!=null) {
 					list.add(cb.equal(r.get("orderstatus"), query.getDomain().getOrderstatus()));
 				}
+				if(query.getKeyword()!=null) {
+					list.add(cb.or(cb.equal(r.get("order_no"), query.getKeyword()),cb.equal(r.get("phone_num"), query.getKeyword())));
+				}
 //				list.add(cb.or(cb.equal(r.get("pro_status"), 1),cb.equal(r.get("pro_status"), 99)));
 				return cb.and(list.toArray(new Predicate[0]));
 			}

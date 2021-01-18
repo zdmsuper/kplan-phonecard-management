@@ -60,8 +60,8 @@
 						>
 						</option>
 					</select>
-<!-- 					<input type="text" class="input-text" style="width: 250px"  -->
-<!-- 					placeholder="输入用户名、电话、邮箱" id="" name="keyword" th:value="${query.keyword}"> -->
+					<input type="text" class="input-text" style="width: 250px" 
+					placeholder="输入订单号、联系电话" id="" name="keyword" th:value="${query.keyword}">
 					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
 						<i class="Hui-iconfont">&#xe665;</i> 查询
 					</button>
@@ -105,7 +105,7 @@
 							<th>详细地址</th>
 							<th>最新状态</th>
 							<th>备注标签</th>
-							<th>锁定状态</th>
+							<th>更新时间</th>
 							<th>最后操作人</th>
 							<th>订单状态</th>
 							<th>审核状态</th>
@@ -127,7 +127,7 @@
 							<td >
 							<span th:text="${item.remarks_tag}"></span>
 							</td>
-							<td th:text="${item.newest_status==221?'已锁定':'未锁定'}">0</td>
+							<td th:text="${#dates.format(item.update_date,'yyyy-MM-dd HH:mm:ss')}">0</td>
 							<td th:text="${item.documentary}"></td>
 							<td th:text="${item.orderstatus.desc}"></td>
 							<td th:text="${item.examineStatus.desc}" style="color: red;"></td>

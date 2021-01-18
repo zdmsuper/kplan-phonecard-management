@@ -89,6 +89,11 @@
 <!-- 						> -->
 <!-- 						</option> -->
 <!-- 					</select> -->
+						<select name="domain.lock_status" id="lock_status" class="select select-box inline">
+						<option value="">锁定状态</option>
+						<option value="1" th:selected="${1==query.domain.lock_status}">已锁定</option>
+						<option value="2" th:selected="${2==query.domain.lock_status}">未锁定</option>
+						</select>
 					<input type="text" class="input-text" style="width: 250px" 
 					placeholder="联系电话、订购号码" id="" name="domain.phone_num" th:value="${query.domain.phone_num}">
 					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
@@ -218,6 +223,10 @@
 			formObj.submit();
 		});
 		$('#operator').change(function(){
+			var formObj = $(this).parents('form');
+			formObj.submit();
+		});
+		$('#lock_status').change(function(){
 			var formObj = $(this).parents('form');
 			formObj.submit();
 		});

@@ -50,7 +50,7 @@
 						<option value="1" th:selected="${'1'==query.domain.logistics_info}">恶意订单</option>
 						<option value="4" th:selected="${'4'==query.domain.logistics_info}">物流订单</option>
 						</select>
-					<select name="keyword" id="keyword" class="select select-box inline">
+						<select name="keyword" id="keyword" class="select select-box inline">
 						<option value="">全部状态</option>
 						<option value="1" th:selected="${'1'==query.keyword}">等待处理</option>
 <!-- 						<option value="4" th:selected="${'4'==query.keyword}">物流订单</option> -->
@@ -58,6 +58,12 @@
 						<option value="3" th:selected="${'3'==query.keyword}">三次回访</option>
 						
 <!-- 						<option value="4" th:selected="${'4'==query.keyword}">运营处理</option> -->
+						</select>
+						
+						<select name="domain.lock_status" id="lock_status" class="select select-box inline">
+						<option value="">锁定状态</option>
+						<option value="1" th:selected="${1==query.domain.lock_status}">已锁定</option>
+						<option value="2" th:selected="${2==query.domain.lock_status}">未锁定</option>
 						</select>
 				
 <!-- 					<select name="domain.pro_status" id="pro_status" class="select select-box inline"> -->
@@ -241,6 +247,10 @@
 			formObj.submit();
 		});
 		$('#pro_status').change(function(){
+			var formObj = $(this).parents('form');
+			formObj.submit();
+		});
+		$('#lock_status').change(function(){
 			var formObj = $(this).parents('form');
 			formObj.submit();
 		});

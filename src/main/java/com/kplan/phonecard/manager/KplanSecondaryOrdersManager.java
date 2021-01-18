@@ -162,6 +162,15 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS));
 						}
 					}
+					
+					if(query.getDomain().getLock_status()!=null) {
+						if(query.getDomain().getLock_status()==1) {
+							list.add(cb.equal(r.get("lock_status"), query.getDomain().getLock_status()));
+						}
+						else {
+							list.add(cb.or(cb.equal(r.get("lock_status"), 2),cb.equal(r.get("lock_status"), 0),cb.isNull(r.get("lock_status"))));
+						}
+					}
 					if(query.getDomain().getLogistics_info()!=null) {
 						if(query.getDomain().getLogistics_info().equals("1")) {
 //							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
@@ -212,6 +221,14 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						}
 						if(query.getKeyword().equals("3")) {
 							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS));
+						}
+					}
+					if(query.getDomain().getLock_status()!=null) {
+						if(query.getDomain().getLock_status()==1) {
+							list.add(cb.equal(r.get("lock_status"), query.getDomain().getLock_status()));
+						}
+						else {
+							list.add(cb.or(cb.equal(r.get("lock_status"), 2),cb.equal(r.get("lock_status"), 0),cb.isNull(r.get("lock_status"))));
 						}
 					}
 					if(query.getDomain().getLogistics_info()!=null) {
