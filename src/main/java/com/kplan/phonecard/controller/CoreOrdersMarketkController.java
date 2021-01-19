@@ -423,9 +423,9 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	@RequestMapping("/city")
 	public String city(Map<String, Object> map,UnicomPostCityCodeQuery query) {
 		List<UnicomPostCityCode> province = this.unicompostcityManager.findByPrivoin();
-		List<UnicomPostCityCode> listCode=this.unicompostcityManager.city();
+//		List<UnicomPostCityCode> listCode=this.unicompostcityManager.city();
 		map.put("province", province);
-		map.put("listCode", listCode);
+//		map.put("listCode", listCode);
 		map.put("query", query);
 		return "coreorders/city";
 	}
