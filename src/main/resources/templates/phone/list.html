@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui/css/H-ui.min.css}" href="ui/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/H-ui.admin.css}" href="ui/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/skin/default/skin.css}" href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/style.css}" href="ui/h-ui.admin/css/style.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/lib/layer/iconfont.css}" href="ui/h-ui/css/H-ui.min.css"/>
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>号码管理</title>
+</head>
+<body>
+	<nav class="breadcrumb">
+		<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span>
+		用户中心 <span class="c-gray en">&gt;</span>联通号码列表 <a
+			class="btn btn-success radius r"
+			style="line-height: 1.6em; margin-top: 3px"
+			href="javascript:location.replace(location.href);" title="刷新"> <i
+			class="Hui-iconfont">&#xe68f;</i>
+		</a>
+
+	</nav>
+	<div class="page-container">
+		<form th:action="@{/phone/list}" method="get" autocomplete="off">
+			<div class="text">
+<!-- 				<input type="hidden" name="sortName" value="prodate"/> -->
+<!-- 				<input type="hidden" name="sortOrder" value="desc"/> -->
+<!-- 				<input type="hidden" name="ordersource" value="CD"/> -->
+				创建时间： <input type="text"
+					id="datemin" class="input-text date" name="createdDateStart"
+					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;"> 
+					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
+					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
+						<select name="domain.section_no" id="section_no" class="select select-box inline">
+						<option value="">号段</option>
+						<option th:each="SectionNo:${listSectionNo}"
+							th:value="${SectionNo.section_no}"
+							th:text="${SectionNo.section_no}"
+							th:selected="${query.domain.section_no==SectionNo.section_no}">&nbsp;</option>
+						</select>
+						<select name="domain.rule_name" id="rule_name" class="select select-box inline">
+						<option value="">规则</option>
+						<option th:each="rule:${listRuleName}"
+							th:value="${rule.rule_name}"
+							th:text="${rule.rule_name}"
+							th:selected="${query.domain.rule_name==rule.rule_name}">&nbsp;</option>
+						</select>
+						<select name="domain.makestatus" id="make_status" class="select select-box inline">
+						<option value="">使用状态</option>
+						<option th:each="make:${T(com.kplan.phonecard.enums.MakePhoneStatusEnum).values()}" 
+						th:value="${make}" th:text="${make.desc}"
+						th:selected="${make==query.domain.makestatus}"
+						>
+						</select>
+					<input type="text" class="input-text" style="width: 250px" 
+					placeholder="联系电话、订购号码" id="keyword" name="keyword" th:value="${query.keyword}">
+					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
+						<i class="Hui-iconfont">&#xe665;</i> 查询
+					</button>
+<!-- 					<a href="javascript:;" id="excel" -->
+<!-- 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> -->
+<!-- 						导出</a> -->
+			</div>
+
+			<div class="mt-20 dataTables_wrapper">
+				<table
+					class="table table-border table-bordered table-hover table-bg table-sort">
+					<thead>
+						<tr class="text-c">
+							<th><input type="checkbox" name="" value=""></th>
+							<th>电话号码</th>
+							<th>号段</th>
+							<th>中间号段</th>
+							<th>是否包含4</th>
+							<th>规则</th>
+							<th>是否已被使用</th>
+							<th>创建时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="text-c" th:each="item:${page}">
+							<td><input type="checkbox" value="1" name=""
+								th:value="${item.id}"></td>
+							<td th:text="${item.phone}">1</td>
+							<td th:text="${item.section_no}"></td>
+							<td th:text="${item.middle_secition_no}"></td>
+							<td th:text="${item.include_four}"></td>
+							<td th:text="${item.rule_name}"></td>
+							<td th:text="${item.makestatus.desc}"></td>
+								<td th:text="${#dates.format(item.crea_date,'yyyy-MM-dd HH:mm:ss')}"></td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="pagination_div" th:include="fragments/page :: pagination(${page})"></div>
+			</div>
+		</form>
+	</div>
+		<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript" th:src="@{/lib/jquery/1.9.1/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}"></script>
+	<script type="text/javascript" th:src="@{/ui/h-ui/js/H-ui.min.js}"></script>
+	<script type="text/javascript" th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/laydate/laydate.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/laypage/1.2/laypage.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/js/web-global.js}"></script>
+	<!--/_footer 作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" th:inline="javascript">
+	$(function() {
+		lay('.date').each(function(){
+			  laydate.render({
+			    elem: this
+			    ,trigger: 'click'
+			  });
+			});
+	});
+	
+	function op(index,msg){
+		var id='t'+index;
+		layer.tips(msg, '#'+id+'',{
+			  tips: [1, '#3595CC'],
+			  time: 5000
+			});
+	}
+		$('#searchBtn').click(function() {
+			var formObj = $(this).parents('form');
+			formObj.submit();
+			//var formData = new FormData(formObj[0]);
+		});
+		/*用户-添加*/
+		function add(title, url, w, h) {
+			layer_show(title, url, w, h);
+		}
+		
+		function upfile(title, url, w, h) {
+			layer_show(title, url, w, h);
+		}
+		
+		function upfile(title, url, w, h) {
+			layer_show(title, url, w, h);
+		}
+		/*用户-查看*/
+		function show(title, url, w, h) {
+
+			layer_show(title, url, w, h);
+		}
+		function edit(title, url, id, w, h) {
+			layer_show(title, url, w, h);
+		}
+		/*用户-停用*/
+		$('#section_no').change(function(){
+			var section_no=$(this).val();
+			var rule_name=$('#rule_name');
+			$('#rule_name option[value!=""]').remove();
+// 			$('#district option[value!=""]').remove();
+			var url="/phone/qryRuleName";
+			$.ajax({
+				type:'get',
+				url:url+'?section_no='+section_no,
+				success:function(resp){
+					$.each(resp,function(){
+						rule_name.append('<option  value='+this.rule_name+'>'+this.rule_name+'</option>');
+						
+					});
+					
+				}
+			});
+		});
+		
+		
+		/*密码-修改*/
+		function change_password(title, url, id, w, h) {
+			layer_show(title, url, w, h);
+		}
+		
+		
+	</script>
+</body>
+</html>

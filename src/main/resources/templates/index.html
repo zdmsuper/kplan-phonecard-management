@@ -132,6 +132,15 @@
 			</ul>
 		</dd>
 		</dl>
+		
+		<dl id="menu-member" th:if="${basicUserInfo?.jurisdiction==1 ||basicUserInfo?.jurisdiction==9}">
+			<dt><i class="Hui-iconfont">&#xe60d;</i>号码管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="phone/list" data-title="联通号码" href="javascript:;">联通号码</a></li>
+			</ul>
+		</dd>
+		</dl>
 	<dl id="menu-admin" th:if="${basicUserInfo?.jurisdiction==1 ||basicUserInfo?.jurisdiction==9}">
 			<dt><i class="Hui-iconfont">&#xe62d;</i>恶意订单<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
