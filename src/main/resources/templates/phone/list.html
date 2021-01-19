@@ -137,6 +137,19 @@
 			  time: 5000
 			});
 	}
+	
+	
+
+	$('#rule_name').change(function(){
+		var formObj = $(this).parents('form');
+		formObj.submit();
+	});
+	
+	$('#make_status').change(function(){
+		var formObj = $(this).parents('form');
+		formObj.submit();
+	});
+	
 		$('#searchBtn').click(function() {
 			var formObj = $(this).parents('form');
 			formObj.submit();
