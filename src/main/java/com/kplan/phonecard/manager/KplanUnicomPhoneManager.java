@@ -1,6 +1,7 @@
 package com.kplan.phonecard.manager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -20,6 +21,8 @@ import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.KplanUnicomPhone;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
+import com.kplan.phonecard.domain.msgRes;
+import com.kplan.phonecard.enums.MakePhoneStatusEnum;
 import com.kplan.phonecard.query.KplanUnicomPhoneQuery;
 import com.kplan.phonecard.service.KplanUnicomPhoneService;
 import com.sun.istack.NotNull;
@@ -101,6 +104,41 @@ public class KplanUnicomPhoneManager extends BaseManager {
 			return b;
 		}).toList();
 		return resultList;
+	}
+	
+	/**文件上传
+	 * @param data
+	 * @return
+	 */
+	public String uploadFile(List<Object> data) {
+		msgRes msg = new msgRes();
+		if(data!=null&&data.size()>0) {
+			KplanUnicomPhone phone;
+			try {
+				for(Object l:data) {
+					List<String> p=(List<String>) l;
+					phone=new KplanUnicomPhone();
+					phone.setPhone(p.get(0));
+					phone.setSection_no(p.get(1));
+					phone.setMiddle_secition_no(p.get(2));
+					phone.setInclude_four(p.get(3));
+					phone.setRule_name(p.get(4));
+					phone.setCrea_date(new Date());
+					phone.setMakestatus(MakePhoneStatusEnum.make);
+					this.kplanUnicomPhoneService.add(phone);
+				}
+				
+			} catch (Exception e) {
+				msg.setCode("201");
+				msg.setStatus("201");
+				msg.setMsg("号码入库异常、请联系管理员");
+				return JSON.toJSONString(msg);
+			}
+		}
+		msg.setCode("200");
+		msg.setStatus("200");
+		msg.setMsg("号码上传成功");
+		return JSON.toJSONString(msg);
 	}
 	/**根据号段获取号段
 	 * @param section_no

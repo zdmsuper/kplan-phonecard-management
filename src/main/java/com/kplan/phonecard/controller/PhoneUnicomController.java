@@ -1,5 +1,6 @@
 package com.kplan.phonecard.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -8,13 +9,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.metadata.Sheet;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.KplanUnicomPhone;
+import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.manager.KplanUnicomPhoneManager;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.query.KplanUnicomPhoneQuery;
+import com.kplan.phonecard.query.kplanscordersQuery;
 
 @Controller
 @RequestMapping("/phone")
@@ -39,6 +46,27 @@ public class PhoneUnicomController extends AbstractBaseController{
 		map.put("listRuleName", listRuleName);
 		map.put("listSectionNo", listSectionNo);
 		return "phone/list";
+	}
+	/**号码上传跳转
+	 * @param map
+	 * @param query
+	 * @return
+	 */
+	@RequestMapping("/upLoadedit")
+	public String upLoadedit(Map<String, Object> map, KplanUnicomPhoneQuery query) {
+		return "phone/upLoadedit";
+	}
+	/**号码上传
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	@ResponseBody
+	public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 1));
+		ManagerInfo info = super.getCurrentUserDetails().orElse(null);
+		return this.kplanUnicomPhoneManager.uploadFile(data);
 	}
 	
 	/**查询规则
