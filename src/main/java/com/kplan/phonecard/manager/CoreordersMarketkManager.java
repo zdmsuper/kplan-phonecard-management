@@ -111,13 +111,14 @@ public class CoreordersMarketkManager extends BaseManager {
 					list.add(cb.or(cb.equal(r.get("order_source"), "线下上门渠道"),cb.equal(r.get("order_source"), "线下上门渠道-四川"),cb.like(r.get("external_company"), "%武侯%")));
 				}
 				if("GZ".equals(query.getDomain().getOrder_source())) {
-					list.add(cb.equal(r.get("order_source"), "线下上门渠道-贵州"));
+					list.add(cb.or(cb.equal(r.get("order_source"), "线下上门渠道-贵州"),cb.like(r.get("external_company"), "%贵阳-南明%")));
 				}
 			}else {
-				list.add(cb.or(cb.like(r.get("order_source"), "%线下上门渠道%"),cb.like(r.get("order_source"), "%武侯%")));
+				list.add(cb.or(cb.like(r.get("order_source"), "%线下上门渠道%"),cb.like(r.get("order_source"), "%武侯%"),cb.like(r.get("external_company"), "%贵阳-南明%")));
 			}
 			list.add(cb.isNotNull(r.get("malicious_tag")));
 			list.add(cb.notEqual(r.get("malicious_tag"), "未打标"));
+			list.add(cb.notEqual(r.get("malicious_tag"), "查询不到订单信息"));
 			list.add(cb.notEqual(r.get("export_status"), ExportStatusEnum.EXPORTSTATUS15.getCode()));
 			return cb.and(list.toArray(new Predicate[0]));
 		}
@@ -145,23 +146,23 @@ public class CoreordersMarketkManager extends BaseManager {
 			
 			if("GZ".equals(query.getDomain().getOrder_source())) {
 				if(StringUtils.trimToNull(whereStr)==null) {
-					whereStr= "order_source='线下上门渠道-贵州'  and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
+					whereStr= "(order_source='线下上门渠道-贵州'   or  external_company like '%贵阳-南明%')  and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
 				}else {
-					whereStr=whereStr+ "  and order_source='线下上门渠道-贵州' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+" ";;
+					whereStr=whereStr+ "  and (order_source='线下上门渠道-贵州'   or  external_company like '%贵阳-南明%')  and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+" ";;
 				}
 			}
 			
 			if(StringUtils.trimToNull(whereStr)==null) {
-				whereStr= " malicious_tag  is  not null and malicious_tag !='未打标' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
+				whereStr= " malicious_tag  is  not null and malicious_tag !='未打标' and malicious_tag!='查询不到订单信息'  and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
 			}else {
-				whereStr=whereStr+ "  and malicious_tag  is not null and malicious_tag !='未打标' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";;
+				whereStr=whereStr+ "  and malicious_tag  is not null and malicious_tag !='未打标' and malicious_tag!='查询不到订单信息' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";;
 			}
 			
 		}else {
 			if(StringUtils.trimToNull(whereStr)==null) {
-				whereStr= "(order_source like '%线下上门渠道%'  or external_company like '%武侯%') and malicious_tag  is not null and malicious_tag !='未打标' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
+				whereStr= "(order_source like '%线下上门渠道%'  or external_company like '%武侯%' or  external_company like '%贵阳-南明%') and malicious_tag  is not null and malicious_tag !='未打标' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
 			}else {
-				whereStr=whereStr+ " and (order_source like '%线下上门渠道%'  or external_company like '%武侯%') and malicious_tag  is not null and malicious_tag !='未打标' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
+				whereStr=whereStr+ " and (order_source like '%线下上门渠道%'  or external_company like '%武侯%' or  external_company like '%贵阳-南明%') and malicious_tag  is not null and malicious_tag !='未打标' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
 			}
 		}
 		String sql="";
