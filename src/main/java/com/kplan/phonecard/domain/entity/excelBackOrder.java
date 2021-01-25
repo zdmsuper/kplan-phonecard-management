@@ -43,6 +43,8 @@ public class excelBackOrder {
 	private String reject_info;// AS 操作记录
 	@ExcelProperty(value="回捞标记")
 	private String chekStatus;
+	@ExcelProperty(value="订单来源")
+	private String orderSource;
 	public String getORDER_NO() {
 		return ORDER_NO;
 	}
@@ -132,6 +134,12 @@ public class excelBackOrder {
 	}
 	public void setReject_info(String reject_info) {
 		this.reject_info = reject_info;
+	}
+	public String getOrderSource() {
+		return orderSource;
+	}
+	public void setOrderSource(String orderSource) {
+		this.orderSource = orderSource;
 	}
 	
 	

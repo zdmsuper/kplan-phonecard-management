@@ -284,6 +284,14 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 			}
 		}
 		
+		if(query.getDomain().getOrder_source()!=null) {
+			if(StringUtils.trimToNull(whereStr)==null) {
+				whereStr=" order_source ='"+query.getDomain().getOrder_source()+"'";
+			}else {
+				whereStr=whereStr+" and order_source ='"+query.getDomain().getOrder_source()+"'";
+			}
+		}
+		
 		String sql = "from KplanSecondaryOrders where "+whereStr;
 		return this.kplanSecondaryOrdersService.getResultList(sql);
 	}
