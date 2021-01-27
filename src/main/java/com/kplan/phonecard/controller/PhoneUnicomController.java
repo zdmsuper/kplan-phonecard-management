@@ -15,9 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.metadata.Sheet;
+import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.KplanUnicomPhone;
 import com.kplan.phonecard.domain.ManagerInfo;
+import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.manager.KplanUnicomPhoneManager;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.query.KplanUnicomPhoneQuery;
@@ -78,5 +80,24 @@ public class PhoneUnicomController extends AbstractBaseController{
 	public Object qryRuleName(String section_no) {
 		Object l = this.kplanUnicomPhoneManager.qryRuleName(section_no);
 		return l;
+	}
+	/**号码锁定
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "lockPhone")
+	@ResponseBody
+	public Object lockPhone(Long id) {
+		return this.kplanUnicomPhoneManager.lockPhone(id);
+	}
+	
+	/**号码解锁
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "UnlockPhone")
+	@ResponseBody
+	public Object UnlockPhone(Long id) {
+		return this.kplanUnicomPhoneManager.UnlockPhone(id);
 	}
 }

@@ -154,4 +154,61 @@ public class KplanUnicomPhoneManager extends BaseManager {
 		}).toList();
 		return JSON.toJSON(resultList);
 	}
+	
+	/**号码已使用锁定
+	 * @param id
+	 * @return
+	 */
+	public Object lockPhone(Long id) {
+		msgRes msg = new msgRes();
+		
+		KplanUnicomPhone p=this.kplanUnicomPhoneService.findByIdOrNew(id);
+		if(p!=null) {
+			p.setMakestatus(MakePhoneStatusEnum.makeNot);
+			try {
+				this.kplanUnicomPhoneService.update(p);
+				msg.setCode("200");
+				msg.setStatus("200");
+				msg.setMsg("号码操作成功");
+			} catch (Exception e) {
+				msg.setCode("299");
+				msg.setStatus("299");
+				msg.setMsg("号码号码更新错误");
+			}
+		}else {
+			msg.setCode("201");
+			msg.setStatus("201");
+			msg.setMsg("查找不到号码");
+		}
+		
+		return JSON.toJSON(msg);
+	}
+	
+	/**号码已使用解锁
+	 * @param id
+	 * @return
+	 */
+	public Object UnlockPhone(Long id) {
+		msgRes msg = new msgRes();
+		KplanUnicomPhone p=this.kplanUnicomPhoneService.findByIdOrNew(id);
+		if(p!=null) {
+			p.setMakestatus(MakePhoneStatusEnum.make);
+			try {
+				this.kplanUnicomPhoneService.update(p);
+				msg.setCode("200");
+				msg.setStatus("200");
+				msg.setMsg("号码操作成功");
+			} catch (Exception e) {
+				msg.setCode("299");
+				msg.setStatus("299");
+				msg.setMsg("号码号码更新错误");
+			}
+		}else {
+			msg.setCode("201");
+			msg.setStatus("201");
+			msg.setMsg("查找不到号码");
+		}
+		
+		return JSON.toJSON(msg);
+	}
 }

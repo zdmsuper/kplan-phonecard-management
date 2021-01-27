@@ -22,7 +22,7 @@ public class KplanUnicomPhone extends BaseDomain{
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="kplan_unicom_phone_sequence")
 	@SequenceGenerator(name="kplan_unicom_phone_sequence",sequenceName="kplan_unicom_phone_sequence",allocationSize=1)
-			private Integer id;//	int4	32	0	True	BM?
+			private Long id;//	int4	32	0	True	BM?
 			@Column(name = "phone", unique = true, length = 16)	
 			private String phone;//	varchar	16	0	False		电话号码
 			@Column(name = "section_no", unique = true, length = 16)	
@@ -46,10 +46,10 @@ public class KplanUnicomPhone extends BaseDomain{
 			private Date up_date;//	timestamp	6	0	False		更新时间
 			@Column(name = "remarks", unique = true, length = 255)
 			private String remarks;	//varchar	255	0	False		备注
-			public Integer getId() {
+			public Long getId() {
 				return id;
 			}
-			public void setId(Integer id) {
+			public void setId(Long id) {
 				this.id = id;
 			}
 			public String getPhone() {

@@ -17,6 +17,15 @@
 <link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/skin/default/skin.css}" href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" th:href="@{/ui/h-ui.admin/css/style.css}" href="ui/h-ui.admin/css/style.css" />
 <link rel="stylesheet" type="text/css" th:href="@{/lib/layer/iconfont.css}" href="ui/h-ui/css/H-ui.min.css"/>
+<style>
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+</style>
 <!--[if IE 6]>
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
@@ -95,6 +104,7 @@
 							<th>规则</th>
 							<th>是否已被使用</th>
 							<th>创建时间</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -106,8 +116,28 @@
 							<td th:text="${item.middle_secition_no}"></td>
 							<td th:text="${item.include_four}"></td>
 							<td th:text="${item.rule_name}"></td>
-							<td th:text="${item.makestatus.desc}"></td>
-								<td th:text="${#dates.format(item.crea_date,'yyyy-MM-dd HH:mm:ss')}"></td>
+							<td th:if="${item.makestatus.code==0}" style="color: green;" th:text="${item.makestatus.desc}"></td>
+							<td th:if="${item.makestatus.code==1}" style="color: red;" th:text="${item.makestatus.desc}"></td>
+							<td th:text="${#dates.format(item.crea_date,'yyyy-MM-dd HH:mm:ss')}"></td>
+							<td th:if="${item.makestatus.code==0}" title="锁定">
+								<a style="text-decoration: none"
+								th:onclick="|phone_stop(this,'${item.id}')|" href="javascript:;"
+								title="锁定">
+								<svg class="icon" style="height: 22px;width: 22px" aria-hidden="true">
+ 								 <use xlink:href="#icon-suoding"></use>
+								</svg>
+								</a>
+								</td>
+								
+							<td th:if="${item.makestatus.code==1}" title="解锁">
+							<a style="text-decoration: none"
+								th:onclick="|phone_start(this,'${item.id}')|" href="javascript:;"
+								title="锁定">
+							<svg class="icon" style="height: 22px;width: 22px" aria-hidden="true">
+ 								 <use xlink:href="#icon-unlock-01"></use>
+								</svg>
+							</a>
+								</td>
 						</tr>
 					</tbody>
 				</table>
@@ -122,7 +152,7 @@
 	<script type="text/javascript" th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}"></script>
 	<script type="text/javascript" th:src="@{/lib/laydate/laydate.js}"></script>
 	<script type="text/javascript" th:src="@{/lib/laypage/1.2/laypage.js}"></script>
-	<script type="text/javascript" th:src="@{/lib/js/web-global.js}"></script>
+	<script type="text/javascript" th:src="@{/lib/layer/iconfont.js}"></script>
 	<!--/_footer 作为公共模版分离出去-->
 
 	<!--请在下方写此页面业务相关的脚本-->
@@ -181,7 +211,58 @@
 		function edit(title, url, id, w, h) {
 			layer_show(title, url, w, h);
 		}
-		/*用户-停用*/
+		/*号码-锁定*/ 
+		function phone_stop(obj, id) {
+			layer
+					.confirm(
+							'确认要对号码做已使用操作吗？',
+							function(index) {
+								$
+										.ajax({
+											type : 'POST',
+											url : '/phone/lockPhone',
+											dataType : 'json',
+											data:{'id':id},
+											success : function(data) {
+												layer.msg('号码已锁定!', {
+													icon : 1,
+													time : 1000
+												});
+												window.location.reload();
+											},
+											error : function(data) {
+												console.log(data.msg);
+											},
+										});
+							});
+		}
+		
+		/*号码-解锁*/ 
+		function phone_start(obj, id) {
+			layer
+					.confirm(
+							'确认要对号码做解锁操作吗？',
+							function(index) {
+								$
+										.ajax({
+											type : 'POST',
+											url : '/phone/UnlockPhone',
+											dataType : 'json',
+											data:{'id':id},
+											success : function(data) {
+												layer.msg('号码已解锁!', {
+													icon : 1,
+													time : 1000
+												});
+												window.location.reload();
+											},
+											error : function(data) {
+												console.log(data.msg);
+											},
+										});
+							});
+		}
+		
 		$('#section_no').change(function(){
 			var section_no=$(this).val();
 			var rule_name=$('#rule_name');
