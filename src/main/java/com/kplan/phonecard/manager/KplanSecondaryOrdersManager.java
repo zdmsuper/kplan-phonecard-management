@@ -370,33 +370,33 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 				this.coreOrderSerbice.exeNative(phonesql);
 			}
 		}else {
-			KplanPhoneNumber p =new KplanPhoneNumber();
-			p.setId(phone_Num);
-			p.setCread_date(new Date());
-			p.setLast_date(new Date());
-			if("GZ".equals(ordersource)) {
-				p.setProvince_code("85");
-				p.setProvince_name("贵州");
-				p.setCity_code("850");
-				p.setCity_name("贵阳市");
-			}else {
-				p.setProvince_code("81");
-				p.setProvince_name("四川");
-				p.setCity_code("810");
-				p.setCity_name("成都市");
-			}
-			p.setRule_name("官方靓号");
-			p.setUse_not(1);
-			p.setPhone_num(re_phone);
-			try {
-				this.coreOrderSerbice.add(p);
-			} catch (Exception e) {
-			logger.error("添加官方靓号失败：{}",e.getMessage());;
-			msg.setCode("202");
-			msg.setStatus("202");
-			msg.setMsg("添加官方靓号失败，请联系管理员");
-			return JSON.toJSON(msg);
-			}
+//			KplanPhoneNumber p =new KplanPhoneNumber();
+//			p.setId(phone_Num);
+//			p.setCread_date(new Date());
+//			p.setLast_date(new Date());
+//			if("GZ".equals(ordersource)) {
+//				p.setProvince_code("85");
+//				p.setProvince_name("贵州");
+//				p.setCity_code("850");
+//				p.setCity_name("贵阳市");
+//			}else {
+//				p.setProvince_code("81");
+//				p.setProvince_name("四川");
+//				p.setCity_code("810");
+//				p.setCity_name("成都市");
+//			}
+//			p.setRule_name("官方靓号");
+//			p.setUse_not(1);
+//			p.setPhone_num(re_phone);
+//			try {
+//				this.coreOrderSerbice.add(p);
+//			} catch (Exception e) {
+//			logger.error("添加官方靓号失败：{}",e.getMessage());;
+//			msg.setCode("202");
+//			msg.setStatus("202");
+//			msg.setMsg("添加官方靓号失败，请联系管理员");
+//			return JSON.toJSON(msg);
+//			}
 			
 		}
 		}
@@ -453,9 +453,16 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						k.setOrder_source("线下上门渠道-贵州");
 					}
 					if("CD".equals(ordersource)) {
-						if(StringUtils.trimToNull(paddress)!=null) {
+						if(StringUtils.trimToNull(paddress)!=null&&"本地号码".equals(paddress)) {
 							k.setOrder_source("线下上门渠道-四川-归属地");
-						}else {
+						}
+						else if(StringUtils.trimToNull(paddress)!=null&&"手工订单".equals(paddress)) {
+							//手工订单占用号码
+							String phonesql="update kplan_unicom_phone set make_status=1 ,phone_num='"+re_phone+"',remarks='"+managerInfo.getBasicUserInfo().getUserRealName()+" 办理订单预占号码'  where make_status=0 and phone='"+phone_Num+"'";
+							this.coreOrderSerbice.exeNative(phonesql);
+							k.setOrder_source("交付上门渠道");
+						}
+						else {
 						k.setOrder_source("线下上门渠道-四川");
 						}
 					}
@@ -468,8 +475,14 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					k.setDistrict_name(dir.getDistrict_name());
 					k.setInitial_status(20);
 					k.setOrder_status(OrderStatusEnum.InitOrderStatus);
-					k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
-					k.setVisit_code(0);
+					//手工订单为选择的号码为联通提供的线下号码
+					if("手工订单".equals(paddress)) {
+						k.setExport_status(ExportStatusEnum.EXPORTSTATUS16);
+						k.setVisit_code(5);
+					}else {
+						k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
+						k.setVisit_code(0);
+					}
 					k.setCreatetime(new Date());
 					k.setProduct_code(pocDuct.getProcduct_code());
 					k.setProduct_name(pocDuct.getProcduct_name());

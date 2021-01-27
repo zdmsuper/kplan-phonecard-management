@@ -34,7 +34,10 @@ public enum ExportStatusEnum {
 	 * 驳回单已导出
 	 */
 	EXPORTSTATUS15(15,"驳回单已导出"),
-	
+	/**
+	 * 待手工导出
+	 */
+	EXPORTSTATUS16(16,"待手工导出"),
 	/**
 	 * 已导出订单
 	 */
