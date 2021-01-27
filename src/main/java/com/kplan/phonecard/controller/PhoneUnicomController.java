@@ -47,6 +47,7 @@ public class PhoneUnicomController extends AbstractBaseController{
 		map.put("query", query);
 		map.put("listRuleName", listRuleName);
 		map.put("listSectionNo", listSectionNo);
+		map.put("basicUserInfo", super.getCurrentUserDetails().orElse(null).getBasicUserInfo());
 		return "phone/list";
 	}
 	/**号码上传跳转
