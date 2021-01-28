@@ -55,7 +55,6 @@ public class CoreordersMarketkManager extends BaseManager {
 	@Autowired
 	CustomerServiceLogService customerServiceLogService;
 
-
 	public Page<CoreOrdersMarketk> findOrder(@NotNull CoreOrdersMarketkQuery query, Pageable pageable) {
 		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
 			@Override
@@ -73,18 +72,18 @@ public class CoreordersMarketkManager extends BaseManager {
 					list.add(cb.equal(r.get("order_status"), query.getDomain().getOrder_status()));
 				}
 				if (query.getDomain().getOrder_source() != null) {
-					if("线下上门渠道".equals(query.getDomain().getOrder_source())) {
-						list.add(cb.like(r.get("order_source"), "%"+query.getDomain().getOrder_source()+"%"));
+					if ("线下上门渠道".equals(query.getDomain().getOrder_source())) {
+						list.add(cb.like(r.get("order_source"), "%" + query.getDomain().getOrder_source() + "%"));
 					}
-					if("K计划".equals(query.getDomain().getOrder_source())) {
+					if ("K计划".equals(query.getDomain().getOrder_source())) {
 						list.add(cb.notLike(r.get("order_source"), "%上门%"));
 						list.add(cb.notEqual(r.get("order_source"), "标记订单"));
 					}
-					if("交付上门渠道".equals(query.getDomain().getOrder_source())) {
+					if ("交付上门渠道".equals(query.getDomain().getOrder_source())) {
 						list.add(cb.equal(r.get("order_source"), "交付上门渠道"));
 					}
-					if("标记订单".equals(query.getDomain().getOrder_source())) {
-					list.add(cb.equal(r.get("order_source"), "标记订单"));
+					if ("标记订单".equals(query.getDomain().getOrder_source())) {
+						list.add(cb.equal(r.get("order_source"), "标记订单"));
 					}
 				}
 				return cb.and(list.toArray(new Predicate[0]));
@@ -92,86 +91,110 @@ public class CoreordersMarketkManager extends BaseManager {
 		};
 		return this.coreOrderSerbice.findAll(spec, pageable);
 	}
-	
-	/**查询恶意标签订单
+
+	/**
+	 * 查询恶意标签订单
+	 * 
 	 * @param query
 	 * @param pageable
 	 * @return
 	 */
-	public Page<CoreOrdersMarketk> qryMaliciTag(@NotNull CoreOrdersMarketkQuery query, Pageable pageable){
+	public Page<CoreOrdersMarketk> qryMaliciTag(@NotNull CoreOrdersMarketkQuery query, Pageable pageable) {
 		Specification<CoreOrdersMarketk> spec = new Specification<CoreOrdersMarketk>() {
-		@Override
-		public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
-			List<Predicate> list = new ArrayList<>();
-			if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
-				list.add(cb.between(r.get("createtime"), query.getCreatedDateStart(), query.getCreatedDateEnd()));
-			}
-			if (query.getDomain().getOrder_source() != null) {
-				if("CD".equals(query.getDomain().getOrder_source())) {
-					list.add(cb.or(cb.equal(r.get("order_source"), "线下上门渠道"),cb.equal(r.get("order_source"), "线下上门渠道-四川"),cb.like(r.get("external_company"), "%武侯%")));
+			@Override
+			public Predicate toPredicate(Root<CoreOrdersMarketk> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<>();
+				if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
+					list.add(cb.between(r.get("createtime"), query.getCreatedDateStart(), query.getCreatedDateEnd()));
 				}
-				if("GZ".equals(query.getDomain().getOrder_source())) {
-					list.add(cb.or(cb.equal(r.get("order_source"), "线下上门渠道-贵州"),cb.like(r.get("external_company"), "%贵阳-南明%")));
+				if (query.getDomain().getOrder_source() != null) {
+					if ("CD".equals(query.getDomain().getOrder_source())) {
+						list.add(cb.or(cb.equal(r.get("order_source"), "线下上门渠道"),
+								cb.equal(r.get("order_source"), "线下上门渠道-四川"),
+								cb.like(r.get("external_company"), "%武侯%")));
+					}
+					if ("GZ".equals(query.getDomain().getOrder_source())) {
+						list.add(cb.or(cb.equal(r.get("order_source"), "线下上门渠道-贵州"),
+								cb.like(r.get("external_company"), "%贵阳-南明%")));
+					}
+				} else {
+					list.add(cb.or(cb.like(r.get("order_source"), "%线下上门渠道%"), cb.like(r.get("order_source"), "%武侯%"),
+							cb.like(r.get("external_company"), "%贵阳-南明%")));
 				}
-			}else {
-				list.add(cb.or(cb.like(r.get("order_source"), "%线下上门渠道%"),cb.like(r.get("order_source"), "%武侯%"),cb.like(r.get("external_company"), "%贵阳-南明%")));
+				list.add(cb.isNotNull(r.get("malicious_tag")));
+				list.add(cb.notEqual(r.get("malicious_tag"), "未打标"));
+				list.add(cb.notEqual(r.get("malicious_tag"), "查询不到订单信息"));
+				list.add(cb.notEqual(r.get("export_status"), ExportStatusEnum.EXPORTSTATUS15.getCode()));
+				return cb.and(list.toArray(new Predicate[0]));
 			}
-			list.add(cb.isNotNull(r.get("malicious_tag")));
-			list.add(cb.notEqual(r.get("malicious_tag"), "未打标"));
-			list.add(cb.notEqual(r.get("malicious_tag"), "查询不到订单信息"));
-			list.add(cb.notEqual(r.get("export_status"), ExportStatusEnum.EXPORTSTATUS15.getCode()));
-			return cb.and(list.toArray(new Predicate[0]));
-		}
 		};
-	return this.coreOrderSerbice.findAll(spec, pageable);
+		return this.coreOrderSerbice.findAll(spec, pageable);
 	}
-	
-	/**恶意标签订单导出
+
+	/**
+	 * 恶意标签订单导出
+	 * 
 	 * @param query
 	 * @return
 	 */
-	public List<CoreOrdersMarketk> exceMaliciTag(@NotNull CoreOrdersMarketkQuery query){
-		String whereStr="";
-		if(query.getCreatedDateStart()!=null&&query.getCreatedDateEnd()!=null) {
-			whereStr="createtime >='"+query.getCreatedDateStart()+"' and createtime<='"+ query.getCreatedDateEnd()+"'";
+	public List<CoreOrdersMarketk> exceMaliciTag(@NotNull CoreOrdersMarketkQuery query) {
+		String whereStr = "";
+		if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
+			whereStr = "createtime >='" + query.getCreatedDateStart() + "' and createtime<='"
+					+ query.getCreatedDateEnd() + "'";
 		}
-		if(query.getDomain().getOrder_source()!=null) {
-			if("CD".equals(query.getDomain().getOrder_source())) {
-				if(StringUtils.trimToNull(whereStr)==null) {
-					whereStr= "(order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%') and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
-				}else {
-					whereStr=whereStr+ " and (order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%') and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";;
+		if (query.getDomain().getOrder_source() != null) {
+			if ("CD".equals(query.getDomain().getOrder_source())) {
+				if (StringUtils.trimToNull(whereStr) == null) {
+					whereStr = "(order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%') and export_status!="
+							+ ExportStatusEnum.EXPORTSTATUS15.getCode() + "";
+				} else {
+					whereStr = whereStr
+							+ " and (order_source='线下上门渠道-四川' or order_source='线下上门渠道'  or external_company like '%武侯%') and export_status!="
+							+ ExportStatusEnum.EXPORTSTATUS15.getCode() + "";
+					;
 				}
 			}
-			
-			if("GZ".equals(query.getDomain().getOrder_source())) {
-				if(StringUtils.trimToNull(whereStr)==null) {
-					whereStr= "(order_source='线下上门渠道-贵州'   or  external_company like '%贵阳-南明%')  and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
-				}else {
-					whereStr=whereStr+ "  and (order_source='线下上门渠道-贵州'   or  external_company like '%贵阳-南明%')  and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+" ";;
+
+			if ("GZ".equals(query.getDomain().getOrder_source())) {
+				if (StringUtils.trimToNull(whereStr) == null) {
+					whereStr = "(order_source='线下上门渠道-贵州'   or  external_company like '%贵阳-南明%')  and export_status!="
+							+ ExportStatusEnum.EXPORTSTATUS15.getCode() + "";
+				} else {
+					whereStr = whereStr
+							+ "  and (order_source='线下上门渠道-贵州'   or  external_company like '%贵阳-南明%')  and export_status!="
+							+ ExportStatusEnum.EXPORTSTATUS15.getCode() + " ";
+					;
 				}
 			}
-			
-			if(StringUtils.trimToNull(whereStr)==null) {
-				whereStr= " malicious_tag  is  not null and malicious_tag !='未打标' and malicious_tag!='查询不到订单信息'  and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
-			}else {
-				whereStr=whereStr+ "  and malicious_tag  is not null and malicious_tag !='未打标' and malicious_tag!='查询不到订单信息' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";;
+
+			if (StringUtils.trimToNull(whereStr) == null) {
+				whereStr = " malicious_tag  is  not null and malicious_tag !='未打标' and malicious_tag!='查询不到订单信息'  and export_status!="
+						+ ExportStatusEnum.EXPORTSTATUS15.getCode() + "";
+			} else {
+				whereStr = whereStr
+						+ "  and malicious_tag  is not null and malicious_tag !='未打标' and malicious_tag!='查询不到订单信息' and export_status!="
+						+ ExportStatusEnum.EXPORTSTATUS15.getCode() + "";
+				;
 			}
-			
-		}else {
-			if(StringUtils.trimToNull(whereStr)==null) {
-				whereStr= "(order_source like '%线下上门渠道%'  or external_company like '%武侯%' or  external_company like '%贵阳-南明%') and malicious_tag  is not null and malicious_tag !='未打标' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
-			}else {
-				whereStr=whereStr+ " and (order_source like '%线下上门渠道%'  or external_company like '%武侯%' or  external_company like '%贵阳-南明%') and malicious_tag  is not null and malicious_tag !='未打标' and export_status!="+ExportStatusEnum.EXPORTSTATUS15.getCode()+"";
+
+		} else {
+			if (StringUtils.trimToNull(whereStr) == null) {
+				whereStr = "(order_source like '%线下上门渠道%'  or external_company like '%武侯%' or  external_company like '%贵阳-南明%') and malicious_tag  is not null and malicious_tag !='未打标' and export_status!="
+						+ ExportStatusEnum.EXPORTSTATUS15.getCode() + "";
+			} else {
+				whereStr = whereStr
+						+ " and (order_source like '%线下上门渠道%'  or external_company like '%武侯%' or  external_company like '%贵阳-南明%') and malicious_tag  is not null and malicious_tag !='未打标' and export_status!="
+						+ ExportStatusEnum.EXPORTSTATUS15.getCode() + "";
 			}
 		}
-		String sql="";
-		if(StringUtils.trimToNull(whereStr)==null) {
-			sql="from  CoreOrdersMarketk";
-		}else {
-			sql="from  CoreOrdersMarketk where "+whereStr;
+		String sql = "";
+		if (StringUtils.trimToNull(whereStr) == null) {
+			sql = "from  CoreOrdersMarketk";
+		} else {
+			sql = "from  CoreOrdersMarketk where " + whereStr;
 		}
-		List<CoreOrdersMarketk> l=this.coreOrderSerbice.getResultList(sql);
+		List<CoreOrdersMarketk> l = this.coreOrderSerbice.getResultList(sql);
 		return l;
 	}
 
@@ -261,19 +284,19 @@ public class CoreordersMarketkManager extends BaseManager {
 
 	public Object savaOrders(String userName, String userid, String address, String ordersource, String province_code,
 			String province_name, String re_phone, String city, String cityName, String district, String districtName,
-			String phone_Num, String smsstatus, String Productcode, String Productname,String user) {
-			msgRes msg = new msgRes();
+			String phone_Num, String smsstatus, String Productcode, String Productname, String user) {
+		msgRes msg = new msgRes();
 		try {
-			if(coreOrderSerbice.chekOrder(re_phone)) {
+			if (coreOrderSerbice.chekOrder(re_phone)) {
 				msg.setCode("203");
 				msg.setStatus("203");
 				msg.setMsg("该订单已办理，请勿重复办理");
 				return JSON.toJSON(msg);
 			}
-			
+
 			KplanPhoneNumber phoneNew = (KplanPhoneNumber) coreOrderSerbice.getById(phone_Num, KplanPhoneNumber.class);
-			if(phoneNew==null) {
-				KplanPhoneNumber p=new KplanPhoneNumber();
+			if (phoneNew == null) {
+				KplanPhoneNumber p = new KplanPhoneNumber();
 				p.setCity_code("810");
 				p.setCread_date(new Date());
 				p.setProvince_code("81");
@@ -288,10 +311,9 @@ public class CoreordersMarketkManager extends BaseManager {
 				p.setId(phone_Num);
 				coreOrderSerbice.add(p);
 			}
-			
+
 			KplanPhoneNumber phone = (KplanPhoneNumber) coreOrderSerbice.getById(phone_Num, KplanPhoneNumber.class);
-			
-			
+
 			if (phone != null) {
 				if (phone.getUse_not() != 0) {
 					msg.setCode("202");
@@ -310,23 +332,23 @@ public class CoreordersMarketkManager extends BaseManager {
 					k.setAccess_name(userName);
 					k.setAccess_id_number(userid);
 					k.setReceiver_address(address);
-					if("贵州".equals(ordersource)) {
+					if ("贵州".equals(ordersource)) {
 						k.setOrder_source("线下上门渠道-贵州");
 					}
-					if("成都".equals(ordersource)) {
-						
-							k.setOrder_source("线下上门渠道-四川");
-					
+					if ("成都".equals(ordersource)) {
+
+						k.setOrder_source("线下上门渠道-四川");
+
 					}
-					if("成都官方号码".equals(ordersource)) {
+					if ("成都官方号码".equals(ordersource)) {
 						k.setOrder_source("线下上门渠道-官方号码");
 					}
-					
-					if(StringUtils.trimToNull(user)!=null) {
+
+					if (StringUtils.trimToNull(user) != null) {
 						k.setOrder_source("交付上门渠道");
 						k.setRecommend_name(user);
 					}
-				
+
 					k.setProvince_code(province_code);
 					k.setProvince_name(province_name);
 					k.setReceiver_phone(re_phone);
@@ -482,7 +504,7 @@ public class CoreordersMarketkManager extends BaseManager {
 		return l;
 	}
 
-	public Object addOrders(List<OrderRowModel> l, String proTag,String provicn) {
+	public Object addOrders(List<OrderRowModel> l, String proTag, String provicn) {
 		msgRes msg = new msgRes();
 		try {
 
@@ -495,7 +517,7 @@ public class CoreordersMarketkManager extends BaseManager {
 						k.setAccess_name(o.getUserName().trim());
 						k.setAccess_id_number(o.getUserId().trim());
 						k.setReceiver_address(o.getAddress().trim());
-						k.setOrder_source("线下上门渠道-"+provicn);
+						k.setOrder_source("线下上门渠道-" + provicn);
 						k.setProvince_code(c.getProvince_code());
 						k.setProvince_name(c.getProvince_name());
 						k.setReceiver_phone(o.getPhone().trim());
@@ -542,6 +564,38 @@ public class CoreordersMarketkManager extends BaseManager {
 		return JSON.toJSON(msg);
 	}
 
+	public Object uploadData(List<Object> data, ManagerInfo managerInfo) {
+		msgRes msg = new msgRes();
+		String sql = "";
+		CoreordersTrackLog log;
+		try {
+			String userName = managerInfo.getBasicUserInfo().getUserRealName();
+			if (data != null && data.size() > 0) {
+				List<String> l;
+				for (Object b : data) {
+					l = (List<String>) b;
+					sql = "update core_orders_market_k set order_status=11 ,track_status=330,operator='" + userName
+							+ "' ,track_time=now(),mall_order_no='" + l.get(1) + "' where order_no='" + l.get(2) + "'";
+					this.coreOrderSerbice.exeNative(sql);
+					log = new CoreordersTrackLog();
+					log.setDelivery_order_no(l.get(2));
+					log.setCreate_time(new Date());
+					log.setLog_info("330");
+					log.setOperator(userName);
+					this.logService.add(log);
+				}
+			}
+			msg.setCode("200");
+			msg.setStatus("200");
+			msg.setMsg("手工单数据回导成功");
+		} catch (Exception e) {
+			msg.setCode("201");
+			msg.setStatus("201");
+			msg.setMsg("手工单数据回导异常，请联系管理员");
+		}
+		return JSON.toJSON(msg);
+	}
+
 	public CoreOrdersMarketk findById(String id) {
 		String sql = "from  CoreOrdersMarketk where id='" + id + "'";
 		List<CoreOrdersMarketk> l = this.coreOrderSerbice.getResultList(sql);
@@ -555,7 +609,7 @@ public class CoreordersMarketkManager extends BaseManager {
 			String proctype, String province, String provinceCode, String city, String cityCode, String district,
 			String districtCode, ManagerInfo managerInfo) {
 		msgRes msg = new msgRes();
-		CustomerServiceLog serviceLog=new CustomerServiceLog();
+		CustomerServiceLog serviceLog = new CustomerServiceLog();
 		CoreOrdersMarketk order;
 		UnicomPostCityCode dir = null;
 		try {
@@ -614,7 +668,7 @@ public class CoreordersMarketkManager extends BaseManager {
 					log.setCreate_time(new Date());
 					log.setLog_info("9001");
 					log.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
-					
+
 					serviceLog.setBusiness_type("K计划");
 					serviceLog.setCity_name(order.getCity_name());
 					serviceLog.setCreate_time(new Date());
@@ -628,7 +682,7 @@ public class CoreordersMarketkManager extends BaseManager {
 					serviceLog.setProvince_name(order.getProvince_name());
 					serviceLog.setRemarks("CQ");
 					this.customerServiceLogService.add(serviceLog);
-					
+
 					this.logService.add(log);
 					msg.setCode("200");
 					msg.setStatus("200");
@@ -865,8 +919,9 @@ public class CoreordersMarketkManager extends BaseManager {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String starDate = sdf.format(query.getCreatedDateStart());
 			String endDate = sdf.format(query.getCreatedDateEnd());
-			String sql = "from CoreOrdersMarketk where  malicious_tag is not null and order_source <> '标记订单'  and order_source not like'%线下上门%'    and track_status!=330 AND tracktime >= '"+starDate+"'  " + 
-					"AND  tracktime <= '"+endDate+"' AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime,  'YYYY-MM-DD')  ";
+			String sql = "from CoreOrdersMarketk where  malicious_tag is not null and order_source <> '标记订单'  and order_source not like'%线下上门%'    and track_status!=330 AND tracktime >= '"
+					+ starDate + "'  " + "AND  tracktime <= '" + endDate
+					+ "' AND to_char(createtime + '24 Hours', 'YYYY-MM-DD') < to_char(tracktime,  'YYYY-MM-DD')  ";
 			logger.info(sql);
 			return this.coreOrderSerbice.getResultList(sql);
 		} else {
@@ -910,13 +965,14 @@ public class CoreordersMarketkManager extends BaseManager {
 		};
 		return this.coreOrderSerbice.findAllList(spec);
 	}
-	
+
 	/**
 	 * 更新恶意标签导出状态
 	 * 
 	 */
 	public void updateExportStatus(String orderNo) {
-		String sql="update core_orders_market_k set export_status="+ExportStatusEnum.EXPORTSTATUS15.getCode()+" where order_no='"+orderNo+"'";
+		String sql = "update core_orders_market_k set export_status=" + ExportStatusEnum.EXPORTSTATUS15.getCode()
+				+ " where order_no='" + orderNo + "'";
 		this.coreOrderSerbice.exeNative(sql);
 	}
 }

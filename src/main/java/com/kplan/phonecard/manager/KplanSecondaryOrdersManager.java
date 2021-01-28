@@ -490,6 +490,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					k.setBusiness_type("K计划");
 					k.setDifferent_nets(-1);
 					k.setId("CDBACK" + SqeUtils.getBILIBILISqeNo());
+					k.setRecommend_name(managerInfo.getBasicUserInfo().getUserRealName());
 					k.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.add(k);
 					log = new CoreordersTrackLog();

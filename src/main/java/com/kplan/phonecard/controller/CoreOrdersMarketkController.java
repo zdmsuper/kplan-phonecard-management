@@ -169,6 +169,15 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 	public String uporderedit(Map<String, Object> map, ManagerInfoQuery query) {
 		return "coreorders/uporderedit";
 	}
+	/**手工单数据回导跳转
+	 * @param map
+	 * @param query
+	 * @return
+	 */
+	@RequestMapping("/uploadDataEdit")
+	public String uploadDataEdit(Map<String, Object> map, ManagerInfoQuery query) {
+		return "coreorders/uploadDataEdit";
+	}
 
 	@RequestMapping(value = "/uploadOrderFile", method = RequestMethod.POST)
 	@ResponseBody
@@ -177,6 +186,22 @@ public class CoreOrdersMarketkController extends AbstractBaseController {
 		List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 0));
 		List<OrderRowModel> l = PhoneRuleUtils.orderToList(data);
 		return this.coreOrdersManager.addOrders(l, keyword,provicn);
+	}
+	
+	/**手工单数据回导上传文件
+	 * @param file
+	 * @param keyword
+	 * @param provicn
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/uploadDataEditeFile", method = RequestMethod.POST)
+	@ResponseBody
+	public Object uploadDataEditeFile(@RequestParam("file") MultipartFile file) throws IOException {
+		InputStream inputStream = new BufferedInputStream(file.getInputStream());
+		List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 2));
+		ManagerInfo managerInfo=super.getCurrentUserDetails().orElse(null);
+		return this.coreOrdersManager.uploadData(data,managerInfo);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "qryPhones")
