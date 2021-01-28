@@ -48,6 +48,7 @@ import com.kplan.phonecard.service.KplanSecondaryOrdersService;
 import com.kplan.phonecard.service.KplanprocductService;
 import com.kplan.phonecard.utils.DateUtils;
 import com.kplan.phonecard.utils.SendSmsUtils;
+import com.kplan.phonecard.utils.SqeUtils;
 
 import one.util.streamex.StreamEx;
 
@@ -488,7 +489,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					k.setProduct_name(pocDuct.getProcduct_name());
 					k.setBusiness_type("K计划");
 					k.setDifferent_nets(-1);
-					k.setId("CDBACK" + order.getOrder_no());
+					k.setId("CDBACK" + SqeUtils.getBILIBILISqeNo());
 					k.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 					this.coreOrderSerbice.add(k);
 					log = new CoreordersTrackLog();

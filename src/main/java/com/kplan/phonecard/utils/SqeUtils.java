@@ -35,7 +35,7 @@ public class SqeUtils {
 	public static String getBILIBILISqeNo() {
 		String timestamp =new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		StringBuilder str=new StringBuilder();
-		str.append("H").append(timestamp);
+		str.append(timestamp);
 		Random random=new Random();
 		for(int i=0;i<8;i++){
 		str.append(random.nextInt(5));
@@ -79,5 +79,8 @@ public class SqeUtils {
 					str="0"+str;
 				}
 				return Calendar.getInstance().getTimeInMillis()+str;
+			}
+			public static void main(String[] args) {
+				System.out.println(getBILIBILISqeNo());
 			}
 }
