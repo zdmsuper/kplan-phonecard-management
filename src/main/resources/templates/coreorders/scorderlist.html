@@ -45,7 +45,7 @@
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
 					
 					<select name="domain.examineStatus"  id ="examineStatus" class="select select-box inline">
-						<option value="">全部状态</option>
+						<option value="">审核状态</option>
 						<option th:each="examineStatus:${T(com.kplan.phonecard.enums.ExamineStatusEnum).values()}" 
 						th:value="${examineStatus}" th:text="${examineStatus.desc}"
 						th:selected="${examineStatus==query.domain.examineStatus}"
@@ -53,10 +53,30 @@
 						</option>
 					</select>
 					<select name="domain.orderstatus"  id="orderstatus" class="select select-box inline">
-						<option value="">全部状态</option>
+						<option value="">订单状态</option>
 						<option th:each="orderstatus:${T(com.kplan.phonecard.enums.ScorDerStatusEnum).values()}" 
 						th:value="${orderstatus}" th:text="${orderstatus.desc}"
 						th:selected="${orderstatus==query.domain.orderstatus}"
+						>
+						</option>
+					</select>
+					<select name="domain.phone_qcellcore"  id="phone_qcellcore" class="select select-box inline">
+						<option value="">处理工号</option>
+						<option 
+						th:value="15528275575"
+						th:selected="${'15528275575'==query.domain.phone_qcellcore}"
+						th:text="15528275575"
+						>
+						<option 
+						th:value="18581959364"
+						th:text="18581959364"
+						th:selected="${'18581959364'==query.domain.phone_qcellcore}"
+						>
+						</option>
+						<option 
+						th:value="13281168639"
+						th:text="13281168639"
+						th:selected="${'13281168639'==query.domain.phone_qcellcore}"
 						>
 						</option>
 					</select>
@@ -167,6 +187,11 @@
 		formObj.submit();
 	});
 	$('#orderstatus').change(function(){
+		var formObj = $(this).parents('form');
+		formObj.submit();
+	});
+	
+	$('#phone_qcellcore').change(function(){
 		var formObj = $(this).parents('form');
 		formObj.submit();
 	});
