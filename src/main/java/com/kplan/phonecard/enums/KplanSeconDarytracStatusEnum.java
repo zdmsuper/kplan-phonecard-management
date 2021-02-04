@@ -62,6 +62,10 @@ public enum KplanSeconDarytracStatusEnum {
 	 * 不符合回访
 	 */
 	NOREIVITI(17,"不符合回访"),
+	/**
+	 * 不需要处理回访
+	 */
+	NOREIVITI99(99,"不需要处理回访"),
 	/** 未知
 	 */
 	UNKNOW(null,"未知")

@@ -1,5 +1,8 @@
 package com.kplan.phonecard.controller;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,9 +22,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.EasyExcelFactory;
+import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.CoreordersTrackLog;
@@ -29,7 +36,9 @@ import com.kplan.phonecard.domain.KplanPhoneNumber;
 import com.kplan.phonecard.domain.KplanSecondaryOrders;
 import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.ManagerInfo;
+import com.kplan.phonecard.domain.OrderRowModel;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
+import com.kplan.phonecard.domain.entity.excelData;
 import com.kplan.phonecard.domain.entity.excelMaliciTag;
 import com.kplan.phonecard.domain.entity.excelMaliciousOrders;
 import com.kplan.phonecard.domain.entity.excelOrder;
@@ -39,8 +48,11 @@ import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.manager.UnicomPostcityCodeManager;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
+import com.kplan.phonecard.query.ManagerInfoQuery;
+import com.kplan.phonecard.query.kplanscordersQuery;
 import com.kplan.phonecard.service.CoreordersTrackLogService;
 import com.kplan.phonecard.utils.DateUtils;
+import com.kplan.phonecard.utils.PhoneRuleUtils;
 
 @Controller
 @RequestMapping("/malicious")
@@ -327,6 +339,86 @@ public class MaliciousOrderController extends AbstractBaseController {
 		map.put("query", query);
 		return "malicious/maliciTagList";
 	}
+	
+	
+
+	/**激活数据查询
+	 * @return
+	 */
+	@RequestMapping("/qryDataTag")
+	public String qryDataTag(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		Page<KplanSecondaryOrders> page =this.kplanSecondaryOrdersManager.qryDataTag(query, this.getPageRequest(),"CDDETAIL");
+		map.put("page", page);
+		map.put("query", query);
+		return "malicious/qryDataTagList";
+	}
+	
+	
+	
+	/**激活数据上传跳转页面
+	 * @param map
+	 * @param query
+	 * @return
+	 */
+	@RequestMapping("/uploadDataEdit")
+	public String uploadDataEdit(Map<String, Object> map, ManagerInfoQuery query) {
+		return "malicious/uploadDataEdit";
+	}
+	
+	
+	@RequestMapping(value = "/uploadDataFile", method = RequestMethod.POST)
+	@ResponseBody
+	public Object uploadDataFile(@RequestParam("file") MultipartFile file,kplanscordersQuery query) throws IOException {
+		InputStream inputStream = new BufferedInputStream(file.getInputStream());
+		List<Object> data = EasyExcelFactory.read(inputStream, new Sheet(1, 1));
+		return this.kplanSecondaryOrdersManager.uploadDataFile(data,query,super.getCurrentUserDetails().orElse(null));
+	}
+	
+	/**数据激活数据下载
+	 * @param response
+	 * @param map
+	 * @param query
+	 */
+	@RequestMapping("/exceData")
+	public void exceData(HttpServletResponse response, Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersManager.exceData(query);
+		String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		String fileName = date + "激活数据表";
+		try {
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("application/vnd.ms-excel");
+			fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+			response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+			List<excelData> ex = new ArrayList<excelData>();
+			CoreordersTrackLog log;
+			excelData e;
+			if (l != null && l.size() > 0) {
+				for (KplanSecondaryOrders d : l) {
+					e = new excelData();
+					e.setOrderNo(d.getOrder_no());
+					e.setUserName(d.getUser_name());
+					e.setLogisticsUserName(d.getLogistics_info());
+					ex.add(e);
+					
+				}
+				OutputStream outputStream = response.getOutputStream();
+				EasyExcel.write(outputStream, excelData.class).excelType(ExcelTypeEnum.XLSX).sheet("激活数据订单")
+						.doWrite(ex);
+				outputStream.flush();
+				outputStream.close();
+			}else {
+				OutputStream outputStream = response.getOutputStream();
+				EasyExcel.write(outputStream, excelMaliciTag.class).excelType(ExcelTypeEnum.XLSX).sheet("恶意标签订单数据")
+						.doWrite(ex);
+				outputStream.flush();
+				outputStream.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
+	
 	
 	
 	/**恶意标签订单导出

@@ -254,6 +254,27 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		};
 		return this.kplanSecondaryOrdersService.findAll(spec, pageable);
 	}
+	
+	
+	public Page<KplanSecondaryOrders> qryDataTag(@NotNull KplanSecondaryOrdersQuery query, Pageable pageable,String orderSource) {
+		Specification<KplanSecondaryOrders> spec = new Specification<KplanSecondaryOrders>() {
+			@Override
+			public Predicate toPredicate(Root<KplanSecondaryOrders> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<>();
+				if (query.getCreatedDateStart() != null && query.getCreatedDateEnd() != null) {
+					list.add(cb.between(r.get("place_order_time"), query.getCreatedDateStart(),
+							query.getCreatedDateEnd()));
+				}
+				if(query.getDomain().getPhone_num()!=null) {
+					list.add(cb.or(cb.equal(r.get("phone_num"), query.getDomain().getPhone_num()),cb.equal(r.get("phone"), query.getDomain().getPhone_num())));
+				}else {
+				}
+				list.add(cb.equal(r.get("order_source"), "CDDETAIL"));
+				return cb.and(list.toArray(new Predicate[0]));
+			}
+		};
+		return this.kplanSecondaryOrdersService.findAll(spec, pageable);
+	}
 
 	public List<BackTitle> qryTitle(Date date, Date date2) {
 		String sql = "select operator from kplan_secondary_orders where pro_date>='" + date + "' and  pro_date<='"
@@ -888,4 +909,62 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		return resultList;
 	}
 
+	
+	
+	public String uploadDataFile(List<Object> data, kplanscordersQuery query, ManagerInfo info) {
+		msgRes msg = new msgRes();
+		String upLoadSqe=DateUtils.getTodayDate();
+		KplanSecondaryOrders o;
+		try {
+			if (data != null && data.size() > 0) {
+				for (Object l : data) {
+					List<String> list = (List<String>) l;
+					o = new KplanSecondaryOrders();
+					o.setPlace_order_time(new Date());
+					o.setOrder_no(list.get(0));
+					o.setPro_status(ProStatusEnum.CREADORDER);
+					o.setOrder_source("CDDETAIL");
+					o.setTrack_status(KplanSeconDarytracStatusEnum.NOREIVITI99);
+					if (info != null) {
+						o.setOperator(info.getBasicUserInfo().getUserRealName() );
+					}
+					this.kplanSecondaryOrdersService.add(o);
+				}
+				msg.setCode("200");
+				msg.setStatus("200");
+				msg.setMsg("文件上传成功");
+				return JSON.toJSONString(msg);
+			} else {
+				msg.setCode("201");
+				msg.setStatus("201");
+				msg.setMsg("文件上传时间文件数据为空");
+				return JSON.toJSONString(msg);
+			}
+		} catch (Exception e) {
+			msg.setCode("999");
+			msg.setStatus("999");
+			msg.setMsg("系统异常，请稍后重试");
+			return JSON.toJSONString(msg);
+		}
+
+	}
+	
+	/**激活数据下载查询数据源
+	 * @param query
+	 * @return
+	 */
+	public List<KplanSecondaryOrders> exceData(KplanSecondaryOrdersQuery query){
+		String whereStr="";
+		String sql="";
+		if(query.getCreatedDateEnd()!=null&&query.getCreatedDateStart()!=null) {
+			whereStr="place_order_time>='"+query.getCreatedDateStart()+"' and place_order_time<='"+query.getCreatedDateEnd()+"'";
+		}
+		if(StringUtils.trimToNull(whereStr)!=null) {
+			sql="from KplanSecondaryOrders where order_source='CDDETAIL' AND  "+whereStr;
+		}else {
+			sql="from KplanSecondaryOrders where order_source='CDDETAIL'";
+		}
+		List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersService.getResultList(sql);
+		return l;
+	}
 }
