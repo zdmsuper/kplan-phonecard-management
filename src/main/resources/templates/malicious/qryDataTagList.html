@@ -42,54 +42,6 @@
 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;"> 
 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd"
 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;">
-<!-- 						<select name="domain.logistics_info" id="logistics_info" class="select select-box inline"> -->
-<!-- 						<option value="">订单类型</option> -->
-<!-- 						<option value="1" th:selected="${'1'==query.domain.logistics_info}">恶意订单</option> -->
-<!-- 						<option value="4" th:selected="${'4'==query.domain.logistics_info}">物流订单</option> -->
-<!-- 						</select> -->
-<!-- 						<select name="keyword" id="keyword" class="select select-box inline"> -->
-<!-- 						<option value="">回访状态</option> -->
-<!-- 						<option value="1" th:selected="${'1'==query.keyword}">等待处理</option> -->
-<!-- 						<option value="2" th:selected="${'2'==query.keyword}">二次回访</option> -->
-<!-- 						<option value="3" th:selected="${'3'==query.keyword}">三次回访</option> -->
-						
-<!-- 						</select> -->
-						
-<!-- 						<select name="domain.lock_status" id="lock_status" class="select select-box inline"> -->
-<!-- 						<option value="">锁定状态</option> -->
-<!-- 						<option value="1" th:selected="${1==query.domain.lock_status}">已锁定</option> -->
-<!-- 						<option value="2" th:selected="${2==query.domain.lock_status}">未锁定</option> -->
-<!-- 						</select> -->
-				
-<!-- 					<select name="domain.pro_status" id="pro_status" class="select select-box inline"> -->
-<!-- 						<option value="">全部状态</option> -->
-<!-- 						<option th:each="procStatus:${T(com.kplan.phonecard.enums.KplanSeconDarytracStatusEnum).values()}"  -->
-<!-- 						th:value="${procStatus}" th:text="${procStatus.desc}" -->
-<!-- 						th:selected="${procStatus==query.domain.track_status}" -->
-<!-- 						> -->
-<!-- 						</option> -->
-<!-- 					</select> -->
-					
-<!-- 					<select name="domain.order_source" id="order_source" class="select select-box inline"> -->
-<!-- 					<option value="">全部地区</option> -->
-<!-- 					<option value="CD" th:selected="${'CD'==query.domain.order_source}">成都</option> -->
-<!-- 					<option value="CQ" th:selected="${'CQ'==query.domain.order_source}">重庆</option> -->
-<!-- 					</select> -->
-<!-- 					<select name="domain.operator" id="operator" class="select select-box inline"> -->
-<!-- 						<option value="">全部批次</option> -->
-<!-- 						<option th:each="title:${lti}"  -->
-<!-- 						th:value="${title.exportFileTitle}" th:text="${title.exportFileTitle}" -->
-<!-- 					th:selected="${title.exportFileTitle==query.domain.operator}"> -->
-<!-- 						</option> -->
-<!-- 					</select> -->
-<!-- 					<select name="domain.basicUserInfo.gender" class="select select-box inline"> -->
-<!-- 						<option value="">全部性别</option> -->
-<!-- 						<option th:each="gender:${T(com.kplan.phonecard.enums.GenderEnum).values()}"  -->
-<!-- 						th:value="${gender}" th:text="${gender.desc}" -->
-<!-- 						th:selected="${gender==query.domain.basicUserInfo?.gender}" -->
-<!-- 						> -->
-<!-- 						</option> -->
-<!-- 					</select> -->
 					<input type="text" class="input-text" style="width: 250px" 
 					placeholder="订单号" id="" name="domain.phone_num" th:value="${query.domain.phone_num}">
 					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
@@ -103,29 +55,6 @@
 					数据下载</a>
 			</div>
 
-<!-- 			<div class="cl pd-5 bg-1 bk-gray mt-20"> -->
-<!-- 						<span class="l"> <a href="javascript:;" -->
-<!-- 					onclick="upfile('文件上传','upedit','','300')" -->
-<!-- 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> -->
-<!-- 						上传文件</a> -->
-<!-- 				</span> -->
-<!-- 			</div> -->
-<!-- 			<div class="cl pd-5 bg-1 bk-gray mt-20"> -->
-<!-- 				<span class="l"> <a href="javascript:;" -->
-<!-- 					onclick="add('录入订单','edit','','850')" -->
-<!-- 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> -->
-<!-- 						添加</a> -->
-<!-- 						</span> -->
-						
-<!-- 						<span class="l">  -->
-<!-- 						</span> -->
-<!-- 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-<!-- 						<span class="l"> <a href="javascript:;" -->
-<!-- 					onclick="upfile('文件上传','upedit','','200')" -->
-<!-- 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> -->
-<!-- 						上传文件</a> -->
-<!-- 				</span> -->
-<!-- 			</div> -->
 			<div class="mt-20 dataTables_wrapper">
 				<table
 					class="table table-border table-bordered table-hover table-bg table-sort">
