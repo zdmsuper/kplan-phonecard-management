@@ -266,7 +266,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 							query.getCreatedDateEnd()));
 				}
 				if(query.getDomain().getPhone_num()!=null) {
-					list.add(cb.or(cb.equal(r.get("phone_num"), query.getDomain().getPhone_num()),cb.equal(r.get("phone"), query.getDomain().getPhone_num())));
+					list.add(cb.or(cb.equal(r.get("phone_num"), query.getDomain().getPhone_num()),cb.equal(r.get("order_no"), query.getDomain().getPhone_num())));
 				}else {
 				}
 				list.add(cb.equal(r.get("order_source"), "CDDETAIL"));

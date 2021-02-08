@@ -37,9 +37,6 @@
 	<div class="page-container">
 		<form th:action="@{/malicious/qryDataTag}" method="get" autocomplete="off">
 			<div class="text">
-				<input type="hidden" name="sortName" value="prodate"/>
-				<input type="hidden" name="sortOrder" value="desc"/>
-				<input type="hidden" name="ordersource" value="CD"/>
 				创建时间： <input type="text"
 					id="datemin" class="input-text date" name="createdDateStart"
 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;"> 
