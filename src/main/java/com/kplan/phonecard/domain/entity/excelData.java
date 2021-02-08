@@ -7,6 +7,8 @@ public class excelData {
 	private String orderNo;
 	@ExcelProperty(value="联系人姓名")
 	private String userName;
+	@ExcelProperty(value="身份证")
+	private String userId;
 	@ExcelProperty(value="物流联系人姓名")
 	private String logisticsUserName;
 	public String getOrderNo() {
@@ -26,6 +28,12 @@ public class excelData {
 	}
 	public void setLogisticsUserName(String logisticsUserName) {
 		this.logisticsUserName = logisticsUserName;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 }

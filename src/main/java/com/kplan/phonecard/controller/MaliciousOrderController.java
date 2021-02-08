@@ -397,6 +397,7 @@ public class MaliciousOrderController extends AbstractBaseController {
 					e = new excelData();
 					e.setOrderNo(d.getOrder_no());
 					e.setUserName(d.getUser_name());
+					e.setUserId(d.getUser_id());
 					e.setLogisticsUserName(d.getLogistics_info());
 					ex.add(e);
 					
