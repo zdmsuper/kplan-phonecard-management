@@ -148,7 +148,8 @@
 							<td th:text="${item.user_name}"></td>
 							<td th:text="${item.user_id}"></td>
 							<td th:text="${item.logistics_info}"></td>
-							<td style="color:red;" th:text="${item.pro_status.desc}"></td>
+							<td style="color: green;" th:if="${item.pro_status.code==1}"   th:text="${item.pro_status.desc}"></td>
+							<td style="color: red;"   th:if="${item.pro_status.code!=1}"  th:text="${item.pro_status.desc}"></td>
 						</tr>
 					</tbody>
 				</table>
