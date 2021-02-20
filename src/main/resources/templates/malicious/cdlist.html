@@ -96,6 +96,10 @@
 					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
 						<i class="Hui-iconfont">&#xe665;</i> 查询
 					</button>
+					
+<!-- 					<button type="button" class="btn btn-success radius" id="add" name=""> -->
+<!-- 						<i class="Hui-iconfont">&#xe665;</i> 接口 -->
+<!-- 					</button> -->
 <!-- 					<a href="javascript:;" id="excel" -->
 <!-- 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> -->
 <!-- 						导出</a> -->
@@ -235,6 +239,49 @@
 			formObj.submit();
 			formObj.attr( 'action' ,"/malicious/list");
 		});
+		$('#add').click(function(){
+			
+			  $.ajax({
+				        type: "get",
+				        // url: "http://59.110.18.76:8888/kplan/card/scOrdersync",
+				        url: "http://192.168.1.105:8888/kplan/card/scOrdersync",
+				        data:"goodsId=981702278573&procDuctName=%E5%A4%A9%E7%8E%8B%E5%8D%A1&certName=%E7%8E%8B%E7%9B%B8%E7%A8%8B&certNo=513021199207267630&phoneNum=18682898872&postDistrictCode=330106&postAddr=%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B41202&phone=18582866572&apiServion=v2&recommendName=%E6%9C%B1%E5%A4%A7%E4%BC%9F",
+				        contentType: "application/json;charset=UTF-8",
+				        dataType: "json",
+				        success: res=> {
+				            console.log(res)
+				            loadinghide();
+				            // if(res.status == 200){
+				            //     window.location.replace('./success.html')
+				            // }else{
+				            //     alert('此号码已被预占，请选择其他靓号！')
+				            //     gsdgetphone()
+				            // }
+				        },
+				        // error:err=>{console.log(err);loadinghide();}
+				        error: function (XMLHttpRequest, textStatus, errorThrown) {
+				            // 状态码
+				            console.log(XMLHttpRequest.status);
+				            // 状态
+				            console.log(XMLHttpRequest.readyState);
+				            // 错误信息   
+				            console.log(textStatus);
+				        }
+				    })
+			
+			
+// 			$
+// 	         .ajax({
+// 	          type : 'get',
+// 	          url : 'http://192.168.1.105:8888/kplan/card/scOrdersync?goodsId=981702278573&procDuctName=%E5%A4%A9%E7%8E%8B%E5%8D%A1&certName=%E7%8E%8B%E7%9B%B8%E7%A8%8B&certNo=513021199207267630&phoneNum=18682898872&postDistrictCode=330106&postAddr=%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B41202&phone=18582866572&apiServion=v2&recommendName=%E6%9C%B1%E5%A4%A7%E4%BC%9F',
+// 	          success : function(resp) {
+// 	        	     console.log(resp);
+// 					alert(resp);
+// 	          }
+// 	         });
+		});
+		
+		
 		$('#keyword').change(function(){
 			var formObj = $(this).parents('form');
 			formObj.submit();
