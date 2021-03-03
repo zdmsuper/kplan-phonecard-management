@@ -178,7 +178,11 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 							list.add(cb.or(cb.isNull(r.get("logistics_info")),cb.notEqual(r.get("logistics_info"), "物流订单")));
 						}
 						if(query.getDomain().getLogistics_info().equals("4")) {
+							
 							list.add(cb.equal(r.get("logistics_info"), "物流订单"));
+						}
+						if(query.getDomain().getLogistics_info().equals("5")) {
+							list.add(cb.equal(r.get("logistics_info"), "异地订单"));
 						}
 					}
 						
@@ -240,6 +244,9 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						if(query.getDomain().getLogistics_info().equals("4")) {
 							list.add(cb.equal(r.get("logistics_info"), "物流订单"));
 						}
+//						if(query.getDomain().getLogistics_info().equals("5")) {
+//							list.add(cb.equal(r.get("logistics_info"), "异地订单"));
+//						}
 					}
 						list.add(cb.or(cb.notLike(r.get("procduct_name"), "%首月%"),cb.notLike(r.get("procduct_name"), "%免费%"),cb.notLike(r.get("procduct_name"), "%体验%")));
 //						list.add(cb.like(r.get("post_city"), "%成都%"));

@@ -49,6 +49,7 @@
 						<option value="">订单类型</option>
 						<option value="1" th:selected="${'1'==query.domain.logistics_info}">恶意订单</option>
 						<option value="4" th:selected="${'4'==query.domain.logistics_info}">物流订单</option>
+						<option value="5" th:selected="${'5'==query.domain.logistics_info}">异地订单</option>
 						</select>
 						<select name="keyword" id="keyword" class="select select-box inline">
 						<option value="">回访状态</option>
@@ -167,12 +168,12 @@
 <!-- 							<td th:if="${item.pro_status.code} eq 99" > -->
 <!-- 							<span style="color: green;" th:text="${item.pro_status.desc}"></span> -->
 <!-- 							</td> -->
-							<td th:if="${item.pro_status.code} ne 99" th:id="s+${item.id}">
-							<a th:id="${item.id}" th:onmousemove="op([[${item.id}]],[[${item.pro_status.code}]])">
-							<span  style="color: red;" th:text="${item.pro_status.desc}" ></span>
-							</a>
+<!-- 							<td th:if="${item.pro_status.code==99} || ${item.pro_status.code==1}" th:id="s+${item.id}" > -->
+<!-- 							<a th:id="${item.id}" th:onmousemove="op([[${item.id}]],[[${item.pro_status.code}]])"> -->
+<!-- 							<span  style="color: red;" th:text="${item.pro_status.desc}" ></span> -->
+<!-- 							</a> -->
 							
-							</td>
+<!-- 							</td> -->
 							<td th:text="${item.procduct_name}"></td>
 							
 							<td >

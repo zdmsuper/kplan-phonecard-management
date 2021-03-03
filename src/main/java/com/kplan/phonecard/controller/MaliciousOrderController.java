@@ -118,8 +118,12 @@ public class MaliciousOrderController extends AbstractBaseController {
 	 */
 	@RequestMapping("/list")
 	public String list(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		String orderSouer="CD";
+		if("5".equals(query.getDomain().getLogistics_info())) {
+			orderSouer="CDOFFDITE";
+		}
 		Page<KplanSecondaryOrders> page = this.kplanSecondaryOrdersManager.malicicousList(query, this.getPageRequest(),
-				"CD");
+				orderSouer);
 		map.put("page", page);
 		map.put("query", query);
 		return "malicious/list";
@@ -131,8 +135,12 @@ public class MaliciousOrderController extends AbstractBaseController {
 	 */
 	@RequestMapping("/cdList")
 	public String cdList(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		String orderSouer="CD";
+		if("5".equals(query.getDomain().getLogistics_info())) {
+			orderSouer="CDOFFDITE";
+		}
 		Page<KplanSecondaryOrders> page = this.kplanSecondaryOrdersManager.cdmalicicousList(query, this.getPageRequest(),
-				"CD");
+				orderSouer);
 		map.put("page", page);
 		map.put("query", query);
 		return "malicious/cdlist";
@@ -141,8 +149,12 @@ public class MaliciousOrderController extends AbstractBaseController {
 
 	@RequestMapping("/gzlist")
 	public String gzlist(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		String orderSouer="GZ";
+		if("5".equals(query.getDomain().getLogistics_info())) {
+			orderSouer="GZOFFDITE";
+		}
 		Page<KplanSecondaryOrders> page = this.kplanSecondaryOrdersManager.malicicousList(query, this.getPageRequest(),
-				"GZ");
+				orderSouer);
 		map.put("page", page);
 		map.put("query", query);
 		return "malicious/gzlist";
