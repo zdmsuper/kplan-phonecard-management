@@ -481,7 +481,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					if("GZ".equals(ordersource)) {
 						k.setOrder_source("线下上门渠道-贵州");
 					}
-					if("CD".equals(ordersource)) {
+					if("CD".equals(ordersource)||"CDOFFDITE".equals(ordersource)) {
 						if(StringUtils.trimToNull(paddress)!=null&&"本地号码".equals(paddress)) {
 							k.setOrder_source("线下上门渠道-四川-归属地");
 						}
