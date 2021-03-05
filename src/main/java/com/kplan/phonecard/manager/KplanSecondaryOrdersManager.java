@@ -191,6 +191,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION)));
 				}
+				list.add(cb.equal(r.get("operator"), "系统自动"));
 				list.add(cb.equal(r.get("order_source"), orderSource));
 				return cb.and(list.toArray(new Predicate[0]));
 			}
@@ -205,7 +206,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	 * @param orderSource
 	 * @return
 	 */
-	public Page<KplanSecondaryOrders> cdmalicicousList(@NotNull KplanSecondaryOrdersQuery query, Pageable pageable,String orderSource) {
+	public Page<KplanSecondaryOrders> cdmalicicousList(@NotNull KplanSecondaryOrdersQuery query, Pageable pageable,String orderSource,ManagerInfo managerInfo) {
 		Specification<KplanSecondaryOrders> spec = new Specification<KplanSecondaryOrders>() {
 			@Override
 			public Predicate toPredicate(Root<KplanSecondaryOrders> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
@@ -255,6 +256,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION)));
 				}
+				list.add(cb.equal(r.get("operator"), managerInfo.getBasicUserInfo().getUserRealName()));
 				list.add(cb.equal(r.get("order_source"), orderSource));
 				return cb.and(list.toArray(new Predicate[0]));
 			}
@@ -973,5 +975,76 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		}
 		List<KplanSecondaryOrders> l=this.kplanSecondaryOrdersService.getResultList(sql);
 		return l;
+	}
+	
+	/**统计系统订单量
+	 * @return
+	 */
+	public String vitalOrderNum() {
+		String  sql="select count(1) from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单') and track_status=1 and operator='系统自动'";
+		Object waitNumObject=this.kplanSecondaryOrdersService.getNative(sql);
+		Integer waitNum=Integer.parseInt(String.valueOf(waitNumObject));
+		sql="select count(1) from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单') and track_status=13 and operator='系统自动'";
+		Object secondVisitObject=this.kplanSecondaryOrdersService.getNative(sql);
+		Integer secondVisitNum=Integer.parseInt(secondVisitObject.toString());
+		sql="select count(1) from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单') and track_status=14 and operator='系统自动'";
+		Object threeVisitObject=this.kplanSecondaryOrdersService.getNative(sql);
+		Integer threeVisitNum=Integer.parseInt(threeVisitObject.toString());
+		String msg="等待处理："+waitNum+" 笔，二次回访："+secondVisitNum+" 笔，三次回访： "+threeVisitNum+" 笔";
+		return msg;
+	}
+	/**领取订单
+	 * @param paperNum
+	 * @param managerInfo
+	 * @return
+	 */
+	public Object paperNum(Integer paperNum,ManagerInfo managerInfo) {
+		msgRes msg = new msgRes();
+	try {
+		String sql="select count(1) from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单')  and operator='"+managerInfo.getBasicUserInfo().getUserRealName()+"'";
+		Object orderNumObject=this.kplanSecondaryOrdersService.getNative(sql);
+		Integer orderNum=Integer.parseInt(String.valueOf(orderNumObject));
+		if(orderNum>=100) {
+			msg.setCode("200");
+			msg.setStatus("200");
+			msg.setMsg("当前工号订单数量："+orderNum+" 不允许领单");
+			return JSON.toJSON(msg);
+		}
+		sql="update  kplan_secondary_orders set operator='"+managerInfo.getBasicUserInfo().getUserRealName()+"'  where id in(select id from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单')  and track_status=1  and operator='系统自动'   LIMIT "+paperNum+") " ;
+		Integer proNum=this.kplanSecondaryOrdersService.exeNative(sql);
+		if(proNum>=paperNum) {
+			msg.setCode("200");
+			msg.setStatus("200");
+			msg.setMsg("领单成功，当前领取订单： "+proNum+" 笔");
+			return JSON.toJSON(msg);
+		}else if(proNum<paperNum) {
+			Integer paperNumL=paperNum-proNum;
+			sql="update  kplan_secondary_orders set operator='"+managerInfo.getBasicUserInfo().getUserRealName()+"'  where id in(select id from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单')  and track_status=13  and operator='系统自动'   LIMIT "+paperNumL+") " ;
+			proNum=this.kplanSecondaryOrdersService.exeNative(sql);
+			if(proNum>=paperNumL) {
+				msg.setCode("200");
+				msg.setStatus("200");
+				msg.setMsg("领单成功，当前领取订单： "+paperNum+" 笔");
+				return JSON.toJSON(msg);
+			}else {
+				Integer paperNumLi=paperNumL-proNum;
+				sql="update  kplan_secondary_orders set operator='"+managerInfo.getBasicUserInfo().getUserRealName()+"'  where id in(select id from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单')  and track_status=14  and operator='系统自动'   LIMIT "+paperNumLi+") " ;
+				proNum=this.kplanSecondaryOrdersService.exeNative(sql);
+				msg.setCode("200");
+				msg.setStatus("200");
+				msg.setMsg("领单成功 ");
+				return JSON.toJSON(msg);
+			}
+		}
+		msg.setCode("200");
+		msg.setStatus("200");
+		msg.setMsg("领单成功 ");
+		return JSON.toJSON(msg);
+	} catch (Exception e) {
+		msg.setCode("201");
+		msg.setStatus("201");
+		msg.setMsg("领单异常请联系管理员 ");
+		return JSON.toJSON(msg);
+	}
 	}
 }

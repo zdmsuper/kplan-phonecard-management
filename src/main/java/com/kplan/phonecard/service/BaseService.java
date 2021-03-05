@@ -199,7 +199,7 @@ public abstract class BaseService<T extends BaseDomain> {
 				query.setParameter(parameterIndex++, obj);
 			}
 		}
-		return query.getResultList();
+		return query.getSingleResult();
 	}
 	
 	public  void add(  Object arg0) {

@@ -30,6 +30,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.fastjson.JSON;
 import com.kplan.phonecard.domain.CoreOrdersMarketk;
 import com.kplan.phonecard.domain.CoreordersTrackLog;
 import com.kplan.phonecard.domain.KplanPhoneNumber;
@@ -38,6 +39,7 @@ import com.kplan.phonecard.domain.Kplanprocducts;
 import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.OrderRowModel;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
+import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.domain.entity.excelData;
 import com.kplan.phonecard.domain.entity.excelMaliciTag;
 import com.kplan.phonecard.domain.entity.excelMaliciousOrders;
@@ -136,16 +138,42 @@ public class MaliciousOrderController extends AbstractBaseController {
 	@RequestMapping("/cdList")
 	public String cdList(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
 		String orderSouer="CD";
+		ManagerInfo managerInfo = super.getCurrentUserDetails().orElse(null);
 		if("5".equals(query.getDomain().getLogistics_info())) {
 			orderSouer="CDOFFDITE";
 		}
 		Page<KplanSecondaryOrders> page = this.kplanSecondaryOrdersManager.cdmalicicousList(query, this.getPageRequest(),
-				orderSouer);
+				orderSouer,managerInfo);
 		map.put("page", page);
 		map.put("query", query);
 		return "malicious/cdlist";
 	}
-	
+	/**外围客服人员领单跳转
+	 * @param map
+	 * @param query
+	 * @return
+	 */
+	@RequestMapping("/paper")
+	public String paper(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		String res=this.kplanSecondaryOrdersManager.vitalOrderNum();
+		map.put("res", res);
+		return "malicious/paper";
+	}
+	@RequestMapping(value = "/paperNum", method = RequestMethod.POST)
+	@ResponseBody
+	public Object paperNum(Integer paperNum) {
+		ManagerInfo managerInfo = super.getCurrentUserDetails().orElse(null);
+		if(managerInfo!=null) {
+			return this.kplanSecondaryOrdersManager.paperNum(paperNum, managerInfo);
+		}else {
+			msgRes msg = new msgRes();
+			msg.setCode("200");
+			msg.setStatus("200");
+			msg.setMsg("登录失效，请重新登录 ");
+			return JSON.toJSON(msg);
+		}
+		
+	}
 
 	@RequestMapping("/gzlist")
 	public String gzlist(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
@@ -495,6 +523,8 @@ public class MaliciousOrderController extends AbstractBaseController {
 			// TODO: handle exception
 		}
 	}
+	
+	
 	/**
 	 * 解锁订单 1分钟执行一次，解锁锁定超过5分钟的订单
 	 * @throws ParseException 
