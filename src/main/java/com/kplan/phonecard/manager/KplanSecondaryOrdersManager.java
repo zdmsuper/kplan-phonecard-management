@@ -256,7 +256,9 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION)));
 				}
+				if(managerInfo.getBasicUserInfo().getJurisdiction()!=9) {
 				list.add(cb.equal(r.get("operator"), managerInfo.getBasicUserInfo().getUserRealName()));
+				}
 				list.add(cb.equal(r.get("order_source"), orderSource));
 				return cb.and(list.toArray(new Predicate[0]));
 			}
