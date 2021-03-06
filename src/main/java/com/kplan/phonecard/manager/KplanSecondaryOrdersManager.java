@@ -1003,7 +1003,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	public Object paperNum(Integer paperNum,ManagerInfo managerInfo) {
 		msgRes msg = new msgRes();
 	try {
-		String sql="select count(1) from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单') and (track_status!=1 or track_status!=13 or track_status!=14) and operator='"+managerInfo.getBasicUserInfo().getUserRealName()+"'";
+		String sql="select count(1) from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单') and (track_status=1 or track_status=13 or track_status=14) and operator='"+managerInfo.getBasicUserInfo().getUserRealName()+"'";
 		Object orderNumObject=this.kplanSecondaryOrdersService.getNative(sql);
 		Integer orderNum=Integer.parseInt(String.valueOf(orderNumObject));
 		if(orderNum>=100) {
