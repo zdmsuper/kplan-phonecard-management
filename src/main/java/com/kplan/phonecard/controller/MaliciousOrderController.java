@@ -171,6 +171,7 @@ public class MaliciousOrderController extends AbstractBaseController {
 			msg.setStatus("200");
 			msg.setMsg("登录失效，请重新登录 ");
 			return JSON.toJSON(msg);
+			
 		}
 		
 	}
