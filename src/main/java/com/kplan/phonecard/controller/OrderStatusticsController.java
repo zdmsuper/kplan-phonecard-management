@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kplan.phonecard.domain.entity.OrderStatistics;
+import com.kplan.phonecard.domain.entity.VisitiStatistics;
 import com.kplan.phonecard.manager.KplanSecondaryOrdersManager;
 import com.kplan.phonecard.query.KplanSecondaryOrdersQuery;
 import com.kplan.phonecard.utils.DateUtils;
@@ -28,5 +29,12 @@ public class OrderStatusticsController extends AbstractBaseController{
 		map.put("l", l);
 		map.put("query", query);
 		return "statistics/Backstatistics";
+	}
+	@RequestMapping("/VistiStatustics")
+	public String VistiStatustics(Map<String, Object> map, KplanSecondaryOrdersQuery query) {
+		List<VisitiStatistics> l=this.kplanSecondaryOrdersManager.VistiStatustics();
+		map.put("l", l);
+		map.put("query", query);
+		return "statistics/VistiStatustics";
 	}
 }

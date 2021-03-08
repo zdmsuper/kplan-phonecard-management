@@ -34,6 +34,7 @@ import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.domain.entity.BackTitle;
 import com.kplan.phonecard.domain.entity.OrderStatistics;
+import com.kplan.phonecard.domain.entity.VisitiStatistics;
 import com.kplan.phonecard.enums.ExportStatusEnum;
 import com.kplan.phonecard.enums.KplanSeconDarytracStatusEnum;
 import com.kplan.phonecard.enums.OrderStatusEnum;
@@ -918,6 +919,20 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 			return b;
 		}).toList();
 		return resultList;
+	}
+	
+	public List<VisitiStatistics> VistiStatustics(){
+		String sql="SELECT COUNT 	( 1 ), 	OPERATOR, 	TRACK_STATUS  FROM KPLAN_SECONDARY_ORDERS  WHERE (TRACK_STATUS = 1  OR TRACK_STATUS = 13  OR TRACK_STATUS = 14 ) AND OPERATOR!='系统自动' GROUP BY OPERATOR, TRACK_STATUS ORDER BY OPERATOR, TRACK_STATUS ";
+		List<Object[]> list=this.kplanSecondaryOrdersService.getNativeResultList(sql);
+		List<VisitiStatistics> resultList = StreamEx.of(list).map(r -> {
+			VisitiStatistics b = new VisitiStatistics();
+			b.setOrderNum(((BigInteger) r[0]).intValue());
+			b.setUserName((String)r[1]);
+			b.setOrderStatus(KplanSeconDarytracStatusEnum.fromValueDesc((Integer) r[2]));
+			return b;
+		}).toList();
+		return resultList;
+	
 	}
 
 	
