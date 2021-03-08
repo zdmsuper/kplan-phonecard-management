@@ -50,6 +50,7 @@
 						<option value="1" th:selected="${'1'==query.domain.logistics_info}">恶意订单</option>
 						<option value="4" th:selected="${'4'==query.domain.logistics_info}">物流订单</option>
 						<option th:value="5" th:selected="${'5'==query.domain.logistics_info}">异地订单</option>
+							<option th:value="6" th:selected="${'6'==query.domain.logistics_info}">待开户订单</option>
 						</select>
 						<select name="keyword" id="keyword" class="select select-box inline">
 						<option value="">回访状态</option>
