@@ -1006,7 +1006,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 		String sql="select count(1) from kplan_secondary_orders where order_source='CD' and (logistics_info='恶意订单' or logistics_info='物流订单') and (track_status=1 or track_status=13 or track_status=14) and operator='"+managerInfo.getBasicUserInfo().getUserRealName()+"'";
 		Object orderNumObject=this.kplanSecondaryOrdersService.getNative(sql);
 		Integer orderNum=Integer.parseInt(String.valueOf(orderNumObject));
-		if(orderNum>=100) {
+		if(orderNum>=200) {
 			msg.setCode("200");
 			msg.setStatus("200");
 			msg.setMsg("当前工号订单数量："+orderNum+" 不允许领单");
