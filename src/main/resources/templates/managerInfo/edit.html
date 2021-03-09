@@ -102,6 +102,32 @@
 						th:value="${item.basicUserInfo.email}">
 				</div>
 			</div>
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>分公司</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" 
+						name="basicUserInfo.cardId" id="basicUserInfo.cardId"
+						th:value="${item.basicUserInfo.cardId}">
+				</div>
+			</div>
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>权限</label>
+				<div class="formControls col-xs-8 col-sm-9">
+						<select name="basicUserInfo.jurisdiction"
+						class="select select-box inline"
+						 id="basicUserInfo.jurisdiction">
+						<option value="0">请选择</option>
+						<option value="1">公司本部</option>
+						<option value="2">外围客服</option>
+						<option value="9">系统管理员</option>
+						<option value="3">数据上传</option>
+						</select>
+				</div>
+			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3">头像：</label>
 				<div class="formControls col-xs-6 col-sm-6">

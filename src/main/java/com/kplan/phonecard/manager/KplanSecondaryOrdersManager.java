@@ -176,7 +176,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					if(query.getDomain().getLogistics_info()!=null) {
 						if(query.getDomain().getLogistics_info().equals("1")) {
 //							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
-							list.add(cb.or(cb.isNull(r.get("logistics_info")),cb.notEqual(r.get("logistics_info"), "物流订单")));
+							list.add(cb.equal(r.get("logistics_info"), "物流订单"));
+//							list.add(cb.or(cb.isNull(r.get("logistics_info")),cb.notEqual(r.get("logistics_info"), "恶意订单")));
 						}
 						if(query.getDomain().getLogistics_info().equals("4")) {
 							
@@ -244,6 +245,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					if(query.getDomain().getLogistics_info()!=null) {
 						if(query.getDomain().getLogistics_info().equals("1")) {
 //							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
+							
 							list.add(cb.or(cb.isNull(r.get("logistics_info")),cb.notEqual(r.get("logistics_info"), "物流订单")));
 						}
 						if(query.getDomain().getLogistics_info().equals("4")) {
@@ -260,10 +262,19 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION)));
 				}
-				if(managerInfo.getBasicUserInfo().getJurisdiction()!=9) {
+				if(managerInfo.getBasicUserInfo().getJurisdiction()!=9&&managerInfo.getBasicUserInfo().getCardId().contains("武侯")) {
 				list.add(cb.equal(r.get("operator"), managerInfo.getBasicUserInfo().getUserRealName()));
 				}
-				list.add(cb.equal(r.get("order_source"), orderSource));
+				if(managerInfo.getBasicUserInfo().getJurisdiction()==9) {
+					list.add(cb.notEqual(r.get("operator"), "系统自动"));
+				}
+				if(managerInfo.getBasicUserInfo().getCardId()!=null&&managerInfo.getBasicUserInfo().getCardId().contains("武侯")) {
+					list.add(cb.equal(r.get("order_source"), "CD"));
+				}
+				if(managerInfo.getBasicUserInfo().getCardId()!=null&&managerInfo.getBasicUserInfo().getCardId().contains("成华")) {
+					list.add(cb.equal(r.get("order_source"), "GZ"));
+				}
+				
 				return cb.and(list.toArray(new Predicate[0]));
 			}
 		};
@@ -789,7 +800,9 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 						order.setMalicious_info(remarks);
 					}
 					this.coreOrderSerbice.modify(order);
+					if(!"异地订单".equals(order.getLogistics_info())) {
 					SendSmsUtils.senMsg(re_phone, userid, userName);
+					}
 					log = new CoreordersTrackLog();
 					log.setDelivery_order_no(order.getOrder_no());
 					log.setCreate_time(new Date());
@@ -925,7 +938,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 	}
 	
 	public List<VisitiStatistics> VistiStatustics(){
-		String sql="SELECT COUNT 	( 1 ), 	OPERATOR, 	TRACK_STATUS  FROM KPLAN_SECONDARY_ORDERS  WHERE (TRACK_STATUS = 1  OR TRACK_STATUS = 13  OR TRACK_STATUS = 14 ) AND OPERATOR!='系统自动' GROUP BY OPERATOR, TRACK_STATUS ORDER BY OPERATOR, TRACK_STATUS ";
+		String sql="SELECT COUNT 	( 1 ), 	OPERATOR, 	TRACK_STATUS  FROM KPLAN_SECONDARY_ORDERS  WHERE OPERATOR!='系统自动' GROUP BY OPERATOR, TRACK_STATUS ORDER BY OPERATOR, TRACK_STATUS ";
 		List<Object[]> list=this.kplanSecondaryOrdersService.getNativeResultList(sql);
 		List<VisitiStatistics> resultList = StreamEx.of(list).map(r -> {
 			VisitiStatistics b = new VisitiStatistics();

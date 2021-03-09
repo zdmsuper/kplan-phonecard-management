@@ -146,6 +146,7 @@ public class MaliciousOrderController extends AbstractBaseController {
 				orderSouer,managerInfo);
 		map.put("page", page);
 		map.put("query", query);
+		map.put("basicUserInfo",managerInfo.getBasicUserInfo());
 		return "malicious/cdlist";
 	}
 	/**外围客服人员领单跳转
