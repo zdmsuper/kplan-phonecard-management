@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kplan.phonecard.base.BaseDomain;
 import com.kplan.phonecard.dao.BaseDao;
+import com.kplan.phonecard.domain.kplanExternalOrders;
 import com.kplan.phonecard.exceptions.BusinessException;
 import com.kplan.phonecard.reflections.C;
 import com.kplan.phonecard.reflections.P;
@@ -228,4 +229,6 @@ public abstract class BaseService<T extends BaseDomain> {
 	public  void modify( Object arg0) {
 		em.merge(arg0);
 	}
+	
+	
 }

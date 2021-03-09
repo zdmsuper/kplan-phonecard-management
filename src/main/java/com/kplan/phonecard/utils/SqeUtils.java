@@ -43,6 +43,17 @@ public class SqeUtils {
 		return str.toString();
 	}
 	
+	public static String getExterNal() {
+		String timestamp =new SimpleDateFormat("yyMMddHHmmss").format(new Date());
+		StringBuilder str=new StringBuilder();
+		str.append(timestamp);
+		Random random=new Random();
+		for(int i=0;i<3;i++){
+		str.append(random.nextInt(3));
+		}
+		return str.toString();
+	}
+	
 	public static String getBILIBILISqeNo(String title) {
 		String timestamp =new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		StringBuilder str=new StringBuilder();
@@ -81,6 +92,6 @@ public class SqeUtils {
 				return Calendar.getInstance().getTimeInMillis()+str;
 			}
 			public static void main(String[] args) {
-				System.out.println(getBILIBILISqeNo());
+				System.out.println(getExterNal());
 			}
 }

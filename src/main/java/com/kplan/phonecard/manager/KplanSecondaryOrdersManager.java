@@ -176,7 +176,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					if(query.getDomain().getLogistics_info()!=null) {
 						if(query.getDomain().getLogistics_info().equals("1")) {
 //							list.add(cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.WAITSTATUS));
-							list.add(cb.equal(r.get("logistics_info"), "物流订单"));
+							list.add(cb.equal(r.get("logistics_info"), "恶意订单"));
 //							list.add(cb.or(cb.isNull(r.get("logistics_info")),cb.notEqual(r.get("logistics_info"), "恶意订单")));
 						}
 						if(query.getDomain().getLogistics_info().equals("4")) {

@@ -161,6 +161,14 @@
 				</ul>
 		</dd>
 	</dl >
+	<dl id="menu-admin" th:if="${basicUserInfo?.jurisdiction==3||basicUserInfo?.jurisdiction==9}">
+		<dt><i class="Hui-iconfont">&#xe62d;</i>外部订单管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+		<dd>
+			<ul>
+			<li><a data-href="external/list" data-title="外部订单" href="javascript:;">外部订单</a></li>
+			</ul>
+		</dd>
+	</dl >
 		<dl id="menu-admin"  th:if="${basicUserInfo?.jurisdiction==1 ||basicUserInfo?.jurisdiction==9}">
 			<dt><i class="Hui-iconfont">&#xe62d;</i> 统计管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
