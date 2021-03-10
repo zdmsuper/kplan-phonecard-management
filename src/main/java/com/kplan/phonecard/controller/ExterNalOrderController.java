@@ -28,6 +28,7 @@ import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.kplanExternalOrders;
 import com.kplan.phonecard.domain.entity.ExterNalDataExcel;
 import com.kplan.phonecard.domain.entity.excelOrder;
+import com.kplan.phonecard.enums.kplanExternalOrderStatusEnum;
 import com.kplan.phonecard.query.CoreOrdersMarketkQuery;
 import com.kplan.phonecard.query.kplanExternalOrdersQuery;
 import com.kplan.phonecard.query.kplanscordersQuery;
@@ -111,7 +112,7 @@ public class ExterNalOrderController extends AbstractBaseController{
 			        		 e.setUserId(k.getUserId());
 			        		 e.setUserName(k.getUserName());
 			        		 ex.add(e);
-			        		 k.setOrderStatus(1);
+			        		 k.setOrderStatus(kplanExternalOrderStatusEnum.EXPSTATUS);
 			        		 this.kplanExternalOrdersManager.modiy(k);
 			        	}
 			        }

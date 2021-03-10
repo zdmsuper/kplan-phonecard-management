@@ -23,6 +23,7 @@ import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.UnicomPostCityCode;
 import com.kplan.phonecard.domain.kplanExternalOrders;
 import com.kplan.phonecard.domain.msgRes;
+import com.kplan.phonecard.enums.kplanExternalOrderStatusEnum;
 import com.kplan.phonecard.query.KplanMolicioustagQuery;
 import com.kplan.phonecard.query.kplanExternalOrdersQuery;
 import com.kplan.phonecard.service.*;
@@ -70,9 +71,9 @@ public class kplanExternalOrdersManager extends BaseManager{
 					 o.setCityName(c.getCity_name());
 					 o.setDistrictCode(c.getDistrict_code());
 					 o.setDistrictName(c.getDistrict_name());
-					 o.setOrderStatus(0);
+					 o.setOrderStatus(kplanExternalOrderStatusEnum.InitStatus0);
 				 }else {
-					 o.setOrderStatus(-1);
+					 o.setOrderStatus(kplanExternalOrderStatusEnum.EXPSTATUSERROR);
 				 }
 				 o.setProcductCode(l.get(6));
 				 o.setPhoneNum(l.get(1));
@@ -117,7 +118,7 @@ public class kplanExternalOrdersManager extends BaseManager{
 					 l=(List<String>)o;
 					 kplanExternalOrders ex=this.qryExterNalOrder(l.get(2));
 					 if(ex!=null) {
-						ex.setOrderStatus(2);
+						ex.setOrderStatus(kplanExternalOrderStatusEnum.EXPSTATUS2);
 						ex.setPhone(l.get(12));
 						this.kplanExternalOrdersService.modify(ex);
 					 }
@@ -128,7 +129,7 @@ public class kplanExternalOrdersManager extends BaseManager{
 					 l=(List<String>)o;
 					 kplanExternalOrders ex=this.qryExterNalOrder(l.get(0));
 					 if(ex!=null) {
-						ex.setOrderStatus(3);
+						ex.setOrderStatus(kplanExternalOrderStatusEnum.EXPSTATUS3);
 						ex.setRemarks(l.get(25));
 						this.kplanExternalOrdersService.modify(ex);
 					 }

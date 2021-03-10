@@ -3,6 +3,7 @@ package com.kplan.phonecard.domain;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.kplan.phonecard.base.BaseDomain;
+import com.kplan.phonecard.enums.ExportStatusEnum;
+import com.kplan.phonecard.enums.kplanExternalOrderStatusEnum;
 @Entity
 @Table(name = "kplan_external_orders")
 public class kplanExternalOrders extends BaseDomain{
@@ -64,8 +67,9 @@ public class kplanExternalOrders extends BaseDomain{
 	private String operator;//	varchar	32	0	False		操作人
 	@Column(name = "company", unique = true, length = 64)
 	private String comPany;//	varchar	64	0	False		所属分公司
+	@Convert(converter = kplanExternalOrderStatusEnum.EnumConvert.class)
 	@Column(name = "orderstatus", precision = 22, scale = 0)
-	private Integer orderStatus;//	int2	16	0	False		订单状态
+	private kplanExternalOrderStatusEnum orderStatus;//	int2	16	0	False		订单状态
 	@Column(name = "phone", unique = true, length = 16)
 	private String phone;//	varchar	16	0	False		订购号码
 	public Integer getId() {
@@ -201,10 +205,11 @@ public class kplanExternalOrders extends BaseDomain{
 	public void setComPany(String comPany) {
 		this.comPany = comPany;
 	}
-	public Integer getOrderStatus() {
+	
+	public kplanExternalOrderStatusEnum getOrderStatus() {
 		return orderStatus;
 	}
-	public void setOrderStatus(Integer orderStatus) {
+	public void setOrderStatus(kplanExternalOrderStatusEnum orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 	public String getPhone() {

@@ -115,7 +115,7 @@
 							<td th:text="${item.provinceName}"></td>
 							<td th:text="${item.cityName}"></td>
 							<td th:text="${item.address}"></td>
-							<td th:text="${item.orderStatus}"></td>
+							<td style="color: green;" th:text="${item.orderStatus.desc}"></td>
 							<td th:text="${item.procductCode}"></td>
 								<td th:text="${#dates.format(item.creadDate,'yyyy-MM-dd HH:mm:ss')}"></td>
 							<td th:text="${item.operator}"></td>
