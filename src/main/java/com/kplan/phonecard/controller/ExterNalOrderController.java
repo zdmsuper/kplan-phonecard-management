@@ -87,7 +87,7 @@ public class ExterNalOrderController extends AbstractBaseController{
 	@RequestMapping("/downExcel")
 	public void downExcel( HttpServletResponse response,kplanExternalOrdersQuery query) {
 		 String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		    String fileName = date + "，" + "订单数据表";
+		    String fileName = date + "订单数据表";
 		       try {
 		    	   response.setCharacterEncoding("UTF-8");
 			        response.setContentType("application/vnd.ms-excel");

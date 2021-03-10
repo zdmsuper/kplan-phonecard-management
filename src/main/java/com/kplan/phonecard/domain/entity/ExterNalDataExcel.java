@@ -23,9 +23,11 @@ public class ExterNalDataExcel {
 	private String provinceCode;
 	@ExcelProperty(value = {"地市编码"}, index = 9)
 	private String cityCode;
-	@ExcelProperty(value = {"触点编码"}, index = 10)
+	@ExcelProperty(value = {"订购号码"}, index = 10)
+	private String phone;
+	@ExcelProperty(value = {"触点编码"}, index = 11)
 	private String contCode;
-	@ExcelProperty(value = {"发展人编码"}, index = 11)
+	@ExcelProperty(value = {"发展人编码"}, index = 12)
 	private String personCode;
 	public String getOrderNo() {
 		return orderNo;
