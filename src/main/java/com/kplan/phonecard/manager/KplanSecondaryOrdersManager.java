@@ -527,6 +527,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					//手工订单为选择的号码为联通提供的线下号码
 					if("手工订单".equals(paddress)) {
 						k.setExport_status(ExportStatusEnum.EXPORTSTATUS16);
+						k.setExternal_company("09-2279-a33k-9999");
 						k.setVisit_code(5);
 					}else {
 						k.setExport_status(ExportStatusEnum.EXPORTSTATUS1);
