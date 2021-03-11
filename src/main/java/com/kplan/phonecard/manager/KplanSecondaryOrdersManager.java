@@ -196,7 +196,9 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.THREEVISITSTATUS),
 								cb.equal(r.get("track_status"), KplanSeconDarytracStatusEnum.TRANSFERTOOPERATION)));
 				}
+				if(query.getDomain().getPhone_num()==null) {
 				list.add(cb.equal(r.get("operator"), "系统自动"));
+				}
 				list.add(cb.equal(r.get("order_source"), orderSource));
 				return cb.and(list.toArray(new Predicate[0]));
 			}
