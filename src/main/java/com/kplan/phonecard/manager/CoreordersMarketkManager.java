@@ -233,6 +233,9 @@ public class CoreordersMarketkManager extends BaseManager {
 						cb.like(r.get("malicious_tag"), "zop接入本地库校验失败")));
 				list.add(cb.notEqual(r.get("order_source"), "标记订单"));
 				list.add(cb.notLike(r.get("order_source"), "%线下上门%"));
+				list.add(cb.notLike(r.get("external_company"), "%四川%"));
+				list.add(cb.notLike(r.get("external_company"), "%贵州%"));
+				list.add(cb.notLike(r.get("external_company"), "%贵阳%"));
 				Predicate pred = cb.and(list.toArray(new Predicate[0]));
 				list.clear();
 				try {
@@ -277,6 +280,7 @@ public class CoreordersMarketkManager extends BaseManager {
 				list.add(cb.notLike(r.get("order_source"), "%线下上门%"));
 				list.add(cb.notLike(r.get("external_company"), "%四川%"));
 				list.add(cb.notLike(r.get("external_company"), "%贵州%"));
+				list.add(cb.notLike(r.get("external_company"), "%贵阳%"));
 				Predicate pred2 = cb.and(list.toArray(new Predicate[0]));
 				return cb.or(pred, pred2);
 			}
