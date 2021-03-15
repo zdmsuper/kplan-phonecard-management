@@ -274,7 +274,7 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 					list.add(cb.equal(r.get("order_source"), "CD"));
 				}
 				if(managerInfo.getBasicUserInfo().getCardId()!=null&&managerInfo.getBasicUserInfo().getCardId().contains("成华")) {
-					list.add(cb.or(cb.equal(r.get("order_source"), "GZ"),cb.equal(r.get("logistics_info"), "待开户订单")));
+					list.add(cb.or(cb.equal(r.get("order_source"), "GZ")));
 					
 				}
 				
