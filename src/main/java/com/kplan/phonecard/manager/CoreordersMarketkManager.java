@@ -276,6 +276,7 @@ public class CoreordersMarketkManager extends BaseManager {
 				list.add(cb.notEqual(r.get("order_source"), "标记订单"));
 				list.add(cb.notLike(r.get("order_source"), "%线下上门%"));
 				list.add(cb.notLike(r.get("external_company"), "%四川%"));
+				list.add(cb.notLike(r.get("external_company"), "%贵州%"));
 				Predicate pred2 = cb.and(list.toArray(new Predicate[0]));
 				return cb.or(pred, pred2);
 			}
