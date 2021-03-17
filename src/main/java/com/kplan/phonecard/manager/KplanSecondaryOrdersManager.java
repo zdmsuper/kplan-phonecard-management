@@ -512,6 +512,8 @@ public class KplanSecondaryOrdersManager extends BaseManager {
 							String phonesql="update kplan_unicom_phone set make_status=1 ,phone_num='"+re_phone+"',remarks='"+managerInfo.getBasicUserInfo().getUserRealName()+" 办理订单预占号码'  where make_status=0 and phone='"+phone_Num+"'";
 							this.coreOrderSerbice.exeNative(phonesql);
 							k.setOrder_source("交付上门渠道");
+						}else if(order.getOrder_source().contains("待开户")) {
+							k.setOrder_source("线下上门渠道-四川-待开户");
 						}
 						else {
 						k.setOrder_source("线下上门渠道-四川");
