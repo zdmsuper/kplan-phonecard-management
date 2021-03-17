@@ -84,6 +84,10 @@ public class ExterNalOrderController extends AbstractBaseController{
 		List<Object> data = EasyExcelFactory.read(file.getInputStream(), new Sheet(1, 2));
 		return this.kplanExternalOrdersManager.reUpLoadFile(managerInfo, data, status);
 	}
+	/**外部订单下载
+	 * @param response
+	 * @param query
+	 */
 	@RequestMapping("/downExcel")
 	public void downExcel( HttpServletResponse response,kplanExternalOrdersQuery query) {
 		 String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
