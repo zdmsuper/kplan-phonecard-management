@@ -97,9 +97,9 @@ public class SystemController extends AbstractBaseController{
 		 */
 		@RequestMapping("/savaExamination")
 		@ResponseBody
-		public Object savaExamination(String cont_code,String examination_status  ,String transfer_job, String job_name) {
+		public Object savaExamination(String cont_code,String examination_status  ,String transfer_job, String job_name,String pro_type,String program_type) {
 			ManagerInfo managerInfo=super.getCurrentUserDetails().orElse(null);
-			return this.kplanExaminationManager.savaExamination(cont_code, examination_status, transfer_job, job_name, managerInfo);
+			return this.kplanExaminationManager.savaExamination(cont_code, examination_status, transfer_job, job_name, managerInfo,pro_type,program_type);
 		}
 		/**删除触点编码
 		 * @return

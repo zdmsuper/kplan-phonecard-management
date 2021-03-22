@@ -49,7 +49,7 @@ public class KplanExaminationManager extends BaseManager{
 	 * @param job_name
 	 * @return
 	 */
-	public Object savaExamination(String cont_code,String examination_status  ,String transfer_job, String job_name,ManagerInfo managerInfo) {
+	public Object savaExamination(String cont_code,String examination_status  ,String transfer_job, String job_name,ManagerInfo managerInfo,String pro_type,String program_type) {
 		msgRes msg=new msgRes();
 		try {
 			KplanExamination k=new KplanExamination();
@@ -57,6 +57,8 @@ public class KplanExaminationManager extends BaseManager{
 			k.setExamination_status(examination_status);
 			k.setTransfer_job(transfer_job);
 			k.setJob_name(job_name);
+			k.setPro_type(pro_type);
+			k.setProgram_type(program_type);
 			k.setCread_date(new Date());
 			k.setOperator(managerInfo.getBasicUserInfo().getUserRealName());
 			kplanExaminationService.add(k);

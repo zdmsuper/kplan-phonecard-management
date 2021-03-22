@@ -48,7 +48,7 @@
 				<div class="formControls col-xs-7 col-sm-8">
 					<input type="text" class="input-text" value="" placeholder=""
 						id="cont_code" name="query.cont_code"
-						>
+						><span style="color: red;">配置工号登录无需配置触点</span>
 				</div>
 			</div>
 			<div class="row cl">
@@ -57,17 +57,41 @@
 				<div class="formControls col-xs-7 col-sm-8">
 						<input type="radio" value="是" checked="checked" name="examination_status" /> <span>是</span>
 						<input type="radio" value="否" name="examination_status" /><span>否</span>
+						<input type="radio" value="" name="examination_status" /><span>程序登录</span>
 				</div>
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
-					class="c-red">*</span>转移工号：</label>
+					class="c-red">*</span>工号：</label>
 				<div class="formControls col-xs-7 col-sm-8">
 						<input type="text" class="input-text" value="" placeholder=""
 						id="transfer_job" name="qury.transfer_job"
 						>
 				</div>
 			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>功能：</label>
+				<div class="formControls col-xs-7 col-sm-8">
+						<select name="program_type" id="program_type" class="select select-box inline">
+						<option value="审单">审单</option>
+						<option value="登录" >登录</option>
+						</select>
+						
+				</div>
+				</div>
+				<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>程序序列：</label>
+				<div class="formControls col-xs-7 col-sm-8">
+						<select name="pro_type" id="pro_type" class="select select-box inline">
+						<option value="">程序序列</option>
+						<option value="1">1</option>
+						<option value="2" >2</option>
+						</select>
+						<span style="color: red;">审单无需选择</span>
+				</div>
+				</div>
 				<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-3"><span
 					class="c-red">*</span>工号名称：</label>
@@ -179,12 +203,14 @@
 				var url="/system/savaExamination";
 				var cont_code=$('#cont_code').val();
 				var examination_status=$('input:radio:checked').val();
+				var pro_type=$('#pro_type').val();
+				var program_type=$('#program_type').val();
 				var examination_statusText=$("input[name='examination_status']:checked").next("span").text();
 				var transfer_job=$('#transfer_job').val();
 				var job_name=$('#job_name').val();
-				var pramStr="cont_code="+cont_code+"&examination_status="+examination_status+"&transfer_job="+transfer_job+"&job_name="+job_name;
+				var pramStr="cont_code="+cont_code+"&examination_status="+examination_status+"&transfer_job="+transfer_job+"&job_name="+job_name+"&pro_type="+pro_type+"&program_type="+program_type;
 				var submitMsg="触点编码："+cont_code+"<br/> 是否审单:"+examination_statusText+"</br> 转移工号："+transfer_job+"</br> 工号名称："+job_name;
-				if(cont_code==''||examination_status==''||transfer_job==''||job_name==''){
+				if((program_type!='登录')&&(cont_code==''||examination_status==''||transfer_job==''||job_name=='')){
 					layer.msg('请将标签信息填写完整', {
 						    time: 5000, //20s后自动关闭
  						    btn: ['确定', '取消']

@@ -34,6 +34,11 @@ public class KplanExamination extends BaseDomain{
 	private Date cread_date;	//timestamp	6	0	False		创建时间
 	@Column(name = "operator", unique = true, length = 32)
 	private String operator;	//varchar	16	0	False		操作人
+	@Column(name = "pro_type", unique = true, length = 32)
+	private String pro_type;
+	@Column(name = "program_type", unique = true, length = 32)
+	private String program_type;
+
 	public Integer getId() {
 		return id;
 	}
@@ -75,6 +80,18 @@ public class KplanExamination extends BaseDomain{
 	}
 	public void setOperator(String operator) {
 		this.operator = operator;
+	}
+	public String getPro_type() {
+		return pro_type;
+	}
+	public void setPro_type(String pro_type) {
+		this.pro_type = pro_type;
+	}
+	public String getProgram_type() {
+		return program_type;
+	}
+	public void setProgram_type(String program_type) {
+		this.program_type = program_type;
 	}
 	
 	
