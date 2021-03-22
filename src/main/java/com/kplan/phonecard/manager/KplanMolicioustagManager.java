@@ -1,6 +1,7 @@
 package com.kplan.phonecard.manager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
+import com.kplan.phonecard.domain.KplanExamination;
 import com.kplan.phonecard.domain.KplanMolicioustag;
+import com.kplan.phonecard.domain.ManagerInfo;
 import com.kplan.phonecard.domain.msgRes;
 import com.kplan.phonecard.query.KplanMolicioustagQuery;
 import com.kplan.phonecard.service.KplanMolicioustagService;
@@ -72,4 +75,6 @@ public class KplanMolicioustagManager extends BaseManager{
 		}
 		return JSON.toJSON(msg);
 	}
+	
+	
 }

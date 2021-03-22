@@ -1,0 +1,263 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico">
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui/css/H-ui.min.css}" href="ui/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/css/H-ui.admin.css}"
+	href="ui/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/lib/Hui-iconfont/1.0.8/iconfont.css}"
+	href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/skin/default/skin.css}"
+	href="ui/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/ui/h-ui.admin/css/style.css}"
+	href="ui/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+<title>添加用户 - H-ui.admin v3.1</title>
+<meta name="keywords"
+	content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+<meta name="description"
+	content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+</head>
+<body>
+	<article class="page-container">
+		<form method="post" class="form form-horizontal" id="form" autocomplete="off">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>触点编码：</label>
+				<div class="formControls col-xs-7 col-sm-8">
+					<input type="text" class="input-text" value="" placeholder=""
+						id="cont_code" name="query.cont_code"
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>是否审单：</label>
+				<div class="formControls col-xs-7 col-sm-8">
+						<input type="radio" value="是" checked="checked" name="examination_status" /> <span>是</span>
+						<input type="radio" value="否" name="examination_status" /><span>否</span>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>转移工号：</label>
+				<div class="formControls col-xs-7 col-sm-8">
+						<input type="text" class="input-text" value="" placeholder=""
+						id="transfer_job" name="qury.transfer_job"
+						>
+				</div>
+			</div>
+				<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3"><span
+					class="c-red">*</span>工号名称：</label>
+				<div class="formControls col-xs-7 col-sm-8">
+						<input type="text" class="input-text" value="" placeholder=""
+						id="job_name" name="qury.job_name"
+						>
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+					<input class="btn btn-primary radius" type="button" id="saveBtn"
+						value="&nbsp;&nbsp;添加&nbsp;&nbsp;">
+				</div>
+			</div>
+		</form>
+	</article>
+
+	<!--_footer 作为公共模版分离出去-->
+	<script type="text/javascript"
+		th:src="@{/lib/jquery/1.9.1/jquery.min.js}"
+		src="lib/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" th:src="@{/lib/layer/2.4/layer.js}"
+		src="lib/layer/2.4/layer.js"></script>
+	<script type="text/javascript" th:src="@{/ui/h-ui/js/H-ui.min.js}"
+		src="ui/h-ui/js/H-ui.min.js"></script>
+	<script type="text/javascript"
+		th:src="@{/ui/h-ui.admin/js/H-ui.admin.js}"
+		src="ui/h-ui.admin/js/H-ui.admin.js"></script>
+	<!--/_footer 作为公共模版分离出去-->
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/jquery.validate.js}"
+		src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/validate-methods.js}"
+		src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+	<script type="text/javascript"
+		th:src="@{/lib/jquery.validation/1.14.0/messages_zh.js}"
+		src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('.skin-minimal input').iCheck({
+				checkboxClass : 'icheckbox-blue',
+				radioClass : 'iradio-blue',
+				increaseArea : '20%'
+			});
+			$(".file-2").change(function() {
+				console.info(1)
+			});
+			$("#headImg").change(function() {
+				console.info(2)
+			});
+			$("#headImg").change(
+					function() {
+						$("#img").attr("src",
+								URL.createObjectURL($(this)[0].files[0]));
+					});
+			function validateForm() {
+				return $("#form").validate({
+					rules : {
+						'userName' : {
+							required : true,
+							minlength : 2,
+							maxlength : 16
+						},
+						'userid' : {
+							required : true,
+						},
+						'address' : {
+							required : true,
+							isMobile : true,
+						},
+						'province_code' : {
+							required : true,
+							province_code : true,
+						},
+						'district' : {
+							required : true,
+							district : true,
+						},
+						'city' : {
+							required : true,
+							city : true,
+						},
+						're_phone' : {
+							required : true,
+							re_phone : true,
+						},
+						'phone_Num' : {
+							required : true,
+							phone_Num : true,
+						},
+
+					},
+					onkeyup : false,
+					focusCleanup : true,
+					success : "valid"
+				}).form();
+
+			}
+		
+			
+			
+			
+			
+			$('#saveBtn').click(function() {
+				var url="/system/savaExamination";
+				var cont_code=$('#cont_code').val();
+				var examination_status=$('input:radio:checked').val();
+				var examination_statusText=$("input[name='examination_status']:checked").next("span").text();
+				var transfer_job=$('#transfer_job').val();
+				var job_name=$('#job_name').val();
+				var pramStr="cont_code="+cont_code+"&examination_status="+examination_status+"&transfer_job="+transfer_job+"&job_name="+job_name;
+				var submitMsg="触点编码："+cont_code+"<br/> 是否审单:"+examination_statusText+"</br> 转移工号："+transfer_job+"</br> 工号名称："+job_name;
+				if(cont_code==''||examination_status==''||transfer_job==''||job_name==''){
+					layer.msg('请将标签信息填写完整', {
+						    time: 5000, //20s后自动关闭
+ 						    btn: ['确定', '取消']
+						  });
+						return;
+				}
+				layer.confirm(submitMsg, {
+					  btn: ['确定提交','取消'] //按钮
+					}, function(){
+						$.ajax({
+							type:'get',
+							async:false,
+							url:url+"?"+pramStr,
+							success:function(resp){
+								if(resp.status==200){
+									  layer.msg(resp.msg, {
+										    icon: 1,
+										    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+										  }, function(){
+ 											window.parent.location.reload()
+										  });
+								}else{
+									parent.layer.alert(resp.msg, '提示信息')
+								}
+							}
+						});
+					}, function(){
+					  layer.msg('订单已取消提交', {
+					    time: 1000, //20s后自动关闭
+//					    btn: ['明白了', '']
+					  });
+					});
+			});
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+			function  formatTime (time,shu) {//时间切换
+			            if (!time) {
+			            return
+			            }
+			            const timer = new Date(time)
+			            let year = timer.getFullYear()
+			            let month = timer.getMonth() + 1
+			            let date = timer.getDate()
+			            let hours = timer.getHours()
+			            let min = timer.getMinutes()
+						let second = timer.getSeconds()
+			            month < 10 ? month = `0${month}` : month = month
+			            date < 10 ? date = `0${date}` : date = date
+			            hours < 10 ? hours = `0${hours}` : hours = hours
+			            min < 10 ? min = `0${min}` : min = min
+			            if(shu == 1){
+			                return ` ${month}-${date} ${hours}:${min}`
+			            }else{
+			                return `${year} ${month}-${date} ${hours}:${min}:${second}`
+			            }
+			        }
+			
+			
+		$('body').on("click", "input[name='phonesNum']",function(event) {
+			var smsstatus=$(this).val();
+			$("#phone_Num").val(smsstatus);
+			
+		});
+		
+		
+		
+	</script>
+</body>
+</html>
