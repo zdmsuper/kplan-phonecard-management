@@ -35,6 +35,9 @@ public class KplanMolicioustagManager extends BaseManager{
 		Specification<KplanMolicioustag> spec = new Specification<KplanMolicioustag>() {
 			public Predicate toPredicate(Root<KplanMolicioustag> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<>();
+				if(query.getDomain().getBusiness_code()!=null) {
+					list.add(cb.equal(r.get("business_code"), query.getDomain().getBusiness_code()));
+				}
 				return cb.and(list.toArray(new Predicate[0]));
 			}
 		};

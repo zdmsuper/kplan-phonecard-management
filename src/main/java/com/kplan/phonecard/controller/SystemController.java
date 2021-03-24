@@ -32,6 +32,7 @@ public class SystemController extends AbstractBaseController{
 		public String list(Map<String, Object> map, KplanMolicioustagQuery query) {
 			Page<KplanMolicioustag> page=this.kplanMolicioustagManager.qryMaliciTag(query, this.getPageRequest());
 			map.put("page", page);
+			map.put("query", query);
 			return "system/list";
 		}
 		

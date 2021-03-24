@@ -62,23 +62,11 @@
 					</select>
 					<select name="domain.phone_qcellcore"  id="phone_qcellcore" class="select select-box inline">
 						<option value="">处理工号</option>
-						<option 
-						th:value="18608009591"
-						th:selected="${'18608009591'==query.domain.phone_qcellcore}"
-						th:text="邵燕"
-						>
-						<option 
-						th:value="18581959364"
-						th:text="文路"
-						th:selected="${'18581959364'==query.domain.phone_qcellcore}"
-						>
-						</option>
-						<option 
-						th:value="13281168639"
-						th:text="中台文路"
-						th:selected="${'13281168639'==query.domain.phone_qcellcore}"
-						>
-						</option>
+						<option th:each="phones:${T(com.kplan.phonecard.enums.PhoneQcellcoreEnum).values()}" 
+						th:value="${phones}" th:text="${phones.desc}"
+						th:selected="${phones==query.domain.phone_qcellcore}" > </option>
+						
+						
 					</select>
 					<input type="text" class="input-text" style="width: 250px" 
 					placeholder="输入订单号、联系电话" id="" name="keyword" th:value="${query.keyword}">
@@ -151,7 +139,7 @@
 							<span th:text="${item.remarks_tag}"></span>
 							</td>
 							<td th:text="${#dates.format(item.update_date,'yyyy-MM-dd HH:mm:ss')}">0</td>
-							<td th:text="${item.phone_qcellcore}"></td>
+							<td th:text="${item.phone_qcellcore.desc}"></td>
 							<td th:text="${item.orderstatus.desc}"></td>
 							<td th:text="${item.examineStatus.desc}" style="color: red;"></td>
 <!-- 							<td th:text="${item.deliveryOrder==-1?'不限量':item.deliveryOrder}">0</td> -->

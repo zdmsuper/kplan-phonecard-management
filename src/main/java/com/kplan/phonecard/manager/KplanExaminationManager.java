@@ -27,32 +27,45 @@ import com.kplan.phonecard.service.KplanExaminationService;
 
 @Component
 @Transactional
-public class KplanExaminationManager extends BaseManager{
+public class KplanExaminationManager extends BaseManager {
 	@Autowired
 	KplanExaminationService kplanExaminationService;
-	
-	
-	public Page<KplanExamination> qryList(@NotNull KplanExaminationQury query, Pageable pageable){
+
+	public Page<KplanExamination> qryList(@NotNull KplanExaminationQury query, Pageable pageable) {
 		Specification<KplanExamination> spec = new Specification<KplanExamination>() {
 			public Predicate toPredicate(Root<KplanExamination> r, CriteriaQuery<?> qr, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<>();
+				if (query.getDomain().getPro_type() != null) {
+					list.add(cb.equal(r.get("pro_type"), query.getDomain().getPro_type()));
+				}
+				if (query.getKeyword() != null) {
+					list.add(cb.or(cb.like(r.get("cont_code"), "%" + query.getKeyword() + "%"),
+							cb.like(r.get("transfer_job"), "%" + query.getKeyword() + "%"),
+							cb.like(r.get("job_name"), "%" + query.getKeyword() + "%")));
+				}
+				if(query.getDomain().getExamination_status()!=null) {
+					list.add(cb.equal(r.get("examination_status"), query.getDomain().getExamination_status()));
+				}
 				return cb.and(list.toArray(new Predicate[0]));
 			}
 		};
 		return this.kplanExaminationService.findAll(spec, pageable);
 	}
-	
-	/**审单标签添加
+
+	/**
+	 * 审单标签添加
+	 * 
 	 * @param cont_code
 	 * @param examination_status
 	 * @param transfer_job
 	 * @param job_name
 	 * @return
 	 */
-	public Object savaExamination(String cont_code,String examination_status  ,String transfer_job, String job_name,ManagerInfo managerInfo,String pro_type,String program_type) {
-		msgRes msg=new msgRes();
+	public Object savaExamination(String cont_code, String examination_status, String transfer_job, String job_name,
+			ManagerInfo managerInfo, String pro_type, String program_type) {
+		msgRes msg = new msgRes();
 		try {
-			KplanExamination k=new KplanExamination();
+			KplanExamination k = new KplanExamination();
 			k.setCont_code(cont_code);
 			k.setExamination_status(examination_status);
 			k.setTransfer_job(transfer_job);
@@ -66,19 +79,21 @@ public class KplanExaminationManager extends BaseManager{
 			msg.setStatus("200");
 			msg.setMsg("触点增加成功");
 		} catch (Exception e) {
-		msg.setCode("201");
-		msg.setStatus("201");
-		msg.setMsg("系统异常，请联系管理员");
+			msg.setCode("201");
+			msg.setStatus("201");
+			msg.setMsg("系统异常，请联系管理员");
 		}
 		return JSON.toJSON(msg);
 	}
-	
-	/**触点触点标签删除
+
+	/**
+	 * 触点触点标签删除
+	 * 
 	 * @param id
 	 * @return
 	 */
-	public  Object examinationDel(Integer id) {
-		msgRes msg=new msgRes();
+	public Object examinationDel(Integer id) {
+		msgRes msg = new msgRes();
 		try {
 			this.kplanExaminationService.removeById(id, KplanExamination.class);
 			msg.setCode("200");

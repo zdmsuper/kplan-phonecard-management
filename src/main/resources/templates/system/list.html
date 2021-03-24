@@ -37,19 +37,16 @@
 	<div class="page-container">
 		<form th:action="@{/system/list}" method="get" autocomplete="off">
 			<div class="text">
-				<input type="hidden" name="sortName" value="createtime"/>
-				<input type="hidden" name="sortOrder" value="desc"/>
 <!-- 				创建时间： <input type="text" -->
 <!-- 					id="datemin" class="input-text date" name="createdDateStart" -->
 <!-- 					 th:value="${#dates.format(query.createdDateStart,'yyyy-MM-dd')}" style="width: 120px;">  -->
 <!-- 					- <input type="text" id="datemax" class="input-text date" name="createdDateEnd" -->
 <!-- 					th:value="${#dates.format(query.createdDateEnd,'yyyy-MM-dd')}" style="width: 120px;"> -->
-<!-- 					<select name="domain.order_source" id="order_source" class="select select-box inline"> -->
-<!-- 						<option value="">全部状态</option> -->
-<!-- 						<option value="线下上门渠道" th:selected="${'线下上门渠道'==query.domain.order_source}">线下上门渠道</option> -->
-<!-- 						<option value="交付上门渠道" th:selected="${'交付上门渠道'==query.domain.order_source}">交付上门渠道</option> -->
-<!-- 						<option value="标记订单" th:selected="${'标记订单'==query.domain.order_source}">标记订单</option> -->
-<!-- 					</select> -->
+						请选择：<select name="domain.business_code" id="business_code" class="select select-box inline">
+							<option value="">标签选择</option>
+							<option value="KPLANBACK" th:selected="${'KPLANBACK'==query.domain.business_code}">恶意标签</option>
+							<option value="KPLANLOGISTICS" th:selected="${'KPLANLOGISTICS'==query.domain.business_code}">物流标签</option>
+						</select>
 <!-- 					<select name="domain.order_status" id="order_status" class="select select-box inline"> -->
 <!-- 						<option value="">全部状态</option> -->
 <!-- 						<option th:each="orderStatus:${T(com.kplan.phonecard.enums.OrderStatusEnum).values()}"  -->
@@ -68,10 +65,11 @@
 <!-- 					</select> -->
 <!-- 					<input type="text" class="input-text" style="width: 250px"  -->
 <!-- 					placeholder="输入联系电话、订购电话" id="" name="keyword" th:value="${query.keyword}"> -->
-<!-- 					<button type="button" class="btn btn-success radius" id="searchBtn" name=""> -->
-<!-- 						<i class="Hui-iconfont">&#xe665;</i> 查询 -->
-<!-- 					</button> -->
-<!-- 			</div> -->
+						<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+					<button type="button" class="btn btn-success radius" id="searchBtn" name="">
+						<i class="Hui-iconfont">&#xe665;</i> 查询
+					</button>
+			</div>
 
 <!-- 		<div class="cl pd-5 bg-1 bk-gray mt-20"> -->
 <!-- 						<span class="l"> <a href="javascript:;" -->
@@ -171,7 +169,7 @@
 			//var formData = new FormData(formObj[0]);
 		});
 		
-		$('#order_source').change(function(){
+		$('#business_code').change(function(){
 			var formObj = $(this).parents('form');
 			formObj.submit();
 		});

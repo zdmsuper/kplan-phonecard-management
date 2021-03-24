@@ -17,6 +17,7 @@ import com.kplan.phonecard.base.BaseDomain;
 import com.kplan.phonecard.enums.ExamineStatusEnum;
 import com.kplan.phonecard.enums.GenderEnum;
 import com.kplan.phonecard.enums.NewStatusEnum;
+import com.kplan.phonecard.enums.PhoneQcellcoreEnum;
 import com.kplan.phonecard.enums.ScorDerStatusEnum;
 @Entity
 @Table(name = "kplan_sc_orders")
@@ -49,8 +50,9 @@ public class kplanscorders extends BaseDomain{
 	private String 	distribution_addres;//	varchar	128	0	False		收货地址
 	@Column(name = "distribution_type", unique = true, length = 32)
 	private String distribution_type;//	varchar	32	0	False		配送方式
+	@Convert(converter = PhoneQcellcoreEnum.EnumConvert.class)
 	@Column(name = "phone_qcellcore", unique = true, length = 16)
-	private String phone_qcellcore;//	varchar	16	0	False		订购号码归属地
+	private PhoneQcellcoreEnum phone_qcellcore;//	varchar	16	0	False		订购号码归属地
 	@Column(name = "channel_name", unique = true, length = 32)
 	private String channel_name;//	varchar	32	0	False		渠道名称
 	@Column(name = "user_id", unique = true, length = 24)
@@ -167,10 +169,10 @@ public class kplanscorders extends BaseDomain{
 	public void setDistribution_type(String distribution_type) {
 		this.distribution_type = distribution_type;
 	}
-	public String getPhone_qcellcore() {
+	public PhoneQcellcoreEnum getPhone_qcellcore() {
 		return phone_qcellcore;
 	}
-	public void setPhone_qcellcore(String phone_qcellcore) {
+	public void setPhone_qcellcore(PhoneQcellcoreEnum phone_qcellcore) {
 		this.phone_qcellcore = phone_qcellcore;
 	}
 	public String getChannel_name() {
